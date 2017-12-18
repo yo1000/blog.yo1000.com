@@ -93,6 +93,9 @@ $ # Add realm client for Resource server
 $ bin/kcadm.sh create clients -r kc-resource-demo -s clientId=kc-resource-server -s bearerOnly=true
 Created new client with id '58f8a1ad-a409-4f22-9bb8-de10f9ca5365'
 
+$ # Add realm client for Resource client
+$ bin/kcadm.sh create clients -r kc-resource-demo -s clientId=kc-resource-client -s 'redirectUris=["http://localhost:18080/*"]'
+Created new client with id '373d1ce7-19c2-4a40-b1a3-deb3e4a02c83'
 ```
 
 各コマンドの説明は以下。
