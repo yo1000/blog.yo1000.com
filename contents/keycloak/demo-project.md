@@ -22,34 +22,36 @@ TODO: 今回の構成図やインフラ要件を書く
 
 # Keycloak (SSO Server)
 
-Keycloak のダウンロードと起動。
+Keycloak のダウンロード、管理ユーザーの作成、起動。
 
 ```console
+$ # Download & unarchive
 $ curl https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz -o keycloak-3.4.1.Final.tar.gz
 $ tar -zxvf keycloak-3.4.1.Final.tar.gz
 $ cd keycloak-3.4.1.Final
+
+$ # Add admin user
 $ bin/add-user.sh --user keycloak --password keycloakPassword
 Added user 'keycloak' to file '/${baseDir}/keycloak-3.4.1.Final/standalone/configuration/mgmt-users.properties'
 Added user 'keycloak' to file '/${baseDir}/keycloak-3.4.1.Final/domain/configuration/mgmt-users.properties'
+
+$ # Run keycloak
 $ bin/standalone.sh -b 0.0.0.0
 ```
 
-## Download
+各コマンドの説明は以下.
+
+## Download & unarchive
 
 執筆時点での最新は、[3.4.1.Final](http://www.keycloak.org/archive/downloads-3.4.1.html)
 
 - https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz
 
 
-## Register AdminUser
+## Add admin user
 
-```console
-$ bin/add-user.sh --user keycloak --password keycloakPassword
-Added user 'keycloak' to file '/${baseDir}/keycloak-3.4.1.Final/standalone/configuration/mgmt-users.properties'
-Added user 'keycloak' to file '/${baseDir}/keycloak-3.4.1.Final/domain/configuration/mgmt-users.properties'
-```
-
-管理者の作成は、以下いずれかの方法にでおこなう。
+管理ユーザーは、以下いずれかの方法で追加する。
+__リモートホストから、直接追加することはできない。__
 
 - ホスト内の add-user スクリプトによる登録 (今回はこちらを採用)
 - 同一ホストからのアクセスによる Admin Console での登録
