@@ -28,7 +28,9 @@ Keycloak のダウンロードと起動。
 $ curl https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz -o keycloak-3.4.1.Final.tar.gz
 $ tar -zxvf keycloak-3.4.1.Final.tar.gz
 $ cd keycloak-3.4.1.Final
-$ bin.add-user ************
+$ bin/add-user.sh --user keycloak --password keycloakPassword
+Added user 'keycloak' to file '/${baseDir}/keycloak-3.4.1.Final/standalone/configuration/mgmt-users.properties'
+Added user 'keycloak' to file '/${baseDir}/keycloak-3.4.1.Final/domain/configuration/mgmt-users.properties'
 $ bin/standalone.sh -b 0.0.0.0
 ```
 
