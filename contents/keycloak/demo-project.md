@@ -5,8 +5,7 @@
 ## Summary
 
 - Requirements
-- 
-- Keycloak (SSO Server)
+- [Keycloak (SSO Server)](#keycloak-sso-server)
   - Download
   - Register AdminUser
   - Run
