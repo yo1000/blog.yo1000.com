@@ -8,11 +8,11 @@ Keycloak による SSO 検証のデモサイト構築メモ。
 
 - [Requirements](#requirements)
 - [Keycloak (SSO Server)](#keycloak-sso-server)
-  - Add AdminUser
-  - Run Keycloak
-  - Add Realm
-  - Add Roles
-  - Add Users
+  - Download & Unarchive
+  - Initial settings for Keycloak
+  - Set up Realm
+  - Set up Users
+  - Set up Clients
 - [Resource Server (SSO Client A)](#resource-server-sso-client-a)
 - [Resource Client (SSO Client B)](#resource-client-sso-client-b)
 
@@ -24,7 +24,7 @@ TODO: 今回の構成図やインフラ要件を書く
 
 Keycloak のダウンロード、管理ユーザーの作成、起動。
 
-Download & Unarchive
+### Download & Unarchive
 
 ```console
 $ curl https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz -o keycloak-3.4.1.Final.tar.gz
@@ -32,7 +32,7 @@ $ tar -zxvf keycloak-3.4.1.Final.tar.gz
 $ cd keycloak-3.4.1.Final
 ```
 
-Initial settings for Keycloak
+### Initial settings for Keycloak
 
 ```console
 $ # Add admin user for WildFly Management Console
@@ -54,7 +54,7 @@ $ bin/kcadm.sh config credentials --server http://127.0.0.1:8080/auth --realm ma
 Logging into http://127.0.0.1:8080/auth as user admin of realm master
 ```
 
-Set up Realm
+### Set up Realm
 
 ```console
 $ # Create realm
@@ -68,7 +68,7 @@ $ bin/kcadm.sh create roles -r kc-resource-demo -s name=user
 Created new role with id 'user'
 ```
 
-Set up Users
+### Set up Users
 
 ```console
 $ # Create realm users
@@ -84,6 +84,15 @@ $ bin/kcadm.sh set-password -r kc-resource-demo --username bob -p bob1234
 $ # Add realm roles to users
 $ bin/kcadm.sh add-roles -r kc-resource-demo --uusername alice --rolename admin --rolename user
 $ bin/kcadm.sh add-roles -r kc-resource-demo --uusername bob --rolename user
+```
+
+### Set up Clients
+
+```console
+$ # Add realm client for Resource server
+$ bin/kcadm.sh create clients -r kc-resource-demo -s clientId=kc-resource-server -s bearerOnly=true
+Created new client with id '58f8a1ad-a409-4f22-9bb8-de10f9ca5365'
+
 ```
 
 各コマンドの説明は以下。
