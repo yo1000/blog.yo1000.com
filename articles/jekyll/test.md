@@ -6,6 +6,8 @@ tags:
 
 {{site.time}}
 
+{{tags}}
+
 {% for tag in tags %}
 {{ tag }}
 {% endfor %}
