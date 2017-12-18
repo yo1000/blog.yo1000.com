@@ -37,8 +37,6 @@ TODO: 今回の構成図やインフラ要件を書く
 
 ## Set up Keycloak (SSO Server)
 
-Keycloak のダウンロード、管理ユーザーの作成、起動。
-
 ### Download & Unarchive
 
 執筆時点での最新は、[3.4.1.Final](http://www.keycloak.org/archive/downloads-3.4.1.html)<br>
@@ -84,6 +82,14 @@ Logging into http://127.0.0.1:8080/auth as user admin of realm master
 
 ### Set up Realm
 
+レルムは `領域・範囲・部門` といった単語に略されるもので、
+そのログインが、どのような種類のリソースにアクセスするためのものかを管理するための単位。
+より端的には、レルムが分離されていると、ログイン画面の URL が分離する。
+
+使用例としては、顧客が使用するシステムと、システム管理者が使用するシステムで、
+同じ SSO 基盤 (Keycloak) を使用しながらも、
+ログインフォームや、ログイン後に使用されるロールやグループの管理を完全に分離したいような場合に活用できる。
+
 ```console
 $ # Create realm
 $ bin/kcadm.sh create realms -s realm=kc-resource-demo -s enabled=true
@@ -97,6 +103,9 @@ Created new role with id 'user'
 ```
 
 ### Set up Users
+
+`kc-resource-demo` レルムにユーザーを追加していく。
+管理ユーザーとして `alice` を、一般ユーザーとして `bob` を、それぞれ作成する。
 
 ```console
 $ # Create realm users
@@ -116,6 +125,12 @@ $ bin/kcadm.sh add-roles -r kc-resource-demo --uusername bob --rolename user
 
 ### Set up Clients
 
+SSO 基盤を使用するアプリケーション (SSO サーバーに対する、クライアント) を登録する。
+リソースサーバーとして `kc-resource-server` を、リソースクライアントとして `kc-resource-client` をそれぞれ作成する。
+
+リソースサーバー、リソースクライアントという、 __リソースに対して、サーバー・クライアントの関係にある2つのアプリケーション__ を作成するが、
+これらアプリケーションは、 __いずれも SSO サーバーから見れば、等しく SSO クライアント__ となる。
+
 ```console
 $ # Add realm client for Resource server
 $ bin/kcadm.sh create clients -r kc-resource-demo -s clientId=kc-resource-server -s bearerOnly=true
@@ -126,70 +141,5 @@ $ bin/kcadm.sh create clients -r kc-resource-demo -s clientId=kc-resource-client
 Created new client with id '373d1ce7-19c2-4a40-b1a3-deb3e4a02c83'
 ```
 
-各コマンドの説明は以下。
-
-### Download & unarchive
-
-執筆時点での最新は、[3.4.1.Final](http://www.keycloak.org/archive/downloads-3.4.1.html)
-
-Download URL:
-https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz
-
-
-### Add admin user
-
-管理ユーザーは、以下いずれかの方法で追加する。
-__リモートホストから、直接追加することはできない。__
-
-- ホスト内の add-user スクリプトによる登録 (今回はこちらを採用)
-- 同一ホストからのアクセスによる Admin Console での登録
-
-### Run keycloak
-
-`-b` オプションで bind アドレスを指定する。このアドレス以外からの接続は拒否する。
-未指定時は同一ホスト内からの接続のみ許可される。
-`0.0.0.0` ですべて許可。
-
-Admin Console URL:
-http://127.0.0.1:8080/auth/admin/
-
-#### Add Realm
-
-http://192.168.128.5:8080/auth/admin/master/console/#/create/realm
-
-- Name: `kc-resource-demo`
-- Enabled: `ON`
-
-## Resource Server (SSO Client A)
-
-SSO クライアント A を追加する。<br>
-[http://192.168.128.5:8080/auth/admin/master/console/#/create/client/kc-resource-demo](http://192.168.128.5:8080/auth/admin/master/console/#/create/client/kc-resource-demo)
-
-以下を設定して、[Save] する。
-
-- Client ID: `kc-resource-server`
-- Client Protocol: `openid-connect`
-
-Client が追加されると、[Settings] に遷移するので、引き続き以下を設定して、[Save] する。
-
-- Client ID: `kc-resource-server` (そのまま)
-- Client Protocol: `openid-connect` (そのまま)
-- Access Type: `bearer only`
-
-## Resource Client (SSO Client B)
-
-SSO クライアント B を追加する。<br>
-[http://192.168.128.5:8080/auth/admin/master/console/#/create/client/kc-resource-demo](http://192.168.128.5:8080/auth/admin/master/console/#/create/client/kc-resource-demo)
-
-以下を設定して、[Save] する。
-
-- Client ID: `kc-resource-client`
-- Client Protocol: `openid-connect`
-
-Client が追加されると、[Settings] に遷移するので、引き続き以下を設定して、[Save] する。
-
-- Access Type: `confidential`
-- Standard Flow Enabled: `ON`
-- Valid Redirect URIs: `http://localhost:8080/*`
 
 
