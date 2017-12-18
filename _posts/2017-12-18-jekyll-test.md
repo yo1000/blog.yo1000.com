@@ -4,6 +4,6 @@ tags:
 - examples
 ---
 
-{% for tag in site.tags %}
+{% for tag in tags %}
 <em>{{ tag }}</em>
 {% endfor %}
