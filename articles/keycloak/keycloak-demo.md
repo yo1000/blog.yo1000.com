@@ -18,6 +18,20 @@ Keycloak による SSO 検証のデモサイト構築メモ。
 
 ## Requirements
 
+今回の作業環境は以下。
+
+```console
+$ sw_vers
+ProductName:	Mac OS X
+ProductVersion:	10.12.5
+BuildVersion:	16F2073
+
+$ java -version
+java version "1.8.0_131"
+Java(TM) SE Runtime Environment (build 1.8.0_131-b11)
+Java HotSpot(TM) 64-Bit Server VM (build 25.131-b11, mixed mode)
+```
+
 TODO: 今回の構成図やインフラ要件を書く
 
 ## Keycloak (SSO Server)
@@ -33,6 +47,15 @@ $ cd keycloak-3.4.1.Final
 ```
 
 ### Initial settings for Keycloak
+
+管理ユーザーは、以下いずれかの方法で追加する。
+
+- ホスト内の `add-user-keycloak.sh` による登録 _(今回はこちらを使用)_
+- 同一ホストからのアクセスによる Admin Console での登録
+
+今回はすべてローカルホストに構築しているため、気にする必要はないが、
+セットアップ後、初めて作成する管理ユーザーは、 __リモートホストから、直接追加することができない__ ため、
+セットアップ時に一緒に作成しておく必要がある。
 
 ```console
 $ # Add admin user for WildFly Management Console
