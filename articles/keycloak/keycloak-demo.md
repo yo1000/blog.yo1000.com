@@ -1,6 +1,8 @@
+Doc Status: `WIP`
+
 # Keycloak Demo
 
-セットアップメモ。
+Keycloak による SSO 検証のデモサイト構築メモ。
 
 ## Summary
 
