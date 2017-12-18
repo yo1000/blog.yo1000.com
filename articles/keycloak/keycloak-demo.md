@@ -1,4 +1,4 @@
-# Keycloak Demo Project
+# Keycloak Demo
 
 セットアップメモ。
 
