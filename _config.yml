@@ -1,1 +1,12 @@
+# Setup
+title: Project or Site name
+baseurl: ""
+paginate: 1
+locale: "ja"
+
 theme: jekyll-theme-cayman
+
+# About/contact
+author:
+name: yo1000 | YO!CHI KIKUCHI
+url: http://blog.yo1000.com
