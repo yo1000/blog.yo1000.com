@@ -38,13 +38,19 @@ $ bin/standalone.sh -b 0.0.0.0
 
 - https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz
 
+
 ## Register AdminUser
+
+```console
+$ bin/add-user.sh --user keycloak --password keycloakPassword
+Added user 'keycloak' to file '/${baseDir}/keycloak-3.4.1.Final/standalone/configuration/mgmt-users.properties'
+Added user 'keycloak' to file '/${baseDir}/keycloak-3.4.1.Final/domain/configuration/mgmt-users.properties'
+```
 
 管理者の作成は、以下いずれかの方法にでおこなう。
 
+- ホスト内の add-user スクリプトによる登録 (今回はこちらを採用)
 - 同一ホストからのアクセスによる Admin Console での登録
-- ホスト内の add-user スクリプトによる登録
-
 
 ## Run
 
