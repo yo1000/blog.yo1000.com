@@ -8,6 +8,6 @@ tags:
 
 {{tags}}
 
-{% for tag in tags %}
+{% for tag in site.tags %}
 {{ tag }}
 {% endfor %}
