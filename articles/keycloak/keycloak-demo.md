@@ -8,6 +8,11 @@ Keycloak による SSO 検証のデモサイト構築メモ。
 
 - [Requirements](#requirements)
 - [Keycloak (SSO Server)](#keycloak-sso-server)
+  - Add AdminUser
+  - Run Keycloak
+  - Add Realm
+  - Add Roles
+  - Add Users
 - [Resource Server (SSO Client A)](#resource-server-sso-client-a)
 - [Resource Client (SSO Client B)](#resource-client-sso-client-b)
 
@@ -20,18 +25,28 @@ TODO: 今回の構成図やインフラ要件を書く
 Keycloak のダウンロード、管理ユーザーの作成、起動。
 
 ```console
-$ # Download & unarchive
+$ # Download & Unarchive
 $ curl https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz -o keycloak-3.4.1.Final.tar.gz
 $ tar -zxvf keycloak-3.4.1.Final.tar.gz
 $ cd keycloak-3.4.1.Final
 
-$ # Add admin user
-$ bin/add-user.sh --user keycloak --password keycloakPassword
-Added user 'keycloak' to file '/${baseDir}/keycloak-3.4.1.Final/standalone/configuration/mgmt-users.properties'
-Added user 'keycloak' to file '/${baseDir}/keycloak-3.4.1.Final/domain/configuration/mgmt-users.properties'
+$ # Add admin user for WildFly Management Console
+$ bin/add-user.sh -u wildfly -p wildfly1234
+Added user 'wildfly' to file '/${baseDir}/keycloak-3.4.1.Final/standalone/configuration/mgmt-users.properties'
+Added user 'wildfly' to file '/${baseDir}/keycloak-3.4.1.Final/domain/configuration/mgmt-users.properties'
 
-$ # Run keycloak
-$ bin/standalone.sh -b 0.0.0.0
+$ # Add admin user for Keycloak Admin Console
+$ bin/add-user-keycloak.sh -r master -u keycloak -p keycloak1234
+Added 'admin' to '/${baseDir}/keycloak-3.4.1.Final/standalone/configuration/keycloak-add-user.json', restart server to load user
+
+$ # Run Keycloak
+$ bin/standalone.sh -b 0.0.0.0 &
+
+$ # Register credentials
+$ bin/kcadm.sh config credentials --server http://127.0.0.1:8080/auth --realm master --user keycloak --password keycloak1234
+Logging into http://127.0.0.1:8080/auth as user admin of realm master
+
+
 ```
 
 各コマンドの説明は以下。
@@ -59,10 +74,7 @@ __リモートホストから、直接追加することはできない。__
 `0.0.0.0` ですべて許可。
 
 Admin Console URL:
-http://192.168.128.5:8080/auth/admin/
-
-
-### Setup Realm
+http://127.0.0.1:8080/auth/admin/
 
 #### Add Realm
 
@@ -102,4 +114,5 @@ Client が追加されると、[Settings] に遷移するので、引き続き�
 - Access Type: `confidential`
 - Standard Flow Enabled: `ON`
 - Valid Redirect URIs: `http://localhost:8080/*`
+
 
