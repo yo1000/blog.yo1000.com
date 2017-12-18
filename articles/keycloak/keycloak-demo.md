@@ -78,7 +78,7 @@ http://192.168.128.5:8080/auth/admin/master/console/#/create/realm
 
 # Resource Server (SSO Client A)
 
-SSO クライアントを追加する。<br>
+SSO クライアント A を追加する。<br>
 [http://192.168.128.5:8080/auth/admin/master/console/#/create/client/kc-resource-demo](http://192.168.128.5:8080/auth/admin/master/console/#/create/client/kc-resource-demo)
 
 以下を設定して、[Save] する。
@@ -94,10 +94,10 @@ Client が追加されると、[Settings] に遷移するので、引き続き�
 
 # Resource Client (SSO Client B)
 
-SSO クライアントを追加する。<br>
+SSO クライアント B を追加する。<br>
 [http://192.168.128.5:8080/auth/admin/master/console/#/create/client/kc-resource-demo](http://192.168.128.5:8080/auth/admin/master/console/#/create/client/kc-resource-demo)
 
-以下を設定して [Save]
+以下を設定して、[Save] する。
 
 - Client ID: `kc-resource-client`
 - Client Protocol: `openid-connect`
@@ -106,5 +106,5 @@ Client が追加されると、[Settings] に遷移するので、引き続き�
 
 - Access Type: `confidential`
 - Standard Flow Enabled: `ON`
-- Valid Redirect URIs: http://
+- Valid Redirect URIs: `http://localhost:8080/*`
 
