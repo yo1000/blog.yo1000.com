@@ -4,7 +4,7 @@ baseurl: ""
 paginate: 1
 locale: "ja"
 
-theme: jekyll-theme-cayman
+# theme: jekyll-theme-cayman
 
 # About/contact
 author:
