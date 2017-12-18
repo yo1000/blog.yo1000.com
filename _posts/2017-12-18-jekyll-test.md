@@ -1,10 +1,10 @@
 ---
-tags: jekyll examples
+tags:
+- jekyll
+- examples
 ---
 
 {{site.time}}
-
-{{tags}}
 
 {% for tag in site.tags %}
 {{ tag }}
@@ -17,3 +17,6 @@ tags: jekyll examples
 {% for tag in tags %}
 {{ tag }}
 {% endfor %}
+
+{{tags}}
+
