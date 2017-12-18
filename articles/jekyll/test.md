@@ -8,5 +8,4 @@ tags:
 
 {% for tag in tags %}
 {{ tag }}
-{{ site.baseurl }}/tags#{{ tag | slugize }}
 {% endfor %}
