@@ -141,5 +141,8 @@ $ bin/kcadm.sh create clients -r kc-resource-demo -s clientId=kc-resource-client
 Created new client with id '373d1ce7-19c2-4a40-b1a3-deb3e4a02c83'
 ```
 
+## Develop Resource Server (SSO Client A)
 
+
+## Develop Resource Client (SSO Client B)
 
