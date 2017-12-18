@@ -4,29 +4,6 @@ tags:
 - examples
 ---
 
-# Head
-
-{{site.time}}
-
-----
-
-{% for stag in site.tags %}
-{{ stag }}
+{% for tag in site.tags %}
+<em>{{ tag }}</em>
 {% endfor %}
-
-----
-
-{% for ptag in page.tags %}
-{{ ptag }}
-{% endfor %}
-
-----
-
-{% for tag in tags %}
-{{ tag }}
-{% endfor %}
-
-----
-
-{{tags}}
-
