@@ -4,7 +4,7 @@
 
 ## Summary
 
-- Requirements
+- [Requirements](Requirements)
 - [Keycloak (SSO Server)](#keycloak-sso-server)
   - Download
   - Register AdminUser
@@ -16,6 +16,9 @@
 - Resource Client (SSO Client B)
   - Add Client
 
+# Requirements
+
+TODO: 今回の構成図やインフラ要件を書く
 
 # Keycloak (SSO Server)
 
