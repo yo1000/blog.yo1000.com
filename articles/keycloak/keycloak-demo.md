@@ -9,11 +9,11 @@ SSO サーバーのセットアップと、SSO クライアントの開発を順
 
 - [Requirements](#requirements)
 - [Set up Keycloak (SSO Server)](#set-up-keycloak-sso-server)
-  - [Download & Unarchive](#download-unarchive)
-  - Initial settings for Keycloak
-  - Set up Realm
-  - Set up Users
-  - Set up Clients
+  - [Download & Unarchive](#download--unarchive)
+  - [Initial settings for Keycloak](#initial-settings-for-keycloak)
+  - [Set up Realm](#set-up-realm)
+  - [Set up Users](#set-up-users)
+  - [Set up Clients](#set-up-clients)
 - [Develop Resource Server (SSO Client A)](#develop-resource-server-sso-client-a)
 - [Develop Resource Client (SSO Client B)](#develop-resource-client-sso-client-b)
 
