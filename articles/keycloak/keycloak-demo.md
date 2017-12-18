@@ -41,10 +41,22 @@ Added 'admin' to '/${baseDir}/keycloak-3.4.1.Final/standalone/configuration/keyc
 
 $ # Run Keycloak
 $ bin/standalone.sh -b 0.0.0.0 &
+..
+18:38:14,161 INFO  [org.jboss.as] (Controller Boot Thread) WFLYSRV0025: Keycloak 3.4.1.Final (WildFly Core 3.0.8.Final) started in 61427ms - Started 545 of 881 services (604 services are lazy, passive or on-demand)
 
 $ # Register credentials
 $ bin/kcadm.sh config credentials --server http://127.0.0.1:8080/auth --realm master --user keycloak --password keycloak1234
 Logging into http://127.0.0.1:8080/auth as user admin of realm master
+
+$ # Create realm
+$ bin/kcadm.sh create realms -s realm=kc-resource-demo -s enabled=true
+Created new realm with id 'kc-resource-demo'
+
+$ # Create realm roles
+$ bin/kcadm.sh create roles -r kc-resource-demo -s name=admin
+Created new role with id 'admin'
+$ bin/kcadm.sh create roles -r kc-resource-demo -s name=user
+Created new role with id 'user'
 
 
 ```
