@@ -24,12 +24,17 @@ TODO: 今回の構成図やインフラ要件を書く
 
 Keycloak のダウンロード、管理ユーザーの作成、起動。
 
+Download & Unarchive
+
 ```console
-$ # Download & Unarchive
 $ curl https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz -o keycloak-3.4.1.Final.tar.gz
 $ tar -zxvf keycloak-3.4.1.Final.tar.gz
 $ cd keycloak-3.4.1.Final
+```
 
+Initial settings for Keycloak
+
+```console
 $ # Add admin user for WildFly Management Console
 $ bin/add-user.sh -u wildfly -p wildfly1234
 Added user 'wildfly' to file '/${baseDir}/keycloak-3.4.1.Final/standalone/configuration/mgmt-users.properties'
@@ -47,7 +52,11 @@ $ bin/standalone.sh -b 0.0.0.0 &
 $ # Register credentials
 $ bin/kcadm.sh config credentials --server http://127.0.0.1:8080/auth --realm master --user keycloak --password keycloak1234
 Logging into http://127.0.0.1:8080/auth as user admin of realm master
+```
 
+Set up Realm
+
+```console
 $ # Create realm
 $ bin/kcadm.sh create realms -s realm=kc-resource-demo -s enabled=true
 Created new realm with id 'kc-resource-demo'
@@ -57,7 +66,11 @@ $ bin/kcadm.sh create roles -r kc-resource-demo -s name=admin
 Created new role with id 'admin'
 $ bin/kcadm.sh create roles -r kc-resource-demo -s name=user
 Created new role with id 'user'
+```
 
+Set up Users
+
+```console
 $ # Create realm users
 $ ALICE_ID=`bin/kcadm.sh create users -r kc-resource-demo -s username=alice -s enabled=true -i`; echo $ALICE_ID
 26c64aeb-6d09-4d58-afac-fd7550d4ff7b
@@ -71,8 +84,6 @@ $ bin/kcadm.sh set-password -r kc-resource-demo --username bob -p bob1234
 $ # Add realm roles to users
 $ bin/kcadm.sh add-roles -r kc-resource-demo --uusername alice --rolename admin --rolename user
 $ bin/kcadm.sh add-roles -r kc-resource-demo --uusername bob --rolename user
-
-
 ```
 
 各コマンドの説明は以下。
