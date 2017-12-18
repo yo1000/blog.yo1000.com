@@ -10,14 +10,14 @@ tags:
 
 ----
 
-{% for tag in site.tags %}
-{{ tag }}
+{% for stag in site.tags %}
+{{ stag }}
 {% endfor %}
 
 ----
 
-{% for tag in page.tags %}
-{{ tag }}
+{% for ptag in page.tags %}
+{{ ptag }}
 {% endfor %}
 
 ----
