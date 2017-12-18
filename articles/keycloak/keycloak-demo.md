@@ -72,10 +72,10 @@ Created new role with id 'user'
 
 ```console
 $ # Create realm users
-$ ALICE_ID=`bin/kcadm.sh create users -r kc-resource-demo -s username=alice -s enabled=true -i`; echo $ALICE_ID
-26c64aeb-6d09-4d58-afac-fd7550d4ff7b
-$ BOB_ID=`bin/kcadm.sh create users -r kc-resource-demo -s username=bob -s enabled=true -i`; echo $BOB_ID
-8ab8768a-a2b1-479d-be11-3d7dd1b3d3db
+$ bin/kcadm.sh create users -r kc-resource-demo -s username=alice -s enabled=true
+Created new user with id '26c64aeb-6d09-4d58-afac-fd7550d4ff7b'
+$ bin/kcadm.sh create users -r kc-resource-demo -s username=bob -s enabled=true
+Created new user with id '8ab8768a-a2b1-479d-be11-3d7dd1b3d3db'
 
 $ # Update password
 $ bin/kcadm.sh set-password -r kc-resource-demo --username alice -p alice1234
