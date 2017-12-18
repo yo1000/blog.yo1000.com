@@ -3,18 +3,19 @@ Doc Status: `WIP`
 # Keycloak Demo
 
 Keycloak による SSO 検証のデモサイト構築メモ。
+SSO サーバーのセットアップと、SSO クライアントの開発を順に見ていく。
 
 ## Summary
 
 - [Requirements](#requirements)
-- [Keycloak (SSO Server)](#keycloak-sso-server)
-  - Download & Unarchive
+- [Set up Keycloak (SSO Server)](#set-up-keycloak-sso-server)
+  - [Download & Unarchive](#download-unarchive)
   - Initial settings for Keycloak
   - Set up Realm
   - Set up Users
   - Set up Clients
-- [Resource Server (SSO Client A)](#resource-server-sso-client-a)
-- [Resource Client (SSO Client B)](#resource-client-sso-client-b)
+- [Develop Resource Server (SSO Client A)](#develop-resource-server-sso-client-a)
+- [Develop Resource Client (SSO Client B)](#develop-resource-client-sso-client-b)
 
 ## Requirements
 
@@ -34,11 +35,15 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.131-b11, mixed mode)
 
 TODO: 今回の構成図やインフラ要件を書く
 
-## Keycloak (SSO Server)
+## Set up Keycloak (SSO Server)
 
 Keycloak のダウンロード、管理ユーザーの作成、起動。
 
 ### Download & Unarchive
+
+執筆時点での最新は、[3.4.1.Final](http://www.keycloak.org/archive/downloads-3.4.1.html)<br>
+Download URL:
+[https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz](https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz)
 
 ```console
 $ curl https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz -o keycloak-3.4.1.Final.tar.gz
