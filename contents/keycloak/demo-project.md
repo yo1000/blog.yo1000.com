@@ -4,16 +4,16 @@
 
 ## Summary
 
-- [Requirements](Requirements)
+- [Requirements](#requirements)
 - [Keycloak (SSO Server)](#keycloak-sso-server)
   - Download
   - Register AdminUser
   - Run
   - Setup Realm
     - Add Realm
-- Resource Server (SSO Client A)
+- [Resource Server (SSO Client A)](#resource-server-sso-client-a)
   - Add Client
-- Resource Client (SSO Client B)
+- [Resource Client (SSO Client B)](#resource-client-sso-client-b)
   - Add Client
 
 # Requirements
