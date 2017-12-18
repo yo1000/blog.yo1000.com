@@ -2,6 +2,10 @@
 
  セットアップメモ。
 
+## Summary
+
+- Requirements
+- 
 - Keycloak (SSO Server)
   - Download
   - Register AdminUser
@@ -12,19 +16,14 @@
   - Add Client
 - Resource Client (SSO Client B)
   - Add Client
-  - Client ID: `kc-resource-client`
-  - Client Protocol: `openid-connect`
-  - Access Type: `confidential`
-  - Standard Flow Enabled: `ON`
-  - Valid Redirect URIs: http://
 
 
 # Keycloak (SSO Server)
 
 Keycloak のダウンロードと起動。
 
-```
-$ wget ..
+```console
+$ curl https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz -o keycloak-3.4.1.Final.tar.gz
 $ tar -zxvf keycloak-3.4.1.Final.tar.gz
 $ cd keycloak-3.4.1.Final
 $ bin.add-user ************
@@ -33,12 +32,17 @@ $ bin/standalone.sh -b 0.0.0.0
 
 ## Download
 
+執筆時点での最新は、[3.4.1.Final](http://www.keycloak.org/archive/downloads-3.4.1.html)
+
+- https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz
+
 ## Register AdminUser
 
 管理者の作成は、以下いずれかの方法にでおこなう。
 
 - 同一ホストからのアクセスによる Admin Console での登録
 - ホスト内の add-user スクリプトによる登録
+
 
 ## Run
 
@@ -48,6 +52,7 @@ $ bin/standalone.sh -b 0.0.0.0
 
 Admin Console URL:
 http://192.168.128.5:8080/auth/admin/
+
 
 ## Setup Realm
 
@@ -59,6 +64,7 @@ http://192.168.128.5:8080/auth/admin/master/console/#/create/realm
 - Enabled: `ON`
 
 # Resource Server (SSO Client A)
+
 
 ## Add Client
 
@@ -82,6 +88,13 @@ http://192.168.128.5:8080/auth/admin/master/console/#/realms/kc-resource-demo/cl
 - Access Type: `bearer only`
 
 
-
 # Resource Client (SSO Client B)
+
+
+
+- Client ID: `kc-resource-client`
+- Client Protocol: `openid-connect`
+- Access Type: `confidential`
+- Standard Flow Enabled: `ON`
+- Valid Redirect URIs: http://
 
