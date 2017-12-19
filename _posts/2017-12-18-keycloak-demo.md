@@ -270,5 +270,9 @@ keycloak:${CLI_KC_PROPS}" > src/main/resources/application.yml
 - [http://blog.keycloak.org/2017/01/administer-keycloak-server-from-shell.html](http://blog.keycloak.org/2017/01/administer-keycloak-server-from-shell.html)
 - [http://keycloak-documentation.openstandia.jp/master/ja_JP/securing_apps/index.html](http://keycloak-documentation.openstandia.jp/master/ja_JP/securing_apps/index.html)
 - [https://sandor-nemeth.github.io/java/spring/2017/06/15/spring-boot-with-keycloak.html](https://sandor-nemeth.github.io/java/spring/2017/06/15/spring-boot-with-keycloak.html)
+- [https://github.com/foo4u/keycloak-spring-demo](https://github.com/foo4u/keycloak-spring-demo)
+
+### :thinking:
+
 - [http://www.atmarkit.co.jp/ait/articles/1711/08/news009.html](http://www.atmarkit.co.jp/ait/articles/1711/08/news009.html
 )
