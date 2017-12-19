@@ -227,8 +227,10 @@ $ ./mvnw clean spring-boot:run
 
 ## Develop Resource Client (SSO Client - RCli)
 
+[Set up Clients](#set-up-clients) で変数に取った `RES_CLI_ID` を使用して、クレデンシャルを出力する。
+
 ```console
-$ bin/kcadm.sh get clients/278cb584-c5cd-4752-9778-1767c710bf7b/installation/providers/keycloak-oidc-keycloak-json -r kc-resource
+$ bin/kcadm.sh get clients/${RES_CLI_ID}/installation/providers/keycloak-oidc-keycloak-json -r kc-resource
 {
   "realm" : "kc-resource",
   "auth-server-url" : "http://127.0.0.1:8080/auth",
