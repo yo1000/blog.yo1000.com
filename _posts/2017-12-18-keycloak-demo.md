@@ -183,6 +183,28 @@ $ echo "keycloak:
   auth-server-url: http://127.0.0.1:8080/auth
   ssl-required: external
 " > src/main/resources/application.yml
+
+$ echo "package com.yo1000.keycloak.resource.server
+
+import org.springframework.security.access.annotation.Secured
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RestController
+
+@RestController("/kc")
+class KcResourceServerController {
+    @GetMapping("/admin/resource")
+    @Secured("ROLE_ADMIN")
+    fun getAdminResource(): String {
+        return "Admin resource"
+    }
+
+    @GetMapping("/user/resource")
+    @Secured("ROLE_USER")
+    fun getUserResource(): String {
+        return "User resource"
+    }
+}
+" > src/main/kotlin/com/yo1000/keycloak/resource/server/KcResourceServerController.kt
 ```
 
 ## Develop Resource Client (SSO Client - RCli)
