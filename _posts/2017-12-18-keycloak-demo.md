@@ -139,7 +139,7 @@ $ bin/kcadm.sh create clients -r kc-resource-demo -s clientId=kc-resource-server
 Created new client with id '58f8a1ad-a409-4f22-9bb8-de10f9ca5365'
 
 $ # Add realm client for Resource client
-$ bin/kcadm.sh create clients -r kc-resource-demo -s clientId=kc-resource-client -s 'redirectUris=["http://localhost:18080/*"]'
+$ bin/kcadm.sh create clients -r kc-resource-demo -s clientId=kc-resource-client -s 'redirectUris=["http://localhost:28080/*"]'
 Created new client with id '373d1ce7-19c2-4a40-b1a3-deb3e4a02c83'
 ```
 
@@ -165,6 +165,14 @@ $ curl https://start.spring.io/starter.tgz \
 
 $ ls kc-resource-server
 mvnw		mvnw.cmd	pom.xml		src
+
+$ cd kc-resource-server
+
+$ mv \
+src/main/resources/application.properties \
+src/main/resources/application.yml
+
+$ ./mvnw clean spring-boot:run
 ```
 
 ## Develop Resource Client (SSO Client - RCli)
