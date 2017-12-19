@@ -172,11 +172,10 @@ $ mv \
 src/main/resources/application.properties \
 src/main/resources/application.yml
 
-$ # TODO: ..
-$ ./mvnw clean spring-boot:run -Dserver.port=18080
-
 $ # Role Mapping for Cli is requires?
-$ echo "keycloak:
+$ echo "server.port=18080
+
+keycloak:
   realm: kc-resource
   resource: kc-resource-server
   bearer-only: true
@@ -205,6 +204,9 @@ class KcResourceServerController {
     }
 }
 " > src/main/kotlin/com/yo1000/keycloak/resource/server/KcResourceServerController.kt
+
+$ # TODO: ..
+$ ./mvnw clean spring-boot:run
 ```
 
 ## Develop Resource Client (SSO Client - RCli)
