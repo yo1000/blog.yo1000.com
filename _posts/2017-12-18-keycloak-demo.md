@@ -281,9 +281,8 @@ keycloak:${CLI_KC_PROPS}" > src/main/resources/application.yml
 
 一気にコピペで全部セットアップするやーつ。
 
-```
+```bash
 WORKDIR=`pwd`; echo $WORKDIR
-
 curl https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz | tar -zxvf -
 cd keycloak-3.4.1.Final
 bin/add-user.sh -u wildfly -p wildfly1234
@@ -291,7 +290,7 @@ bin/add-user-keycloak.sh -r master -u keycloak -p keycloak1234
 bin/standalone.sh -b 0.0.0.0 &
 ```
 
-```
+```bash
 bin/kcadm.sh config credentials --server http://127.0.0.1:8080/auth --realm master --user keycloak --password keycloak1234
 bin/kcadm.sh create realms -s realm=kc-resource -s enabled=true
 bin/kcadm.sh create roles -r kc-resource -s name=admin
@@ -306,7 +305,7 @@ RES_SRV_ID=`bin/kcadm.sh create clients -r kc-resource -s clientId=kc-resource-s
 RES_CLI_ID=`bin/kcadm.sh create clients -r kc-resource -s clientId=kc-resource-client -s 'redirectUris=["http://localhost:28080/*"]' -i`; echo $RES_CLI_ID
 ```
 
-```
+```bash
 cd $WORKDIR
 curl https://start.spring.io/starter.tgz \
 -d dependencies="web,security,keycloak" \
@@ -364,6 +363,6 @@ class KcResourceServerController {
 ./mvnw clean spring-boot:run
 ```
 
-```
+```bash
 ..
 ```
