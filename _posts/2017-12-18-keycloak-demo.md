@@ -227,7 +227,7 @@ $ ./mvnw clean spring-boot:run
 
 ## Develop Resource Client (SSO Client - RCli)
 
-[Set up Clients](#set-up-clients) で変数に取った `RES_CLI_ID` を使用して、クレデンシャルを出力する。
+[Set up Clients](#set-up-clients) で、`$RES_CLI_ID` 変数に取ったクライアント ID を使用して、クレデンシャルを出力する。
 
 ```console
 $ bin/kcadm.sh get clients/${RES_CLI_ID}/installation/providers/keycloak-oidc-keycloak-json -r kc-resource
