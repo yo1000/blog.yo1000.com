@@ -94,35 +94,35 @@ Logging into http://127.0.0.1:8080/auth as user admin of realm master
 
 ```console
 $ # Create realm
-$ bin/kcadm.sh create realms -s realm=kc-resource-demo -s enabled=true
-Created new realm with id 'kc-resource-demo'
+$ bin/kcadm.sh create realms -s realm=kc-resource -s enabled=true
+Created new realm with id 'kc-resource'
 
 $ # Create realm roles
-$ bin/kcadm.sh create roles -r kc-resource-demo -s name=admin
+$ bin/kcadm.sh create roles -r kc-resource -s name=admin
 Created new role with id 'admin'
-$ bin/kcadm.sh create roles -r kc-resource-demo -s name=user
+$ bin/kcadm.sh create roles -r kc-resource -s name=user
 Created new role with id 'user'
 ```
 
 ### Set up Users
 
-`kc-resource-demo` レルムにユーザーを追加していく。
+`kc-resource` レルムにユーザーを追加していく。
 管理ユーザーとして `alice` を、一般ユーザーとして `bob` を、それぞれ作成する。
 
 ```console
 $ # Create realm users
-$ bin/kcadm.sh create users -r kc-resource-demo -s username=alice -s enabled=true
+$ bin/kcadm.sh create users -r kc-resource -s username=alice -s enabled=true
 Created new user with id '26c64aeb-6d09-4d58-afac-fd7550d4ff7b'
-$ bin/kcadm.sh create users -r kc-resource-demo -s username=bob -s enabled=true
+$ bin/kcadm.sh create users -r kc-resource -s username=bob -s enabled=true
 Created new user with id '8ab8768a-a2b1-479d-be11-3d7dd1b3d3db'
 
 $ # Update password
-$ bin/kcadm.sh set-password -r kc-resource-demo --username alice -p alice1234
-$ bin/kcadm.sh set-password -r kc-resource-demo --username bob -p bob1234
+$ bin/kcadm.sh set-password -r kc-resource --username alice -p alice1234
+$ bin/kcadm.sh set-password -r kc-resource --username bob -p bob1234
 
 $ # Add realm roles to users
-$ bin/kcadm.sh add-roles -r kc-resource-demo --uusername alice --rolename admin --rolename user
-$ bin/kcadm.sh add-roles -r kc-resource-demo --uusername bob --rolename user
+$ bin/kcadm.sh add-roles -r kc-resource --uusername alice --rolename admin --rolename user
+$ bin/kcadm.sh add-roles -r kc-resource --uusername bob --rolename user
 ```
 
 ### Set up Clients
@@ -135,11 +135,11 @@ SSO 基盤を使用するアプリケーション (SSO サーバーに対する�
 
 ```console
 $ # Add realm client for Resource server
-$ bin/kcadm.sh create clients -r kc-resource-demo -s clientId=kc-resource-server -s bearerOnly=true
+$ bin/kcadm.sh create clients -r kc-resource -s clientId=kc-resource-server -s bearerOnly=true
 Created new client with id '58f8a1ad-a409-4f22-9bb8-de10f9ca5365'
 
 $ # Add realm client for Resource client
-$ bin/kcadm.sh create clients -r kc-resource-demo -s clientId=kc-resource-client -s 'redirectUris=["http://localhost:28080/*"]'
+$ bin/kcadm.sh create clients -r kc-resource -s clientId=kc-resource-client -s 'redirectUris=["http://localhost:28080/*"]'
 Created new client with id '373d1ce7-19c2-4a40-b1a3-deb3e4a02c83'
 ```
 
@@ -172,7 +172,15 @@ $ mv \
 src/main/resources/application.properties \
 src/main/resources/application.yml
 
-$ ./mvnw clean spring-boot:run
+$ ./mvnw clean spring-boot:run -Dserver.port=18080
+
+$ echo "keycloak:
+  realm: kc-resource
+  resource: kc-resource-server
+  bearer-only: true
+  auth-server-url: http://127.0.0.1:8080/auth
+  ssl-required: external
+" > src/main/resources/application.yml
 ```
 
 ## Develop Resource Client (SSO Client - RCli)
@@ -180,6 +188,6 @@ $ ./mvnw clean spring-boot:run
 
 ## Refs
 
-[http://www.keycloak.org/](http://www.keycloak.org/)
-[http://www.atmarkit.co.jp/ait/articles/1711/08/news009.html](http://www.atmarkit.co.jp/ait/articles/1711/08/news009.html
+- [http://www.keycloak.org/](http://www.keycloak.org/)
+- [http://www.atmarkit.co.jp/ait/articles/1711/08/news009.html](http://www.atmarkit.co.jp/ait/articles/1711/08/news009.html
 )
