@@ -276,3 +276,94 @@ keycloak:${CLI_KC_PROPS}" > src/main/resources/application.yml
 
 - [http://www.atmarkit.co.jp/ait/articles/1711/08/news009.html](http://www.atmarkit.co.jp/ait/articles/1711/08/news009.html
 )
+
+## Appendix
+
+一気にコピペで全部セットアップするやーつ。
+
+```
+WORKDIR=`pwd`; echo $WORKDIR
+
+curl https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz | tar -zxvf -
+cd keycloak-3.4.1.Final
+bin/add-user.sh -u wildfly -p wildfly1234
+bin/add-user-keycloak.sh -r master -u keycloak -p keycloak1234
+bin/standalone.sh -b 0.0.0.0 &
+```
+
+```
+bin/kcadm.sh config credentials --server http://127.0.0.1:8080/auth --realm master --user keycloak --password keycloak1234
+bin/kcadm.sh create realms -s realm=kc-resource -s enabled=true
+bin/kcadm.sh create roles -r kc-resource -s name=admin
+bin/kcadm.sh create roles -r kc-resource -s name=user
+bin/kcadm.sh create users -r kc-resource -s username=alice -s enabled=true
+bin/kcadm.sh create users -r kc-resource -s username=bob -s enabled=true
+bin/kcadm.sh set-password -r kc-resource --username alice -p alice1234
+bin/kcadm.sh set-password -r kc-resource --username bob -p bob1234
+bin/kcadm.sh add-roles -r kc-resource --uusername alice --rolename admin --rolename user
+bin/kcadm.sh add-roles -r kc-resource --uusername bob --rolename user
+RES_SRV_ID=`bin/kcadm.sh create clients -r kc-resource -s clientId=kc-resource-server -s bearerOnly=true -i`; echo $RES_SRV_ID
+RES_CLI_ID=`bin/kcadm.sh create clients -r kc-resource -s clientId=kc-resource-client -s 'redirectUris=["http://localhost:28080/*"]' -i`; echo $RES_CLI_ID
+```
+
+```
+cd $WORKDIR
+curl https://start.spring.io/starter.tgz \
+-d dependencies="web,security,keycloak" \
+-d language="kotlin" \
+-d javaVersion="1.8" \
+-d packaging="jar" \
+-d bootVersion="1.5.9.RELEASE" \
+-d type="maven-project" \
+-d groupId="com.yo1000" \
+-d artifactId="kc-resource-server" \
+-d version="1.0.0-SNAPSHOT" \
+-d name="kc-resource-server" \
+-d description="Keycloak Client Demo - Resource Server" \
+-d packageName="com.yo1000.keycloak.resource.server" \
+-d baseDir="kc-resource-server" \
+-d applicationName="KcResourceServerApplication" \
+| tar -xzvf -
+cd kc-resource-server
+mv \
+src/main/resources/application.properties \
+src/main/resources/application.yml
+echo "server.port: 18080
+
+keycloak:
+  realm: kc-resource
+  resource: kc-resource-server
+  bearer-only: true
+  auth-server-url: http://127.0.0.1:8080/auth
+  ssl-required: external
+" > src/main/resources/application.yml
+echo "package com.yo1000.keycloak.resource.server
+
+import org.springframework.security.access.annotation.Secured
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RestController
+
+@RestController("/kc")
+class KcResourceServerController {
+    @GetMapping("/admin/resource")
+    @Secured("ROLE_ADMIN")
+    fun getAdminResource(): String {
+        return "Admin resource"
+    }
+
+    @GetMapping("/user/resource")
+    @Secured("ROLE_USER")
+    fun getUserResource(): String {
+        return "User resource"
+    }
+}
+" > src/main/kotlin/com/yo1000/keycloak/resource/server/KcResourceServerController.kt
+
+..
+
+./mvnw clean spring-boot:run
+```
+
+```
+..
+```
