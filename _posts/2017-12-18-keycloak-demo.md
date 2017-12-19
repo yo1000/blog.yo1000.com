@@ -145,12 +145,12 @@ SSO 基盤を使用するアプリケーション (SSO サーバーに対する�
 
 ```console
 $ # Add realm client for Resource server
-$ bin/kcadm.sh create clients -r kc-resource -s clientId=kc-resource-server -s bearerOnly=true
-Created new client with id '58f8a1ad-a409-4f22-9bb8-de10f9ca5365'
+$ RES_SRV_ID=`bin/kcadm.sh create clients -r kc-resource -s clientId=kc-resource-server -s bearerOnly=true -i`; echo $RES_SRV_ID
+58f8a1ad-a409-4f22-9bb8-de10f9ca5365
 
 $ # Add realm client for Resource client
-$ bin/kcadm.sh create clients -r kc-resource -s clientId=kc-resource-client -s 'redirectUris=["http://localhost:28080/*"]'
-Created new client with id '373d1ce7-19c2-4a40-b1a3-deb3e4a02c83'
+$ RES_CLI_ID=`bin/kcadm.sh create clients -r kc-resource -s clientId=kc-resource-client -s 'redirectUris=["http://localhost:28080/*"]' -i`; echo $RES_CLI_ID
+373d1ce7-19c2-4a40-b1a3-deb3e4a02c83
 ```
 
 ## Develop Resource Server (SSO Client - RSrv)
