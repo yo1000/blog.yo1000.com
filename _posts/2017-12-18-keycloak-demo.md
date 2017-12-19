@@ -147,7 +147,7 @@ Created new client with id '373d1ce7-19c2-4a40-b1a3-deb3e4a02c83'
 
 ```console
 $ curl https://start.spring.io/starter.tgz \
--d dependencies="web,jdbc,h2,actuator,keycloak" \
+-d dependencies="web,security,keycloak" \
 -d language="kotlin" \
 -d javaVersion="1.8" \
 -d packaging="jar" \
@@ -172,8 +172,10 @@ $ mv \
 src/main/resources/application.properties \
 src/main/resources/application.yml
 
+$ # TODO: ..
 $ ./mvnw clean spring-boot:run -Dserver.port=18080
 
+$ # Role Mapping for Cli is requires?
 $ echo "keycloak:
   realm: kc-resource
   resource: kc-resource-server
@@ -189,5 +191,6 @@ $ echo "keycloak:
 ## Refs
 
 - [http://www.keycloak.org/](http://www.keycloak.org/)
+- [https://sandor-nemeth.github.io/java/spring/2017/06/15/spring-boot-with-keycloak.html](https://sandor-nemeth.github.io/java/spring/2017/06/15/spring-boot-with-keycloak.html)
 - [http://www.atmarkit.co.jp/ait/articles/1711/08/news009.html](http://www.atmarkit.co.jp/ait/articles/1711/08/news009.html
 )
