@@ -364,5 +364,24 @@ class KcResourceServerController {
 ```
 
 ```bash
+cd $WORKDIR
+curl https://start.spring.io/starter.tgz \
+-d dependencies="web,security,keycloak" \
+-d language="kotlin" \
+-d javaVersion="1.8" \
+-d packaging="jar" \
+-d bootVersion="1.5.9.RELEASE" \
+-d type="maven-project" \
+-d groupId="com.yo1000" \
+-d artifactId="kc-resource-client" \
+-d version="1.0.0-SNAPSHOT" \
+-d name="kc-resource-client" \
+-d description="Keycloak Client Demo - Resource Client" \
+-d packageName="com.yo1000.keycloak.resource.client" \
+-d baseDir="kc-resource-client" \
+-d applicationName="KcResourceClientApplication" \
+| tar -xzvf -
+cd kc-resource-client
+
 ..
 ```
