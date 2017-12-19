@@ -180,6 +180,8 @@ $ cd kc-resource-server
 ```
 
 ```console
+$ sed -i '' 's/<keycloak.version>3.4.0.Final<\/keycloak.version>/<keycloak.version>3.4.1.Final<\/keycloak.version>/g' pom.xml
+
 $ mv \
 src/main/resources/application.properties \
 src/main/resources/application.yml
@@ -254,6 +256,8 @@ $ cd kc-resource-client
 [Set up Clients](#set-up-clients) で、`$RES_CLI_ID` 変数に取ったクライアント ID を使用して、クレデンシャルを出力する。
 
 ```console
+$ sed -i '' 's/<keycloak.version>3.4.0.Final<\/keycloak.version>/<keycloak.version>3.4.1.Final<\/keycloak.version>/g' pom.xml
+
 $ mv \
 src/main/resources/application.properties \
 src/main/resources/application.yml
@@ -324,6 +328,7 @@ curl https://start.spring.io/starter.tgz \
 -d applicationName="KcResourceServerApplication" \
 | tar -xzvf -
 cd kc-resource-server
+sed -i '' 's/<keycloak.version>3.4.0.Final<\/keycloak.version>/<keycloak.version>3.4.1.Final<\/keycloak.version>/g' pom.xml
 mv \
 src/main/resources/application.properties \
 src/main/resources/application.yml
@@ -382,6 +387,10 @@ curl https://start.spring.io/starter.tgz \
 -d applicationName="KcResourceClientApplication" \
 | tar -xzvf -
 cd kc-resource-client
+sed -i '' 's/<keycloak.version>3.4.0.Final<\/keycloak.version>/<keycloak.version>3.4.1.Final<\/keycloak.version>/g' pom.xml
+mv \
+src/main/resources/application.properties \
+src/main/resources/application.yml
 
 ..
 ```
