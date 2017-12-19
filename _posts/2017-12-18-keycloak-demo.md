@@ -167,7 +167,9 @@ $ ls kc-resource-server
 mvnw		mvnw.cmd	pom.xml		src
 
 $ cd kc-resource-server
+```
 
+```console
 $ mv \
 src/main/resources/application.properties \
 src/main/resources/application.yml
@@ -182,7 +184,9 @@ keycloak:
   auth-server-url: http://127.0.0.1:8080/auth
   ssl-required: external
 " > src/main/resources/application.yml
+```
 
+```console
 $ echo "package com.yo1000.keycloak.resource.server
 
 import org.springframework.security.access.annotation.Secured
@@ -204,7 +208,9 @@ class KcResourceServerController {
     }
 }
 " > src/main/kotlin/com/yo1000/keycloak/resource/server/KcResourceServerController.kt
+```
 
+```console
 $ # TODO: ..
 $ ./mvnw clean spring-boot:run
 ```
