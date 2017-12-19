@@ -1,7 +1,5 @@
 Doc Status: `WIP`
 
-# Keycloak Demo
-
 Keycloak による SSO 検証のデモサイト構築メモ。
 SSO サーバーのセットアップと、SSO クライアントの開発を順に見ていく。
 
