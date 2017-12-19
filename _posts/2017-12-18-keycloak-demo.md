@@ -227,6 +227,30 @@ $ ./mvnw clean spring-boot:run
 
 ## Develop Resource Client (SSO Client - RCli)
 
+```console
+$ curl https://start.spring.io/starter.tgz \
+-d dependencies="web,security,keycloak" \
+-d language="kotlin" \
+-d javaVersion="1.8" \
+-d packaging="jar" \
+-d bootVersion="1.5.9.RELEASE" \
+-d type="maven-project" \
+-d groupId="com.yo1000" \
+-d artifactId="kc-resource-client" \
+-d version="1.0.0-SNAPSHOT" \
+-d name="kc-resource-client" \
+-d description="Keycloak Client Demo - Resource Client" \
+-d packageName="com.yo1000.keycloak.resource.client" \
+-d baseDir="kc-resource-client" \
+-d applicationName="KcResourceClientApplication" \
+| tar -xzvf -
+
+$ ls kc-resource-client
+mvnw		mvnw.cmd	pom.xml		src
+
+$ cd kc-resource-client
+```
+
 [Set up Clients](#set-up-clients) で、`$RES_CLI_ID` 変数に取ったクライアント ID を使用して、クレデンシャルを出力する。
 
 ```console
