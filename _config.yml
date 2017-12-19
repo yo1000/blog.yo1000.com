@@ -1,5 +1,5 @@
 # Setup
-title: Find Your Way
+title: Then go talk to a wall
 baseurl: ""
 paginate: 1
 locale: "ja"
@@ -7,6 +7,6 @@ locale: "ja"
 # theme: jekyll-theme-cayman
 
 # About/contact
-author:
+author: yo1000 | YO!CHI KIKUCHI
 name: yo1000 | YO!CHI KIKUCHI
 url: http://blog.yo1000.com
