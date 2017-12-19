@@ -268,7 +268,8 @@ TODO
 [Set up Clients](#set-up-clients) で、`$RES_CLI_ID` 変数に取ったクライアント ID を使用して、クレデンシャルを出力する。
 
 ```console
-$ CLI_KC_PROPS=`bin/kcadm.sh get clients/${RES_CLI_ID}/installation/providers/keycloak-oidc-keycloak-json -r kc-resource | grep -v confidential-port | sed -e s/[\"{},]*//g | sed s/\ :/:/g`; echo "server.port: 28080
+$ CLI_KC_PROPS=`bin/kcadm.sh get clients/${RES_CLI_ID}/installation/providers/keycloak-oidc-keycloak-json -r kc-resource | grep -v confidential-port | sed -e s/[\"{},]*//g | sed s/\ :/:/g`
+$ echo "server.port: 28080
 
 keycloak:${CLI_KC_PROPS}"
 ```
