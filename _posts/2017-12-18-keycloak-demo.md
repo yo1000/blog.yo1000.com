@@ -1,4 +1,5 @@
 ---
+title: Keycloak DEMO
 tags:
 - keycloak
 - wip
@@ -46,8 +47,7 @@ Download URL:
 [https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz](https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz)
 
 ```console
-$ curl https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz -o keycloak-3.4.1.Final.tar.gz
-$ tar -zxvf keycloak-3.4.1.Final.tar.gz
+$ curl https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz | tar -zxvf -
 $ cd keycloak-3.4.1.Final
 ```
 
