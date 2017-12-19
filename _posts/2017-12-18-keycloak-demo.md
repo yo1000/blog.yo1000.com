@@ -1,8 +1,8 @@
 ---
 tags:
 - keycloak
+- wip
 ---
-Doc Status: `WIP`
 
 Keycloak による SSO 検証のデモサイト構築メモ。
 SSO サーバーのセットアップと、SSO クライアントの開発を順に見ていく。
@@ -143,8 +143,35 @@ $ bin/kcadm.sh create clients -r kc-resource-demo -s clientId=kc-resource-client
 Created new client with id '373d1ce7-19c2-4a40-b1a3-deb3e4a02c83'
 ```
 
-## Develop Resource Server (SSO Client A)
+## Develop Resource Server (SSO Client [SRV])
+
+```
+$ curl https://start.spring.io/starter.tgz \
+-d dependencies="web,jdbc,h2,actuator,keycloak" \
+-d language="kotlin" \
+-d javaVersion="1.8" \
+-d packaging="jar" \
+-d bootVersion="1.5.9.RELEASE" \
+-d type="maven-project" \
+-d groupId="com.yo1000" \
+-d artifactId="kc-resource-server" \
+-d version="1.0.0-SNAPSHOT" \
+-d name="kc-resource-server" \
+-d description="Keycloak Client Demo - Resource Server" \
+-d packageName="com.yo1000.keycloak.resource.server" \
+-d baseDir="kc-resource-server" \
+-d applicationName="KcResourceServerApplication" \
+| tar -xzvf -
+
+$ ls kc-resource-server
+mvnw		mvnw.cmd	pom.xml		src
+```
+
+## Develop Resource Client (SSO Client [CLI])
 
 
-## Develop Resource Client (SSO Client B)
+## Refs
 
+[http://www.keycloak.org/](http://www.keycloak.org/)
+[http://www.atmarkit.co.jp/ait/articles/1711/08/news009.html](http://www.atmarkit.co.jp/ait/articles/1711/08/news009.html
+)
