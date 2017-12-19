@@ -251,6 +251,20 @@ mvnw		mvnw.cmd	pom.xml		src
 $ cd kc-resource-client
 ```
 
+```console
+$ mv \
+src/main/resources/application.properties \
+src/main/resources/application.yml
+
+$ echo "server.port: 28080
+
+
+TODO
+
+
+" > src/main/resources/application.yml
+```
+
 [Set up Clients](#set-up-clients) で、`$RES_CLI_ID` 変数に取ったクライアント ID を使用して、クレデンシャルを出力する。
 
 ```console
