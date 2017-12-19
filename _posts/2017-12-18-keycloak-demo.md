@@ -173,7 +173,7 @@ src/main/resources/application.properties \
 src/main/resources/application.yml
 
 $ # Role Mapping for Cli is requires?
-$ echo "server.port=18080
+$ echo "server.port: 18080
 
 keycloak:
   realm: kc-resource
