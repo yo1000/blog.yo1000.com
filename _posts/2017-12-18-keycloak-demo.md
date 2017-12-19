@@ -16,8 +16,8 @@ SSO サーバーのセットアップと、SSO クライアントの開発を順
   - [Set up Realm](#set-up-realm)
   - [Set up Users](#set-up-users)
   - [Set up Clients](#set-up-clients)
-- [Develop Resource Server (SSO Client A)](#develop-resource-server-sso-client-a)
-- [Develop Resource Client (SSO Client B)](#develop-resource-client-sso-client-b)
+- [Develop Resource Server (SSO Client - RSrv)](#develop-resource-server-sso-client--rsrv)
+- [Develop Resource Client (SSO Client - RCli)](#develop-resource-client-sso-client--rcli)
 
 ## Requirements
 
@@ -143,9 +143,9 @@ $ bin/kcadm.sh create clients -r kc-resource-demo -s clientId=kc-resource-client
 Created new client with id '373d1ce7-19c2-4a40-b1a3-deb3e4a02c83'
 ```
 
-## Develop Resource Server (SSO Client [SRV])
+## Develop Resource Server (SSO Client - RSrv)
 
-```
+```console
 $ curl https://start.spring.io/starter.tgz \
 -d dependencies="web,jdbc,h2,actuator,keycloak" \
 -d language="kotlin" \
@@ -167,7 +167,7 @@ $ ls kc-resource-server
 mvnw		mvnw.cmd	pom.xml		src
 ```
 
-## Develop Resource Client (SSO Client [CLI])
+## Develop Resource Client (SSO Client - RCli)
 
 
 ## Refs
