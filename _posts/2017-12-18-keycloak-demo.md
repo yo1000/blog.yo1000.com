@@ -16,8 +16,8 @@ SSO サーバーのセットアップと、SSO クライアントの開発を順
   - [Set up Realm](#set-up-realm)
   - [Set up Users](#set-up-users)
   - [Set up Clients](#set-up-clients)
-- [Develop Resource Server (SSO Client - RSrv)](#develop-resource-server-sso-client--rsrv)
-- [Develop Resource Client (SSO Client - RCli)](#develop-resource-client-sso-client--rcli)
+- [Develop Resource Server (SSO Client - RSrv)](#develop-resource-server-sso-client---rsrv)
+- [Develop Resource Client (SSO Client - RCli)](#develop-resource-client-sso-client---rcli)
 
 ## Requirements
 
