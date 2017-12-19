@@ -76,8 +76,18 @@ $ # Run Keycloak
 $ bin/standalone.sh -b 0.0.0.0 &
 ..
 18:38:14,161 INFO  [org.jboss.as] (Controller Boot Thread) WFLYSRV0025: Keycloak 3.4.1.Final (WildFly Core 3.0.8.Final) started in 61427ms - Started 545 of 881 services (604 services are lazy, passive or on-demand)
+```
 
-$ # Register credentials
+### Login to Keycloak
+
+以降、`kcadm.sh` を使用する上で、ログイン状態が必要になるため、ログインする。
+`kcadm.sh` 実行時に以下のようなメッセージが出力された場合は、
+ログインセッションが期限切れとなっているため、改めてログインする。
+
+> Session has expired. Login again with 'kcadm.sh config credentials'
+
+```console
+$ # Login to Keycloak
 $ bin/kcadm.sh config credentials --server http://127.0.0.1:8080/auth --realm master --user keycloak --password keycloak1234
 Logging into http://127.0.0.1:8080/auth as user admin of realm master
 ```
@@ -216,6 +226,20 @@ $ ./mvnw clean spring-boot:run
 ```
 
 ## Develop Resource Client (SSO Client - RCli)
+
+```console
+$ bin/kcadm.sh get clients/278cb584-c5cd-4752-9778-1767c710bf7b/installation/providers/keycloak-oidc-keycloak-json -r kc-resource
+{
+  "realm" : "kc-resource",
+  "auth-server-url" : "http://127.0.0.1:8080/auth",
+  "ssl-required" : "external",
+  "resource" : "kc-resource-client",
+  "credentials" : {
+    "secret" : "dfaab317-9990-43c3-b94a-be61dcdfc26b"
+  },
+  "confidential-port" : 0
+}
+```
 
 
 ## Refs
