@@ -18,7 +18,17 @@ SSO サーバーのセットアップと、SSO クライアントの開発を順
   - [Set up Users](#set-up-users)
   - [Set up Clients](#set-up-clients)
 - [Develop Resource Server (SSO Client - RSrv)](#develop-resource-server-sso-client---rsrv)
+  - [Create Project for Resource Server](#create-project-for-resource-server)
+  - [Set up Configuration files for Resource Server](#set-up-configuration-files-for-resource-server)
+  - [Implements Security Configuration for Resource Server](#implements-security-configuration-for-resource-server)
+  - [Implements RestController for Resource Server](#implements-restcontroller-for-resource-server)
+  - [Build and Run Resource Server](#build-and-run-resource-server)
 - [Develop Resource Client (SSO Client - RCli)](#develop-resource-client-sso-client---rcli)
+  - [Create Project for Resource Client](#create-project-for-resource-client)
+  - [Set up Configuration files for Resource Client](#set-up-configuration-files-for-resource-client)
+  - [Implements Security Configuration for Resource Client](#implements-security-configuration-for-resource-client)
+  - [Implements Controller with use KeycloakRestTemplate for Resource Client](#implements-controller-with-use-keycloakresttemplate-for-resource-client)
+  - [Build and Run Resource Client](#build-and-run-resource-client)
 
 ## Requirements
 
@@ -163,6 +173,10 @@ $ RES_CLI_ID=`bin/kcadm.sh create clients -r kc-resource -s clientId=kc-resource
 
 ## Develop Resource Server (SSO Client - RSrv)
 
+### Create Project for Resource Server
+
+Spring Initializr で、リソースサーバー用のプロジェクトを作成します。
+
 ```console
 $ cd ${BASE_DIR}
 $ curl https://start.spring.io/starter.tgz \
@@ -189,6 +203,8 @@ $ cd kc-resource-server
 ```
 
 ### Set up Configuration files for Resource Server
+
+リソースサーバー用の、構成ファイルをセットアップします。
 
 ```console
 $ sed -i '' \
@@ -322,7 +338,9 @@ $ ./mvnw clean spring-boot:run &
 
 ## Develop Resource Client (SSO Client - RCli)
 
-### Create Project
+### Create Project for Resource Client
+
+Spring Initializr で、リソースクライアント用のプロジェクトを作成します。
 
 ```console
 $ cd ${BASE_DIR}
@@ -352,6 +370,7 @@ $ cd kc-resource-client
 ### Set up Configuration files for Resource Client
 
 リソースクライアント用の、構成ファイルをセットアップします。
+
 こちらでは、リソースサーバーでは設定しなかった `keycloak.json` が必要になります。
 [Set up Clients](#set-up-clients) で、`$RES_CLI_ID` 変数に取ったクライアント ID を使用して、`keycloak.json` を出力します。
 
@@ -511,7 +530,7 @@ class KcResourceClientController(
 ' > src/main/kotlin/com/yo1000/keycloak/resource/client/KcResourceClientController.kt
 ```
 
-### Build and Run Resource Server
+### Build and Run Resource Client
 
 ```console
 $ ./mvnw clean spring-boot:run &
