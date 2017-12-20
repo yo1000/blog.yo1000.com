@@ -29,7 +29,9 @@ SSO サーバーのセットアップと、SSO クライアントの開発を順
   - [Implements Security Configuration](#implements-security-configuration-for-resource-client)
   - [Implements Controller with use KeycloakRestTemplate](#implements-controller-with-use-keycloakresttemplate-for-resource-client)
   - [Build and Run Resource Client](#build-and-run-resource-client)
-
+- [References](#references)
+  - [Explanations](#explanations)
+  - [Examples](#examples)
 ## Requirements
 
 今回の作業環境は以下。
@@ -536,17 +538,15 @@ class KcResourceClientController(
 $ ./mvnw clean spring-boot:run &
 ```
 
-## Refs
+## References
+
+### Explanations
 
 - [http://www.keycloak.org/](http://www.keycloak.org/)
-- [https://github.com/foo4u/keycloak-spring-demo](https://github.com/foo4u/keycloak-spring-demo)
-
 - [http://blog.keycloak.org/2017/01/administer-keycloak-server-from-shell.html](http://blog.keycloak.org/2017/01/administer-keycloak-server-from-shell.html)
 - [http://keycloak-documentation.openstandia.jp/master/ja_JP/securing_apps/index.html](http://keycloak-documentation.openstandia.jp/master/ja_JP/securing_apps/index.html)
-- [https://sandor-nemeth.github.io/java/spring/2017/06/15/spring-boot-with-keycloak.html](https://sandor-nemeth.github.io/java/spring/2017/06/15/spring-boot-with-keycloak.html)
+
+### Examples
+
 - [https://github.com/foo4u/keycloak-spring-demo](https://github.com/foo4u/keycloak-spring-demo)
-
-### :thinking:
-
-- [http://www.atmarkit.co.jp/ait/articles/1711/08/news009.html](http://www.atmarkit.co.jp/ait/articles/1711/08/news009.html
-)
+- [https://sandor-nemeth.github.io/java/spring/2017/06/15/spring-boot-with-keycloak.html](https://sandor-nemeth.github.io/java/spring/2017/06/15/spring-boot-with-keycloak.html)
