@@ -6,7 +6,7 @@ tags:
 ---
 
 Keycloak による SSO 検証のデモサイト構築メモ。
-SSO サーバーのセットアップと、SSO クライアントの開発を順に見ていく。
+SSO サーバーのセットアップと、SSO クライアントの開発を順に見ていきます。
 
 ## Summary
 
@@ -34,8 +34,7 @@ SSO サーバーのセットアップと、SSO クライアントの開発を順
   - [Examples](#examples)
 
 ## Requirements
-
-今回の作業環境は以下。
+今回の作業環境は以下のとおりです。
 
 ```console
 $ sw_vers
@@ -61,7 +60,6 @@ $ BASE_DIR=`pwd`
 ## Set up Keycloak (SSO Server)
 
 ### Download & Unarchive
-
 執筆時点での最新は、[3.4.1.Final](http://www.keycloak.org/archive/downloads-3.4.1.html)<br>
 Download URL:
 [https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz](https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz)
@@ -73,15 +71,14 @@ $ cd keycloak-3.4.1.Final
 ```
 
 ### Initial settings for Keycloak
-
-管理ユーザーは、以下いずれかの方法で追加する。
+管理ユーザーは、以下いずれかの方法で追加します。
 
 - ホスト内の `add-user-keycloak.sh` による登録 _(今回はこちらを使用)_
 - 同一ホストからのアクセスによる Admin Console での登録
 
-今回はすべてローカルホストに構築しているため、気にする必要はないが、
+今回はすべてローカルホストに構築しているため、気にする必要はありませんが、
 セットアップ後、初めて作成する管理ユーザーは、 __リモートホストから、直接追加することができない__ ため、
-セットアップ時に一緒に作成しておく必要がある。
+セットアップ時に一緒に作成しておく必要があります。
 
 ```console
 $ # Add admin user for WildFly Management Console
@@ -100,10 +97,9 @@ $ bin/standalone.sh -b 0.0.0.0 &
 ```
 
 ### Login to Keycloak
-
-以降、`kcadm.sh` を使用する上で、ログイン状態が必要になるため、ログインする。
-`kcadm.sh` 実行時に以下のようなメッセージが出力された場合は、
-ログインセッションが期限切れとなっているため、改めてログインする。
+以降、`kcadm.sh` を使用する上で、ログイン状態が必要になるため、ログインします。
+`kcadm.sh` 実行時に、以下のようなメッセージが出力された場合は、
+ログインセッションが期限切れとなっているため、改めてログインします。
 
 > Session has expired. Login again with 'kcadm.sh config credentials'
 
@@ -114,14 +110,14 @@ Logging into http://127.0.0.1:8080/auth as user admin of realm master
 ```
 
 ### Set up Realm
-
 レルムは `領域・範囲・部門` といった単語に略されるもので、
-そのログインが、どのような種類のリソースにアクセスするためのものかを管理するための単位。
-より端的には、レルムが分離されていると、ログイン画面の URL が分離する。
+そのログインが、どのような種類のリソースにアクセスするためのものかを区別、管理するための単位です。
+より端的には、レルムが分離されていると、ログイン画面の URL が分離されます。
 
 使用例としては、顧客が使用するシステムと、システム管理者が使用するシステムで、
 同じ SSO 基盤 (Keycloak) を使用しながらも、
-ログインフォームや、ログイン後に使用されるロールやグループの管理を完全に分離したいような場合に活用できる。
+ログインフォームや、ログイン後に使用されるロールや、グループの管理を、
+完全に分離しておきたいような場合に活用できます。
 
 ```console
 $ # Create realm
@@ -136,9 +132,8 @@ Created new role with id 'user'
 ```
 
 ### Set up Users
-
-`kc-resource` レルムにユーザーを追加していく。
-管理ユーザーとして `alice` を、一般ユーザーとして `bob` を、それぞれ作成する。
+`kc-resource` レルムにユーザーを追加していきます。
+管理ユーザーとして `alice` を、一般ユーザーとして `bob` を、それぞれ作成します。
 
 ```console
 $ # Create realm users
@@ -157,12 +152,13 @@ $ bin/kcadm.sh add-roles -r kc-resource --uusername bob --rolename user
 ```
 
 ### Set up Clients
+SSO 基盤を使用するアプリケーション (SSO サーバーに対する、クライアント) を登録します。
+リソースサーバーとして `kc-resource-server` を、
+リソースクライアントとして `kc-resource-client` をそれぞれ作成します。
 
-SSO 基盤を使用するアプリケーション (SSO サーバーに対する、クライアント) を登録する。
-リソースサーバーとして `kc-resource-server` を、リソースクライアントとして `kc-resource-client` をそれぞれ作成する。
-
-リソースサーバー、リソースクライアントという、 __リソースに対して、サーバー・クライアントの関係にある2つのアプリケーション__ を作成するが、
-これらアプリケーションは、 __いずれも SSO サーバーから見れば、等しく SSO クライアント__ となる。
+リソースサーバー、リソースクライアントという、
+__リソースに対して、サーバー・クライアントの関係にある2つのアプリケーション__ を作成しますが、
+これらアプリケーションは、 __いずれも SSO サーバーから見れば、等しく SSO クライアント__ となります。
 
 ```console
 $ # Add realm client for Resource server
@@ -174,10 +170,9 @@ $ RES_CLI_ID=`bin/kcadm.sh create clients -r kc-resource -s clientId=kc-resource
 373d1ce7-19c2-4a40-b1a3-deb3e4a02c83
 ```
 
-## Develop Resource Server (SSO Client - RSrv)
+## Develop Resource Server (SSO Client - A)
 
 ### Create Project for Resource Server
-
 Spring Initializr で、リソースサーバー用のプロジェクトを作成します。
 
 ```console
@@ -206,7 +201,6 @@ $ cd kc-resource-server
 ```
 
 ### Set up Configuration files for Resource Server
-
 リソースサーバー用の、構成ファイルをセットアップします。
 
 ```console
@@ -230,6 +224,16 @@ keycloak:
 ```
 
 ### Implements Security Configuration for Resource Server
+セキュリティ構成を実装します。いくつかポイントがありますが、とくに以下の点に注意してください。
+
+#### `configure(http: HttpSecurity)`
+認証で保護したい URL のパターンと、許可するロールの組み合わせを正しく設定します。
+この設定に誤りがあると、SSO 基盤へのリダイレクトに失敗します。
+
+#### `grantedAuthoritiesMapper(): GrantedAuthoritiesMapper`
+認証基盤でロール名を小文字や、大文字小文字混在で設定しても、
+`mapper.setConvertToUpperCase(true)` を設定することで、
+プログラムから扱う場合に、すべて大文字で統一することができます。
 
 ```console
 $ echo 'package com.yo1000.keycloak.resource.server
@@ -309,6 +313,7 @@ class KcSecurityConfigurer: KeycloakWebSecurityConfigurerAdapter() {
 ```
 
 ### Implements RestController for Resource Server
+リソースを返却するエンドポイントとなる、API 用コントローラーを実装します。
 
 ```console
 $ echo 'package com.yo1000.keycloak.resource.server
@@ -334,6 +339,7 @@ class KcResourceServerController {
 ```
 
 ### Build and Run Resource Server
+リソースサーバー用アプリケーションを起動します。
 
 ```console
 $ ./mvnw clean spring-boot:run &
@@ -342,7 +348,6 @@ $ ./mvnw clean spring-boot:run &
 ## Develop Resource Client (SSO Client - RCli)
 
 ### Create Project for Resource Client
-
 Spring Initializr で、リソースクライアント用のプロジェクトを作成します。
 
 ```console
@@ -371,11 +376,11 @@ $ cd kc-resource-client
 ```
 
 ### Set up Configuration files for Resource Client
-
 リソースクライアント用の、構成ファイルをセットアップします。
 
 こちらでは、リソースサーバーでは設定しなかった `keycloak.json` が必要になります。
-[Set up Clients](#set-up-clients) で、`$RES_CLI_ID` 変数に取ったクライアント ID を使用して、`keycloak.json` を出力します。
+[Set up Clients](#set-up-clients) で `$RES_CLI_ID` 変数に取っておいた、
+クライアント ID を使用して、`keycloak.json` を出力します。
 
 ```console
 $ # Update Keycloak dependency version
