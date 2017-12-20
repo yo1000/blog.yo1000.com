@@ -251,20 +251,21 @@ $ ls kc-resource-client
 mvnw		mvnw.cmd	pom.xml		src
 
 $ cd kc-resource-client
+$ mkdir -p src/main/webapp/WEB-INF
+$ mv \
+src/main/resources/application.properties \
+src/main/resources/application.yml
 ```
 
 [Set up Clients](#set-up-clients) で、`$RES_CLI_ID` 変数に取ったクライアント ID を使用して、クレデンシャルを出力する。
 
 ```console
-$ sed -i '' 's/<keycloak.version>3.4.0.Final<\/keycloak.version>/<keycloak.version>3.4.1.Final<\/keycloak.version>/g' pom.xml
+$ # Update Keycloak dependency version
+$ sed -i '' \
+'s/<keycloak.version>3.4.0.Final<\/keycloak.version>/<keycloak.version>3.4.1.Final<\/keycloak.version>/g' \
+pom.xml
 
-$ mv \
-src/main/resources/application.properties \
-src/main/resources/application.yml
-
-$ bin/kcadm.sh get clients/${RES_CLI_ID}/installation/providers/keycloak-oidc-keycloak-json -r kc-resource \
-> src/main/webapp/WEB-INF/keycloak.json 
-
+$ # Configure application.yml
 $ echo "server.port: 28080
 
 keycloak:
@@ -272,6 +273,10 @@ keycloak:
   resource: kc-resource-client
   auth-server-url: http://127.0.0.1:8080/auth
 " > src/main/resources/application.yml
+
+$ # Install credentials
+$ bin/kcadm.sh get clients/${RES_CLI_ID}/installation/providers/keycloak-oidc-keycloak-json -r kc-resource \
+> src/main/webapp/WEB-INF/keycloak.json 
 ```
 
 ## Refs
