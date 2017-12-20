@@ -275,7 +275,9 @@ keycloak:
 " > src/main/resources/application.yml
 
 $ # Install credentials
-$ bin/kcadm.sh get clients/${RES_CLI_ID}/installation/providers/keycloak-oidc-keycloak-json -r kc-resource \
+$ bin/kcadm.sh \
+get clients/${RES_CLI_ID}/installation/providers/keycloak-oidc-keycloak-json \
+-r kc-resource \
 > src/main/webapp/WEB-INF/keycloak.json 
 ```
 
