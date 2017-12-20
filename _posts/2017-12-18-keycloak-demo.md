@@ -251,10 +251,6 @@ $ ls kc-resource-client
 mvnw		mvnw.cmd	pom.xml		src
 
 $ cd kc-resource-client
-$ mkdir -p src/main/webapp/WEB-INF
-$ mv \
-src/main/resources/application.properties \
-src/main/resources/application.yml
 ```
 
 [Set up Clients](#set-up-clients) で、`$RES_CLI_ID` 変数に取ったクライアント ID を使用して、クレデンシャルを出力する。
@@ -266,6 +262,9 @@ $ sed -i '' \
 pom.xml
 
 $ # Configure application.yml
+$ mv \
+src/main/resources/application.properties \
+src/main/resources/application.yml
 $ echo "server.port: 28080
 
 keycloak:
@@ -275,10 +274,96 @@ keycloak:
 " > src/main/resources/application.yml
 
 $ # Install credentials
+$ mkdir -p src/main/webapp/WEB-INF
 $ bin/kcadm.sh \
 get clients/${RES_CLI_ID}/installation/providers/keycloak-oidc-keycloak-json \
 -r kc-resource \
 > src/main/webapp/WEB-INF/keycloak.json 
+```
+
+```console
+$ echo "package com.yo1000.keycloak.resource.client
+
+import org.keycloak.adapters.springsecurity.KeycloakConfiguration
+import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider
+import org.keycloak.adapters.springsecurity.client.KeycloakClientRequestFactory
+import org.keycloak.adapters.springsecurity.client.KeycloakRestTemplate
+import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter
+import org.keycloak.adapters.springsecurity.filter.KeycloakAuthenticationProcessingFilter
+import org.keycloak.adapters.springsecurity.filter.KeycloakPreAuthActionsFilter
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.config.ConfigurableBeanFactory
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
+import org.springframework.boot.web.servlet.FilterRegistrationBean
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Scope
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.core.session.SessionRegistryImpl
+import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy
+import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper
+import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper
+
+@KeycloakConfiguration
+class SecurityConfiguration : KeycloakWebSecurityConfigurerAdapter() {
+    @Autowired
+    fun configureGlobal(auth: AuthenticationManagerBuilder) {
+        auth.authenticationProvider(keycloakAuthenticationProvider())
+    }
+
+    @Bean
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    fun keycloakRestTemplate(keycloakClientRequestFactory: KeycloakClientRequestFactory): KeycloakRestTemplate {
+        return KeycloakRestTemplate(keycloakClientRequestFactory)
+    }
+
+    @Bean
+    override fun sessionAuthenticationStrategy(): SessionAuthenticationStrategy {
+        return RegisterSessionAuthenticationStrategy(SessionRegistryImpl())
+    }
+
+    @Bean
+    fun keycloakAuthenticationProcessingFilterRegistrationBean(
+            filter: KeycloakAuthenticationProcessingFilter): FilterRegistrationBean {
+        val registrationBean = FilterRegistrationBean(filter)
+        registrationBean.isEnabled = false
+        return registrationBean
+    }
+
+    @Bean
+    @ConditionalOnClass(SpringBootApplication::class)
+    fun keycloakPreAuthActionsFilterRegistrationBean(
+            filter: KeycloakPreAuthActionsFilter): FilterRegistrationBean {
+        val registrationBean = FilterRegistrationBean(filter)
+        registrationBean.isEnabled = false
+        return registrationBean
+    }
+
+    @Bean
+    fun grantedAuthoritiesMapper(): GrantedAuthoritiesMapper {
+        val mapper = SimpleAuthorityMapper()
+        mapper.setConvertToUpperCase(true)
+        return mapper
+    }
+
+    override fun keycloakAuthenticationProvider(): KeycloakAuthenticationProvider {
+        val provider = super.keycloakAuthenticationProvider()
+        provider.setGrantedAuthoritiesMapper(grantedAuthoritiesMapper())
+        return provider
+    }
+
+    override fun configure(http: HttpSecurity) {
+        super.configure(http)
+        http
+                .authorizeRequests()
+                .antMatchers("/user").hasRole("USER")
+                .antMatchers("/admin").hasRole("ADMIN")
+                .anyRequest().permitAll()
+    }
+}
+" > src/main/kotlin/com/yo1000/keycloak/resource/client/SecurityConfiguration.kt
 ```
 
 ## Refs
