@@ -226,11 +226,11 @@ keycloak:
 ### Implements Security Configuration for Resource Server
 セキュリティ構成を実装します。いくつかポイントがありますが、とくに以下の点に注意してください。
 
-#### `configure(http: HttpSecurity)`
+#### configure(http: HttpSecurity)
 認証で保護したい URL のパターンと、許可するロールの組み合わせを正しく設定します。
 この設定に誤りがあると、SSO 基盤へのリダイレクトに失敗します。
 
-#### `grantedAuthoritiesMapper(): GrantedAuthoritiesMapper`
+#### grantedAuthoritiesMapper(): GrantedAuthoritiesMapper
 認証基盤でロール名を小文字や、大文字小文字混在で設定しても、
 `mapper.setConvertToUpperCase(true)` を設定することで、
 プログラムから扱う場合に、すべて大文字で統一することができます。
@@ -345,7 +345,7 @@ class KcResourceServerController {
 $ ./mvnw clean spring-boot:run &
 ```
 
-## Develop Resource Client (SSO Client - RCli)
+## Develop Resource Client (SSO Client - B)
 
 ### Create Project for Resource Client
 Spring Initializr で、リソースクライアント用のプロジェクトを作成します。
@@ -409,6 +409,17 @@ $ ${BASE_DIR}/keycloak-3.4.1.Final/bin/kcadm.sh \
 ```
 
 ### Implements Security Configuration for Resource Client
+セキュリティ構成を実装します。
+Resource Server 用の実装で触れたものと同様ですが、改めて以下の点に注意してください。
+
+#### configure(http: HttpSecurity)
+認証で保護したい URL のパターンと、許可するロールの組み合わせを正しく設定します。
+この設定に誤りがあると、SSO 基盤へのリダイレクトに失敗します。
+
+#### grantedAuthoritiesMapper(): GrantedAuthoritiesMapper
+認証基盤でロール名を小文字や、大文字小文字混在で設定しても、
+`mapper.setConvertToUpperCase(true)` を設定することで、
+プログラムから扱う場合に、すべて大文字で統一することができます。
 
 ```console
 $ echo 'package com.yo1000.keycloak.resource.client
@@ -496,6 +507,8 @@ class SecurityConfiguration : KeycloakWebSecurityConfigurerAdapter() {
 ```
 
 ### Implements Controller with use `KeycloakRestTemplate` for Resource Client
+リソースサーバーにリソースを要求して、
+結果を画面に表示するエンドポイントとなる、コントローラーを実装します。
 
 ```console
 $ echo 'package com.yo1000.keycloak.resource.client
@@ -539,10 +552,17 @@ class KcResourceClientController(
 ```
 
 ### Build and Run Resource Client
+リソースクライアント用アプリケーションを起動します。
 
 ```console
 $ ./mvnw clean spring-boot:run &
 ```
+
+## Demo
+ここまで作成したものを実際に動かした結果を、
+参考までに、以下キャプチャとして残しておきます。
+
+TODO: キャプチャ取ってはる
 
 ## References
 
