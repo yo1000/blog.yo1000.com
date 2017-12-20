@@ -1,13 +1,11 @@
 # Setup
 title: Then go talk to a wall
 tagline: I just want you to listen
+lang: "ja-JP"
 baseurl: ""
 paginate: 1
-locale: "ja"
-
-# theme: jekyll-theme-cayman
 
 # About/contact
 author:
   name: yo1000 | YO!CHI KIKUCHI
-  url: http://blog.yo1000.com
+  url: https://github.com/yo1000
