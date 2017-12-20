@@ -486,11 +486,6 @@ import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMap
 
 @KeycloakConfiguration
 class SecurityConfiguration : KeycloakWebSecurityConfigurerAdapter() {
-    @Autowired
-    fun configureGlobal(auth: AuthenticationManagerBuilder) {
-        auth.authenticationProvider(keycloakAuthenticationProvider())
-    }
-
     @Bean
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     fun keycloakRestTemplate(keycloakClientRequestFactory: KeycloakClientRequestFactory): KeycloakRestTemplate {
@@ -530,6 +525,10 @@ class SecurityConfiguration : KeycloakWebSecurityConfigurerAdapter() {
         val provider = super.keycloakAuthenticationProvider()
         provider.setGrantedAuthoritiesMapper(grantedAuthoritiesMapper())
         return provider
+    }
+
+    override fun configure(auth: AuthenticationManagerBuilder?) {
+        auth!!.authenticationProvider(keycloakAuthenticationProvider())
     }
 
     override fun configure(http: HttpSecurity) {
