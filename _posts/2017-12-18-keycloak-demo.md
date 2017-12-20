@@ -262,15 +262,23 @@ $ mv \
 src/main/resources/application.properties \
 src/main/resources/application.yml
 
-$ CLI_KC_PROPS=`bin/kcadm.sh get clients/${RES_CLI_ID}/installation/providers/keycloak-oidc-keycloak-json -r kc-resource | grep -v confidential-port | sed -e s/[\"{},]*//g | sed s/\ :/:/g`
+$ bin/kcadm.sh get clients/${RES_CLI_ID}/installation/providers/keycloak-oidc-keycloak-json -r kc-resource \
+> src/main/webapp/WEB-INF/keycloak.json 
+
 $ echo "server.port: 28080
 
-keycloak:${CLI_KC_PROPS}" > src/main/resources/application.yml
+keycloak:
+  realm: kc-resource
+  resource: kc-resource-client
+  auth-server-url: http://127.0.0.1:8080/auth
+" > src/main/resources/application.yml
 ```
 
 ## Refs
 
 - [http://www.keycloak.org/](http://www.keycloak.org/)
+- [https://github.com/foo4u/keycloak-spring-demo](https://github.com/foo4u/keycloak-spring-demo)
+
 - [http://blog.keycloak.org/2017/01/administer-keycloak-server-from-shell.html](http://blog.keycloak.org/2017/01/administer-keycloak-server-from-shell.html)
 - [http://keycloak-documentation.openstandia.jp/master/ja_JP/securing_apps/index.html](http://keycloak-documentation.openstandia.jp/master/ja_JP/securing_apps/index.html)
 - [https://sandor-nemeth.github.io/java/spring/2017/06/15/spring-boot-with-keycloak.html](https://sandor-nemeth.github.io/java/spring/2017/06/15/spring-boot-with-keycloak.html)
