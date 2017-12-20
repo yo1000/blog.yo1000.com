@@ -199,7 +199,7 @@ keycloak:
 ```
 
 ```console
-$ echo "package com.yo1000.keycloak.resource.server
+$ echo 'package com.yo1000.keycloak.resource.server
 
 import org.springframework.security.access.annotation.Secured
 import org.springframework.web.bind.annotation.GetMapping
@@ -219,7 +219,7 @@ class KcResourceServerController {
         return "User resource"
     }
 }
-" > src/main/kotlin/com/yo1000/keycloak/resource/server/KcResourceServerController.kt
+' > src/main/kotlin/com/yo1000/keycloak/resource/server/KcResourceServerController.kt
 ```
 
 ```console
@@ -282,7 +282,7 @@ get clients/${RES_CLI_ID}/installation/providers/keycloak-oidc-keycloak-json \
 ```
 
 ```console
-$ echo "package com.yo1000.keycloak.resource.client
+$ echo 'package com.yo1000.keycloak.resource.client
 
 import org.keycloak.adapters.springsecurity.KeycloakConfiguration
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider
@@ -363,7 +363,7 @@ class SecurityConfiguration : KeycloakWebSecurityConfigurerAdapter() {
                 .anyRequest().permitAll()
     }
 }
-" > src/main/kotlin/com/yo1000/keycloak/resource/client/SecurityConfiguration.kt
+' > src/main/kotlin/com/yo1000/keycloak/resource/client/SecurityConfiguration.kt
 ```
 
 ## Refs
