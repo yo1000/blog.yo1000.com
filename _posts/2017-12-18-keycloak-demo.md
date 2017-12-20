@@ -563,7 +563,7 @@ class KcResourceClientController(
         val template: KeycloakRestTemplate
 ) {
     companion object {
-        const val ENDPOINT = "http://localhost:18080/{role}/resource"
+        const val ENDPOINT = "http://localhost:18080/kc/resource/server/{role}"
     }
 
     @GetMapping("/admin")
