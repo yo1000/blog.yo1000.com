@@ -38,6 +38,13 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.131-b11, mixed mode)
 
 TODO: 今回の構成図やインフラ要件を書く
 
+以降、一連の流れを実施するにあたり、ディレクトリ移動が数回発生するため、
+便宜上、`${BASE_DIR}` をディレクトリの基点として使用します。
+
+```console
+$ BASE_DIR=`pwd`
+```
+
 ## Set up Keycloak (SSO Server)
 
 ### Download & Unarchive
@@ -47,6 +54,7 @@ Download URL:
 [https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz](https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz)
 
 ```console
+$ cd ${BASE_DIR}
 $ curl https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz | tar -zxvf -
 $ cd keycloak-3.4.1.Final
 ```
@@ -156,22 +164,23 @@ $ RES_CLI_ID=`bin/kcadm.sh create clients -r kc-resource -s clientId=kc-resource
 ## Develop Resource Server (SSO Client - RSrv)
 
 ```console
+$ cd ${BASE_DIR}
 $ curl https://start.spring.io/starter.tgz \
--d dependencies="web,security,keycloak" \
--d language="kotlin" \
--d javaVersion="1.8" \
--d packaging="jar" \
--d bootVersion="1.5.9.RELEASE" \
--d type="maven-project" \
--d groupId="com.yo1000" \
--d artifactId="kc-resource-server" \
--d version="1.0.0-SNAPSHOT" \
--d name="kc-resource-server" \
--d description="Keycloak Client Demo - Resource Server" \
--d packageName="com.yo1000.keycloak.resource.server" \
--d baseDir="kc-resource-server" \
--d applicationName="KcResourceServerApplication" \
-| tar -xzvf -
+  -d dependencies="web,security,keycloak" \
+  -d language="kotlin" \
+  -d javaVersion="1.8" \
+  -d packaging="jar" \
+  -d bootVersion="1.5.9.RELEASE" \
+  -d type="maven-project" \
+  -d groupId="com.yo1000" \
+  -d artifactId="kc-resource-server" \
+  -d version="1.0.0-SNAPSHOT" \
+  -d name="kc-resource-server" \
+  -d description="Keycloak Client Demo - Resource Server" \
+  -d packageName="com.yo1000.keycloak.resource.server" \
+  -d baseDir="kc-resource-server" \
+  -d applicationName="KcResourceServerApplication" \
+  | tar -xzvf -
 
 $ ls kc-resource-server
 mvnw		mvnw.cmd	pom.xml		src
@@ -179,14 +188,17 @@ mvnw		mvnw.cmd	pom.xml		src
 $ cd kc-resource-server
 ```
 
+### Set up Configuration files for Resource Server
+
 ```console
-$ sed -i '' 's/<keycloak.version>3.4.0.Final<\/keycloak.version>/<keycloak.version>3.4.1.Final<\/keycloak.version>/g' pom.xml
+$ sed -i '' \
+  's/<keycloak.version>3.4.0.Final<\/keycloak.version>/<keycloak.version>3.4.1.Final<\/keycloak.version>/g' \
+  pom.xml
 
 $ mv \
-src/main/resources/application.properties \
-src/main/resources/application.yml
+  src/main/resources/application.properties \
+  src/main/resources/application.yml
 
-$ # Role Mapping for Cli is requires?
 $ echo "server.port: 18080
 
 keycloak:
@@ -198,54 +210,138 @@ keycloak:
 " > src/main/resources/application.yml
 ```
 
+### Implements Security Configuration for Resource Server
+
 ```console
 $ echo 'package com.yo1000.keycloak.resource.server
 
-import org.springframework.security.access.annotation.Secured
+import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.web.authentication.session.NullAuthenticatedSessionStrategy
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy
+import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper
+import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper
+import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.boot.web.servlet.FilterRegistrationBean
+import org.keycloak.adapters.springsecurity.filter.KeycloakPreAuthActionsFilter
+import org.keycloak.adapters.springsecurity.filter.KeycloakAuthenticationProcessingFilter
+import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver
+import org.keycloak.adapters.KeycloakConfigResolver
+
+@Configuration
+@EnableWebSecurity
+class KcSecurityConfigurer: KeycloakWebSecurityConfigurerAdapter() {
+    @Bean
+    fun grantedAuthoritiesMapper(): GrantedAuthoritiesMapper {
+        val mapper = SimpleAuthorityMapper()
+        mapper.setConvertToUpperCase(true)
+        return mapper
+    }
+
+    @Bean
+    fun keycloakConfigResolver(): KeycloakConfigResolver {
+        return KeycloakSpringBootConfigResolver()
+    }
+
+    @Bean
+    fun keycloakAuthenticationProcessingFilterRegistrationBean(
+            filter: KeycloakAuthenticationProcessingFilter): FilterRegistrationBean {
+        val registrationBean = FilterRegistrationBean(filter)
+        registrationBean.isEnabled = false
+        return registrationBean
+    }
+
+    @Bean
+    fun keycloakPreAuthActionsFilterRegistrationBean(
+            filter: KeycloakPreAuthActionsFilter): FilterRegistrationBean {
+        val registrationBean = FilterRegistrationBean(filter)
+        registrationBean.isEnabled = false
+        return registrationBean
+    }
+
+    override fun sessionAuthenticationStrategy(): SessionAuthenticationStrategy {
+        return NullAuthenticatedSessionStrategy()
+    }
+
+    override fun keycloakAuthenticationProvider(): KeycloakAuthenticationProvider {
+        val provider = super.keycloakAuthenticationProvider()
+        provider.setGrantedAuthoritiesMapper(grantedAuthoritiesMapper())
+        return provider
+    }
+
+    override fun configure(auth: AuthenticationManagerBuilder?) {
+        auth!!.authenticationProvider(keycloakAuthenticationProvider())
+    }
+
+    override fun configure(http: HttpSecurity) {
+        super.configure(http)
+        http
+                .authorizeRequests()
+                .antMatchers("/kc/resource/server/admin").hasRole("ADMIN")
+                .antMatchers("/kc/resource/server/user").hasRole("USER")
+                .anyRequest().permitAll()
+    }
+}
+' > src/main/kotlin/com/yo1000/keycloak/resource/server/KcSecurityConfigurer.kt
+```
+
+### Implements RestController for Resource Server
+
+```console
+$ echo 'package com.yo1000.keycloak.resource.server
+
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
+@RequestMapping("/kc/resource/server")
 class KcResourceServerController {
-    @GetMapping("/admin/resource")
-    @Secured("ROLE_ADMIN")
+    @GetMapping("/admin")
     fun getAdminResource(): String {
-        return "Admin resource"
+        return "ADMIN Resource!!"
     }
 
-    @GetMapping("/user/resource")
-    @Secured("ROLE_USER")
+    @GetMapping("/user")
     fun getUserResource(): String {
-        return "User resource"
+        return "USER Resource."
     }
 }
-' > src/main/kotlin/com/yo1000/keycloak/resource/server/KcResourceServerController.kt
+' > src/main/kotlin/com/yo1000/keycloak/resource/server/KcResourceServerController.kt 
 ```
 
+### Build and Run Resource Server
+
 ```console
-$ # TODO: ..
-$ ./mvnw clean spring-boot:run
+$ ./mvnw clean spring-boot:run &
 ```
 
 ## Develop Resource Client (SSO Client - RCli)
 
+### Create Project
+
 ```console
+$ cd ${BASE_DIR}
 $ curl https://start.spring.io/starter.tgz \
--d dependencies="web,security,keycloak" \
--d language="kotlin" \
--d javaVersion="1.8" \
--d packaging="jar" \
--d bootVersion="1.5.9.RELEASE" \
--d type="maven-project" \
--d groupId="com.yo1000" \
--d artifactId="kc-resource-client" \
--d version="1.0.0-SNAPSHOT" \
--d name="kc-resource-client" \
--d description="Keycloak Client Demo - Resource Client" \
--d packageName="com.yo1000.keycloak.resource.client" \
--d baseDir="kc-resource-client" \
--d applicationName="KcResourceClientApplication" \
-| tar -xzvf -
+  -d dependencies="web,security,keycloak" \
+  -d language="kotlin" \
+  -d javaVersion="1.8" \
+  -d packaging="jar" \
+  -d bootVersion="1.5.9.RELEASE" \
+  -d type="maven-project" \
+  -d groupId="com.yo1000" \
+  -d artifactId="kc-resource-client" \
+  -d version="1.0.0-SNAPSHOT" \
+  -d name="kc-resource-client" \
+  -d description="Keycloak Client Demo - Resource Client" \
+  -d packageName="com.yo1000.keycloak.resource.client" \
+  -d baseDir="kc-resource-client" \
+  -d applicationName="KcResourceClientApplication" \
+  | tar -xzvf -
 
 $ ls kc-resource-client
 mvnw		mvnw.cmd	pom.xml		src
@@ -253,18 +349,22 @@ mvnw		mvnw.cmd	pom.xml		src
 $ cd kc-resource-client
 ```
 
-[Set up Clients](#set-up-clients) で、`$RES_CLI_ID` 変数に取ったクライアント ID を使用して、クレデンシャルを出力する。
+### Set up Configuration files for Resource Client
+
+リソースクライアント用の、構成ファイルをセットアップします。
+こちらでは、リソースサーバーでは設定しなかった `keycloak.json` が必要になります。
+[Set up Clients](#set-up-clients) で、`$RES_CLI_ID` 変数に取ったクライアント ID を使用して、`keycloak.json` を出力します。
 
 ```console
 $ # Update Keycloak dependency version
 $ sed -i '' \
-'s/<keycloak.version>3.4.0.Final<\/keycloak.version>/<keycloak.version>3.4.1.Final<\/keycloak.version>/g' \
-pom.xml
+  's/<keycloak.version>3.4.0.Final<\/keycloak.version>/<keycloak.version>3.4.1.Final<\/keycloak.version>/g' \
+  pom.xml
 
 $ # Configure application.yml
 $ mv \
-src/main/resources/application.properties \
-src/main/resources/application.yml
+  src/main/resources/application.properties \
+  src/main/resources/application.yml
 $ echo "server.port: 28080
 
 keycloak:
@@ -275,11 +375,13 @@ keycloak:
 
 $ # Install credentials
 $ mkdir -p src/main/webapp/WEB-INF
-$ bin/kcadm.sh \
-get clients/${RES_CLI_ID}/installation/providers/keycloak-oidc-keycloak-json \
--r kc-resource \
-> src/main/webapp/WEB-INF/keycloak.json 
+$ ${BASE_DIR}/keycloak-3.4.1.Final/bin/kcadm.sh \
+  get clients/${RES_CLI_ID}/installation/providers/keycloak-oidc-keycloak-json \
+  -r kc-resource \
+  > src/main/webapp/WEB-INF/keycloak.json 
 ```
+
+### Implements Security Configuration for Resource Client
 
 ```console
 $ echo 'package com.yo1000.keycloak.resource.client
@@ -358,12 +460,61 @@ class SecurityConfiguration : KeycloakWebSecurityConfigurerAdapter() {
         super.configure(http)
         http
                 .authorizeRequests()
-                .antMatchers("/user").hasRole("USER")
-                .antMatchers("/admin").hasRole("ADMIN")
+                .antMatchers("/kc/resource/client/user").hasRole("USER")
+                .antMatchers("/kc/resource/client/admin").hasRole("ADMIN")
                 .anyRequest().permitAll()
     }
 }
 ' > src/main/kotlin/com/yo1000/keycloak/resource/client/SecurityConfiguration.kt
+```
+
+### Implements Controller with use `KeycloakRestTemplate` for Resource Client
+
+```console
+$ echo 'package com.yo1000.keycloak.resource.client
+
+import org.keycloak.adapters.springsecurity.client.KeycloakRestTemplate
+import org.springframework.stereotype.Controller
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseBody
+
+@Controller
+@RequestMapping("/kc/resource/client")
+class KcResourceClientController(
+        val template: KeycloakRestTemplate
+) {
+    companion object {
+        const val ENDPOINT = "http://localhost:18080/{role}/resource"
+    }
+
+    @GetMapping("/admin")
+    @ResponseBody
+    fun getAdmin(): String {
+        val resp = template.getForObject(ENDPOINT, String::class.java, mapOf("role" to "admin"))
+        return """
+            This page is Resource Client side.
+            Resource Server Response: [$resp]
+            """.trimIndent()
+    }
+
+    @GetMapping("/user")
+    @ResponseBody
+    fun getUser(): String {
+        val resp = template.getForObject(ENDPOINT, String::class.java, mapOf("role" to "user"))
+        return """
+            This page is Resource Client side.
+            Resource Server Response: [$resp]
+            """.trimIndent()
+    }
+}
+' > src/main/kotlin/com/yo1000/keycloak/resource/client/KcResourceClientController.kt
+```
+
+### Build and Run Resource Server
+
+```console
+$ ./mvnw clean spring-boot:run &
 ```
 
 ## Refs
@@ -380,6 +531,19 @@ class SecurityConfiguration : KeycloakWebSecurityConfigurerAdapter() {
 
 - [http://www.atmarkit.co.jp/ait/articles/1711/08/news009.html](http://www.atmarkit.co.jp/ait/articles/1711/08/news009.html
 )
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Appendix
 
