@@ -66,7 +66,8 @@ Download URL:
 
 ```console
 $ cd ${BASE_DIR}
-$ curl https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz | tar -zxvf -
+$ curl https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz \
+  | tar -zxvf -
 $ cd keycloak-3.4.1.Final
 ```
 
@@ -82,16 +83,22 @@ $ cd keycloak-3.4.1.Final
 
 ```console
 $ # Add admin user for WildFly Management Console
-$ bin/add-user.sh -u wildfly -p wildfly1234
+$ bin/add-user.sh \
+  -u wildfly \
+  -p wildfly1234
 Added user 'wildfly' to file '/${baseDir}/keycloak-3.4.1.Final/standalone/configuration/mgmt-users.properties'
 Added user 'wildfly' to file '/${baseDir}/keycloak-3.4.1.Final/domain/configuration/mgmt-users.properties'
 
 $ # Add admin user for Keycloak Admin Console
-$ bin/add-user-keycloak.sh -r master -u keycloak -p keycloak1234
+$ bin/add-user-keycloak.sh \
+  -r master \
+  -u keycloak \
+  -p keycloak1234
 Added 'admin' to '/${baseDir}/keycloak-3.4.1.Final/standalone/configuration/keycloak-add-user.json', restart server to load user
 
 $ # Run Keycloak
-$ bin/standalone.sh -b 0.0.0.0 &
+$ bin/standalone.sh \
+  -b 0.0.0.0 &
 ..
 18:38:14,161 INFO  [org.jboss.as] (Controller Boot Thread) WFLYSRV0025: Keycloak 3.4.1.Final (WildFly Core 3.0.8.Final) started in 61427ms - Started 545 of 881 services (604 services are lazy, passive or on-demand)
 ```
@@ -105,7 +112,11 @@ $ bin/standalone.sh -b 0.0.0.0 &
 
 ```console
 $ # Login to Keycloak
-$ bin/kcadm.sh config credentials --server http://127.0.0.1:8080/auth --realm master --user keycloak --password keycloak1234
+$ bin/kcadm.sh config credentials \
+  --server http://127.0.0.1:8080/auth \
+  --realm master \
+  --user keycloak \
+  --password keycloak1234
 Logging into http://127.0.0.1:8080/auth as user admin of realm master
 ```
 
@@ -121,13 +132,19 @@ Logging into http://127.0.0.1:8080/auth as user admin of realm master
 
 ```console
 $ # Create realm
-$ bin/kcadm.sh create realms -s realm=kc-resource -s enabled=true
+$ bin/kcadm.sh create realms \
+  -s realm=kc-resource \
+  -s enabled=true
 Created new realm with id 'kc-resource'
 
 $ # Create realm roles
-$ bin/kcadm.sh create roles -r kc-resource -s name=admin
+$ bin/kcadm.sh create roles \
+  -r kc-resource \
+  -s name=admin
 Created new role with id 'admin'
-$ bin/kcadm.sh create roles -r kc-resource -s name=user
+$ bin/kcadm.sh create roles \
+  -r kc-resource \
+  -s name=user
 Created new role with id 'user'
 ```
 
@@ -137,18 +154,37 @@ Created new role with id 'user'
 
 ```console
 $ # Create realm users
-$ bin/kcadm.sh create users -r kc-resource -s username=alice -s enabled=true
+$ bin/kcadm.sh create users \
+  -r kc-resource \
+  -s username=alice \
+  -s enabled=true
 Created new user with id '26c64aeb-6d09-4d58-afac-fd7550d4ff7b'
-$ bin/kcadm.sh create users -r kc-resource -s username=bob -s enabled=true
+$ bin/kcadm.sh create users \
+  -r kc-resource \
+  -s username=bob \
+  -s enabled=true
 Created new user with id '8ab8768a-a2b1-479d-be11-3d7dd1b3d3db'
 
 $ # Update password
-$ bin/kcadm.sh set-password -r kc-resource --username alice -p alice1234
-$ bin/kcadm.sh set-password -r kc-resource --username bob -p bob1234
+$ bin/kcadm.sh set-password \
+  -r kc-resource \
+  --username alice \
+  -p alice1234
+$ bin/kcadm.sh set-password \
+  -r kc-resource \
+  --username bob \
+  -p bob1234
 
 $ # Add realm roles to users
-$ bin/kcadm.sh add-roles -r kc-resource --uusername alice --rolename admin --rolename user
-$ bin/kcadm.sh add-roles -r kc-resource --uusername bob --rolename user
+$ bin/kcadm.sh add-roles \
+  -r kc-resource \
+  --uusername alice \
+  --rolename admin \
+  --rolename user
+$ bin/kcadm.sh add-roles \
+  -r kc-resource \
+  --uusername bob \
+  --rolename user
 ```
 
 ### Set up Clients
@@ -162,11 +198,13 @@ __リソースに対して、サーバー・クライアントの関係にある
 
 ```console
 $ # Add realm client for Resource server
-$ RES_SRV_ID=`bin/kcadm.sh create clients -r kc-resource -s clientId=kc-resource-server -s bearerOnly=true -i`; echo $RES_SRV_ID
+$ RES_SRV_ID=`bin/kcadm.sh create clients -r kc-resource -s clientId=kc-resource-server -s bearerOnly=true -i`; \
+  echo $RES_SRV_ID
 58f8a1ad-a409-4f22-9bb8-de10f9ca5365
 
 $ # Add realm client for Resource client
-$ RES_CLI_ID=`bin/kcadm.sh create clients -r kc-resource -s clientId=kc-resource-client -s 'redirectUris=["http://localhost:28080/*"]' -i`; echo $RES_CLI_ID
+$ RES_CLI_ID=`bin/kcadm.sh create clients -r kc-resource -s clientId=kc-resource-client -s 'redirectUris=["http://localhost:28080/*"]' -i`; \
+  echo $RES_CLI_ID
 373d1ce7-19c2-4a40-b1a3-deb3e4a02c83
 ```
 
