@@ -627,11 +627,10 @@ $ ./mvnw clean spring-boot:run &
 ```
 
 ## Demo
-ここまで作成したものを実際に動かした結果を、
-参考までに、以下キャプチャとして残しておきます。
+参考までに、実際に動かした結果を、以下キャプチャに残しておきます。
 
 以下 URL にアクセスしてみます。<br>
-http://localhost:28080/kc/resource/client/admin
+[http://localhost:28080/kc/resource/client/admin](http://localhost:28080/kc/resource/client/admin)
 
 Keycloak へリダイレクトされ、ログインを要求されます。
 ![kc-resource-demo-1.png]({{ site.baseurl }}/img/keycloak/kc-resource-demo-1.png)
