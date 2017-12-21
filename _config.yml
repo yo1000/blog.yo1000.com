@@ -11,3 +11,6 @@ author:
   url: https://github.com/yo1000
 
 permalink: none
+
+plugins:
+  - jekyll-redirect-from
