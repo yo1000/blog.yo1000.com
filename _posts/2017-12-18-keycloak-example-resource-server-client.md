@@ -1,5 +1,5 @@
 ---
-title: Keycloak Example, When Resource Servers and Resource Clients collaboration.
+title: Keycloak Example, When Resource Servers and Resource Clients collaboration
 tags:
 - keycloak
 - spring boot
@@ -54,7 +54,7 @@ Java(TM) SE Runtime Environment (build 1.8.0_131-b11)
 Java HotSpot(TM) 64-Bit Server VM (build 25.131-b11, mixed mode)
 ```
 
-TODO: 今回の構成図やインフラ要件を書く
+![kc-resource-flow.svg]({{ site.baseurl }}/img/keycloak/kc-resource-flow.svg)
 
 以降、一連の流れを実施するにあたり、ディレクトリ移動が数回発生するため、
 便宜上、`${BASE_DIR}` をディレクトリの基点として使用します。
