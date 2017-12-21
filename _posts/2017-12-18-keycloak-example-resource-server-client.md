@@ -57,7 +57,11 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.131-b11, mixed mode)
 ```
 
 ### Flow
-構築しようとしてい認証認可フローと、登場するアクターは以下のとおりです。
+構築しようとしている認証認可フローの概要図は、以下のとおりです。
+
+![kc-resource-flow.svg]({{ site.baseurl }}/img/keycloak/kc-resource-flow.svg)
+
+各アクターの役割は、以下のとおりです。
 
 - User
   - Browser を操作して、リソースを表示するサイトを要求します
@@ -72,10 +76,6 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.131-b11, mixed mode)
     - _今回のサンプルでは、ロールに応じた静的な値をリソースとして返却させます_
 - Resource Client
   - Resource Server からリソースを取得して、画面に結果を表示します
-
-認証認可フローの概要図は以下のとおりです。
-
-![kc-resource-flow.svg]({{ site.baseurl }}/img/keycloak/kc-resource-flow.svg)
 
 ### Notes
 以降、一連の流れを実施するにあたり、ディレクトリ移動が数回発生するため、
