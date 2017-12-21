@@ -1,5 +1,6 @@
 ---
 title: Keycloak Example, When Resource Servers and Resource Clients collaboration
+permalink: /:categories/:year/:month/:day/:title
 tags:
 - keycloak
 - spring boot
