@@ -40,6 +40,8 @@ SSO サーバーのセットアップと、SSO クライアントの開発を順
   - [Examples](#examples)
 
 ## Requirements
+
+### Environments
 今回の作業環境は以下のとおりです。
 
 ```console
@@ -54,8 +56,28 @@ Java(TM) SE Runtime Environment (build 1.8.0_131-b11)
 Java HotSpot(TM) 64-Bit Server VM (build 25.131-b11, mixed mode)
 ```
 
+### Flow
+構築しようとしてい認証認可フローと、登場するアクターは以下のとおりです。
+
+- User
+  - Browser を操作して、リソースを表示するサイトを要求します
+  - 認証を必要とした場合に、ログインします
+- Keycloak
+  - SSO 基盤です
+  - ユーザーを認証認可します
+  - クライアント (認証認可情報を要求してきたアプリケーション) を認証認可します
+- Resource Server
+  - Resource Store からリソースを取得して、クライアントへ提供します
+    - _今回のサンプルでは、Resource Store からのリソース取得については実装しません_
+    - _今回のサンプルでは、ロールに応じた静的な値をリソースとして返却させます_
+- Resource Client
+  - Resource Server からリソースを取得して、画面に結果を表示します
+
+認証認可フローの概要図は以下のとおりです。
+
 ![kc-resource-flow.svg]({{ site.baseurl }}/img/keycloak/kc-resource-flow.svg)
 
+### Notes
 以降、一連の流れを実施するにあたり、ディレクトリ移動が数回発生するため、
 便宜上、`${BASE_DIR}` をディレクトリの基点として使用します。
 
