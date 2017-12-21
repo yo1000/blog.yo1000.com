@@ -17,6 +17,9 @@ SSO サーバーのセットアップと、SSO クライアントの開発を順
 ## Summary
 
 - [Requirements](#requirements)
+  - [Environments](#environments)
+  - [Flow](#flow)
+  - [Notes](#notes)
 - [Set up Keycloak (SSO Server)](#set-up-keycloak-sso-server)
   - [Download & Unarchive](#download--unarchive)
   - [Initial settings for Keycloak](#initial-settings-for-keycloak)
