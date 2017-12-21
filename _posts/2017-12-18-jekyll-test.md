@@ -1,4 +1,5 @@
 ---
+categories: wip
 tags:
 - jekyll
 - examples
