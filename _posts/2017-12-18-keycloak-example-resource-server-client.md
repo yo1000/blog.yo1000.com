@@ -117,15 +117,15 @@ $ # Add admin user for WildFly Management Console
 $ bin/add-user.sh \
   -u wildfly \
   -p wildfly1234
-Added user 'wildfly' to file '/${baseDir}/keycloak-3.4.1.Final/standalone/configuration/mgmt-users.properties'
-Added user 'wildfly' to file '/${baseDir}/keycloak-3.4.1.Final/domain/configuration/mgmt-users.properties'
+Added user 'wildfly' to file '/workDir/keycloak-3.4.1.Final/standalone/configuration/mgmt-users.properties'
+Added user 'wildfly' to file '/workDir/keycloak-3.4.1.Final/domain/configuration/mgmt-users.properties'
 
 $ # Add admin user for Keycloak Admin Console
 $ bin/add-user-keycloak.sh \
   -r master \
   -u keycloak \
   -p keycloak1234
-Added 'admin' to '/${baseDir}/keycloak-3.4.1.Final/standalone/configuration/keycloak-add-user.json', restart server to load user
+Added 'admin' to '/workDir/keycloak-3.4.1.Final/standalone/configuration/keycloak-add-user.json', restart server to load user
 
 $ # Run Keycloak
 $ bin/standalone.sh \
