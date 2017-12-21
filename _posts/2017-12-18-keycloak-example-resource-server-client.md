@@ -1,5 +1,5 @@
 ---
-title: Keycloak DEMO
+title: Keycloak Example, When Resource Servers and Resource Clients collaboration.
 tags:
 - keycloak
 - spring boot
