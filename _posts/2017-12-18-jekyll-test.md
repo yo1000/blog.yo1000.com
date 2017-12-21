@@ -1,4 +1,5 @@
 ---
+permalink: /:categories/:year/:month/:day/:title
 tags:
 - jekyll
 - examples
