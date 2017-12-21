@@ -30,7 +30,7 @@ SSO サーバーのセットアップと、SSO クライアントの開発を順
   - [Implements Controller with use KeycloakRestTemplate](#implements-controller-with-use-keycloakresttemplate-for-resource-client)
   - [Build and Run Resource Client](#build-and-run-resource-client)
 - [References](#references)
-  - [Explanations](#explanations)
+  - [Documents](#documents)
   - [Examples](#examples)
 
 ## Requirements
@@ -603,7 +603,7 @@ TODO: キャプチャ取ってはる
 
 ## References
 
-### Explanations
+### Documents
 
 - [http://www.keycloak.org/](http://www.keycloak.org/)
 - [http://blog.keycloak.org/2017/01/administer-keycloak-server-from-shell.html](http://blog.keycloak.org/2017/01/administer-keycloak-server-from-shell.html)
