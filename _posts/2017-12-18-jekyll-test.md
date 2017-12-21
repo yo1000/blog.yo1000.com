@@ -1,5 +1,4 @@
 ---
-permalink: /:categories/:title
 tags:
 - jekyll
 - examples
