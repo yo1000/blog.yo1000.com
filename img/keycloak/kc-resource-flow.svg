@@ -50,7 +50,11 @@
       <path d="M384.5,576.5 L272.9,576.5" fill-opacity="0" stroke="#000000" stroke-width="4"/>
       <path d="M272.9,571.7 L260.1,576.5 L272.9,581.3 M272.9,576.5 L260.1,576.5" fill-opacity="0" stroke="#000000" stroke-width="4" stroke-opacity="1"/>
     </g>
-    <path d="M640.5,320.5 L384.5,320.5 L224.5,320.5 C208.5,320.5 192.5,336.5 192.5,352.5 L192.5,544.5 C192.5,560.5 208.5,576.5 224.5,576.5 L256.5,576.5" fill-opacity="0" stroke="#000000" stroke-width="4" stroke-dasharray="8,8"/>
+    <g>
+      <path d="M368.1,320.5 L224.5,320.5 C208.5,320.5 192.5,336.5 192.5,352.5 L192.5,544.5 C192.5,560.5 208.5,576.5 224.5,576.5 L256.5,576.5" fill-opacity="0" stroke="#000000" stroke-width="4" stroke-dasharray="8,8"/>
+      <path d="M368.1,325.3 L380.9,320.5 L368.1,315.7 M368.1,320.5 L380.9,320.5" fill-opacity="0" stroke="#000000" stroke-width="4" stroke-opacity="1"/>
+    </g>
+    <path d="M378.436,320.5 L640.5,320.5" fill-opacity="0" stroke="#000000" stroke-width="4" stroke-dasharray="8,8"/>
     <g>
       <path d="M640.5,320.5 L752.1,320.5" fill-opacity="0" stroke="#000000" stroke-width="4"/>
       <path d="M752.1,325.3 L764.9,320.5 L752.1,315.7 M752.1,320.5 L764.9,320.5" fill-opacity="0" stroke="#000000" stroke-width="4" stroke-opacity="1"/>
