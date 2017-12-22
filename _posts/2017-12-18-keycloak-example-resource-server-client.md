@@ -475,7 +475,7 @@ $ mkdir -p src/main/webapp/WEB-INF
 $ ${BASE_DIR}/keycloak-3.4.1.Final/bin/kcadm.sh \
   get clients/${RES_CLI_ID}/installation/providers/keycloak-oidc-keycloak-json \
   -r kc-resource \
-  > src/main/webapp/WEB-INF/keycloak.json 
+  > src/main/resources/keycloak.json 
 ```
 
 ### Implements Security Configuration for Resource Client
@@ -494,6 +494,8 @@ Resource Server 用の実装で触れたものと同様ですが、改めて以�
 ```console
 $ echo 'package com.yo1000.keycloak.resource.client
 
+import org.keycloak.adapters.AdapterDeploymentContext
+import org.keycloak.adapters.springsecurity.AdapterDeploymentContextFactoryBean
 import org.keycloak.adapters.springsecurity.KeycloakConfiguration
 import org.keycloak.adapters.springsecurity.authentication.KeycloakAuthenticationProvider
 import org.keycloak.adapters.springsecurity.client.KeycloakClientRequestFactory
@@ -501,20 +503,20 @@ import org.keycloak.adapters.springsecurity.client.KeycloakRestTemplate
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter
 import org.keycloak.adapters.springsecurity.filter.KeycloakAuthenticationProcessingFilter
 import org.keycloak.adapters.springsecurity.filter.KeycloakPreAuthActionsFilter
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.config.ConfigurableBeanFactory
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Scope
+import org.springframework.core.io.ClassPathResource
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper
+import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper
 import org.springframework.security.core.session.SessionRegistryImpl
 import org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy
-import org.springframework.security.core.authority.mapping.SimpleAuthorityMapper
-import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper
 
 @KeycloakConfiguration
 class SecurityConfiguration : KeycloakWebSecurityConfigurerAdapter() {
@@ -527,6 +529,13 @@ class SecurityConfiguration : KeycloakWebSecurityConfigurerAdapter() {
     @Bean
     override fun sessionAuthenticationStrategy(): SessionAuthenticationStrategy {
         return RegisterSessionAuthenticationStrategy(SessionRegistryImpl())
+    }
+
+    @Bean
+    override fun adapterDeploymentContext(): AdapterDeploymentContext {
+        val factoryBean = AdapterDeploymentContextFactoryBean(ClassPathResource("keycloak.json"))
+        factoryBean.afterPropertiesSet()
+        return factoryBean.`object`
     }
 
     @Bean
