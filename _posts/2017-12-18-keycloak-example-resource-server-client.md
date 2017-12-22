@@ -485,8 +485,8 @@ Resource Server 用の実装で触れたものと同様ですが、改めて以�
 認証で保護したい URL のパターンと、許可するロールの組み合わせを正しく設定します。
 この設定に誤りがあると、SSO 基盤へのリダイレクトに失敗します。
 
-### adapterDeploymentContext(): AdapterDeploymentContext
-ひとつ前の手順で作成した、`keycloak.json` の位置を変更します。
+#### adapterDeploymentContext(): AdapterDeploymentContext
+アプリケーションが読み込む、`keycloak.json` の位置を変更します。
 デフォルトでは、`WEB-INF/keycloak.json` となっています。
 Spring Boot で、実行可能 JAR を作成する場合、
 `WEB-INF` にファイルを配置するのは一般的ではないため、
