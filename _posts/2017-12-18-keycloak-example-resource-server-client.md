@@ -1,12 +1,12 @@
 ---
 title: Keycloak Example, When Resource Servers and Resource Clients collaboration
-permalink: /:categories/:year/:month/:day/:title
+permalink: /:year/:month/:day/:title
+category: keycloak
 tags:
 - keycloak
 - spring boot
 - spring security
 - kotlin
-- wip
 ---
 
 Keycloak による SSO 検証のデモサイト構築メモ。
@@ -479,11 +479,18 @@ $ ${BASE_DIR}/keycloak-3.4.1.Final/bin/kcadm.sh \
 
 ### Implements Security Configuration for Resource Client
 セキュリティ構成を実装します。
-Resource Server 用の実装で触れたものと同様ですが、改めて以下の点に注意してください。
+Resource Server 用の実装で触れたものと概ね同様ですが、
+`adapterDeploymentContext()` の説明を追加しているので、
+改めて以下の点に注意してください。
 
 #### configure(http: HttpSecurity)
 認証で保護したい URL のパターンと、許可するロールの組み合わせを正しく設定します。
 この設定に誤りがあると、SSO 基盤へのリダイレクトに失敗します。
+
+#### grantedAuthoritiesMapper(): GrantedAuthoritiesMapper
+認証基盤でロール名を小文字や、大文字小文字混在で設定しても、
+`mapper.setConvertToUpperCase(true)` を設定することで、
+プログラムから扱う場合に、すべて大文字で統一することができます。
 
 #### adapterDeploymentContext(): AdapterDeploymentContext
 アプリケーションが読み込む、`keycloak.json` の位置を変更します。
@@ -491,11 +498,6 @@ Resource Server 用の実装で触れたものと同様ですが、改めて以�
 Spring Boot で、実行可能 JAR を作成する場合、
 `WEB-INF` にファイルを配置するのは一般的ではないため、
 `resources` 直下に配置した、`keycloak.json` を読み込ませるようにします。
-
-#### grantedAuthoritiesMapper(): GrantedAuthoritiesMapper
-認証基盤でロール名を小文字や、大文字小文字混在で設定しても、
-`mapper.setConvertToUpperCase(true)` を設定することで、
-プログラムから扱う場合に、すべて大文字で統一することができます。
 
 ```console
 $ echo 'package com.yo1000.keycloak.resource.client
