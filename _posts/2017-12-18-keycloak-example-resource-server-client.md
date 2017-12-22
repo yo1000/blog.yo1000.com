@@ -633,10 +633,10 @@ $ ./mvnw clean spring-boot:run &
 以下 URL にアクセスしてみます。<br>
 [http://localhost:28080/kc/resource/client/admin](http://localhost:28080/kc/resource/client/admin)
 
-Keycloak へリダイレクトされ、ログインを要求されます。
+Keycloak へリダイレクトされ、ログインを要求されます。<br>
 ![kc-resource-demo-1.png]({{ site.baseurl }}/img/keycloak/kc-resource-demo-1.png)
 
-ログインすると、ロールに応じたメッセージが表示されます。
+ログインすると、ロールに応じたメッセージが表示されます。<br>
 ![kc-resource-demo-2.png]({{ site.baseurl }}/img/keycloak/kc-resource-demo-2.png)
 
 ## References
