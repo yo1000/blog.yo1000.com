@@ -471,7 +471,6 @@ keycloak:
 ' > src/main/resources/application.yml
 
 $ # Install credentials
-$ mkdir -p src/main/webapp/WEB-INF
 $ ${BASE_DIR}/keycloak-3.4.1.Final/bin/kcadm.sh \
   get clients/${RES_CLI_ID}/installation/providers/keycloak-oidc-keycloak-json \
   -r kc-resource \
@@ -485,6 +484,13 @@ Resource Server 用の実装で触れたものと同様ですが、改めて以�
 #### configure(http: HttpSecurity)
 認証で保護したい URL のパターンと、許可するロールの組み合わせを正しく設定します。
 この設定に誤りがあると、SSO 基盤へのリダイレクトに失敗します。
+
+### adapterDeploymentContext(): AdapterDeploymentContext
+ひとつ前の手順で作成した、`keycloak.json` の位置を変更します。
+デフォルトでは、`WEB-INF/keycloak.json` となっています。
+Spring Boot で、実行可能 JAR を作成する場合、
+`WEB-INF` にファイルを配置するのは一般的ではないため、
+`resources` 直下に配置した、`keycloak.json` を読み込ませるようにします。
 
 #### grantedAuthoritiesMapper(): GrantedAuthoritiesMapper
 認証基盤でロール名を小文字や、大文字小文字混在で設定しても、
