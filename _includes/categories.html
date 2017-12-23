@@ -1,0 +1,10 @@
+<section class="category-content">
+  <h1>Categories</h1>
+  <ul>
+    {% assign sorted_categories = site.categories | sort %}
+    {% for category in sorted_categories %}
+      {% assign c = category[0] %}
+      <li><a href="/categories#{{ c }}">#{{ c }} ({{ site.categories[c].size }})</a></li>
+    {% endfor %}
+  </ul>
+</section>
