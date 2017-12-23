@@ -26,7 +26,7 @@
 .side-content h5,
 .side-content h6 {
   font-weight: normal;
-  margin: 0.67em 0;
+  margin: .67em .67em .67em 0;
 }
 
 .side-content h1 {
