@@ -33,7 +33,12 @@
   }
 }
 
-@media screen and (max-width: 42em),
+@media screen and (max-width: 42em) {
+  .tag-content {
+    display: none;
+  }
+}
+
 @media screen and (min-width: 42em) and (max-width: 64em) {
   .tag-content {
     display: none;
