@@ -1,0 +1,17 @@
+---
+layout: page
+title: Categories
+permalink: /categories
+---
+
+<h1>All Categories</h1>
+{% for category in site.categories %}
+<article>
+  <h2 id="{{ category[0] }}">{{ category[0] }}</h2>
+  <ul>
+    {% for post in category[1] %}
+    <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+    {% endfor %}
+  </ul>
+</article>
+{% endfor %}
