@@ -38,18 +38,17 @@
   font-size: .8rem;
 }
 
+.side-content li a .container {
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .side-content li a .icon {
   display: inline-block;
   /* background: #a9150d; */
   background: #e39a00;
   border-radius: 4px 0 0 4px;
   padding: 2px 4px;
-}
-
-.side-content li a .label-container {
-  display: inline-block;
-  padding: 1px 4px 3px 0;
-  vertical-align: middle;
 }
 
 .side-content li a .label {
