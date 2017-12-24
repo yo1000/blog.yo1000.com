@@ -14,4 +14,6 @@ permalink: none
 
 plugins:
   - jekyll-redirect-from
-  - jekyll-font-awesome
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jemoji
