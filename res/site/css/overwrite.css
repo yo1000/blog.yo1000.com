@@ -33,6 +33,36 @@
   font-size: 1.5rem;
 }
 
+.side-content li a {
+  color: #fff;
+  font-size: .8rem;
+}
+
+.side-content li a .icon {
+  display: inline-block;
+  /* background: #a9150d; */
+  background: #e39a00;
+  border-radius: 4px 0 0 4px;
+  padding: 2px 4px;
+}
+
+.side-content li a .label-container {
+  display: inline-block;
+  padding: 1px 4px 3px 0;
+  vertical-align: middle;
+}
+
+.side-content li a .label {
+  display: inline-block;
+  background: #e39a00;
+  border-radius: 0 4px 4px 0;
+  padding: 1px 4px 3px 0;
+}
+
+.side-content li a span {
+  opacity: .7
+}
+
 @media screen and (min-width: 64em) {
   .main-content {
     max-width: none;
