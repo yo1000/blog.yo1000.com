@@ -63,7 +63,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.131-b11, mixed mode)
 ### Flow
 構築しようとしている認証認可フローの概要図は、以下のとおりです。
 
-![kc-resource-flow.svg]({{ site.baseurl }}/img/keycloak/kc-resource-flow.svg)
+![kc-resource-flow.svg]({{ site.baseurl }}/res/site/img/keycloak/kc-resource-flow.svg)
 
 各アクターの役割は、以下のとおりです。
 
@@ -651,10 +651,10 @@ $ ./mvnw clean spring-boot:run &
 [http://localhost:28080/kc/resource/client/admin](http://localhost:28080/kc/resource/client/admin)
 
 Keycloak へリダイレクトされ、ログインを要求されます。<br>
-![kc-resource-demo-1.png]({{ site.baseurl }}/img/keycloak/kc-resource-demo-1.png)
+![kc-resource-demo-1.png]({{ site.baseurl }}/res/site/img/keycloak/kc-resource-demo-1.png)
 
 ログインすると、ロールに応じたメッセージが表示されます。<br>
-![kc-resource-demo-2.png]({{ site.baseurl }}/img/keycloak/kc-resource-demo-2.png)
+![kc-resource-demo-2.png]({{ site.baseurl }}/res/site/img/keycloak/kc-resource-demo-2.png)
 
 ## References
 
