@@ -1,0 +1,27 @@
+<section class="meta-content">
+  <section class="category-content">
+    <ul>
+      {% assign sorted_categories = page.categories | sort %}
+      {% for category in sorted_categories %}
+        {% assign c = category[0] %}
+        <li><a href="/categories#{{ c }}"><div
+          class="container"><div class="icon"><span><i class="fas fa-folder"></i></span></div></div><div
+          class="container"><div class="label"><span>{{ c }}</span></div></div><div
+          class="container"><div class="counter"><span>{{ site.categories[c].size }}</span></div></div></a></li>
+      {% endfor %}
+    </ul>
+  </section>
+  <section class="tag-content">
+    <h1>Tags</h1>
+    <ul>
+      {% assign sorted_tags = page.tags | sort %}
+      {% for tag in sorted_tags %}
+        {% assign t = tag[0] %}
+        <li><a href="/tags#{{ t }}"><div
+          class="container"><div class="icon"><span><i class="fas fa-tag"></i></span></div></div><div
+          class="container"><div class="label"><span>{{ t }}</span></div></div><div
+          class="container"><div class="counter"><span>{{ site.tags[t].size }}</span></div></div></a></li>
+      {% endfor %}
+    </ul>
+  </section>
+</section>
