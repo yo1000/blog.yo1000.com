@@ -29,6 +29,10 @@
   margin: .74rem 0;
 }
 
+.side-content section {
+  margin-bottom: 1.5rem;
+}
+
 .side-content h1 {
   font-size: 1.5rem;
 }
