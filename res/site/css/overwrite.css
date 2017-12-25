@@ -39,6 +39,11 @@
   list-style: none;
 }
 
+.meta-content ul,
+.meta-content p {
+  margin-bottom: 0;
+}
+
 .meta-content li {
   display: inline-block;
 }
