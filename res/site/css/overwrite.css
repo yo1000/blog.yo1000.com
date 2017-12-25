@@ -101,12 +101,17 @@
     margin-right: 12rem;
   }
   
+  .meta-content,
   .side-content {
-    float: right;
     padding: 2rem 4rem;
     margin: 0 auto;
   }
+  
+  .side-content {
+    float: right;
+  }
 
+  .meta-content ul,
   .side-content ul {
     width: 10rem;
     padding: 0;
