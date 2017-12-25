@@ -29,6 +29,11 @@
   margin: .74rem 0;
 }
 
+.meta-content {
+  padding: 2rem 4rem;
+  margin: 0 auto;
+}
+
 .meta-content section,
 .side-content section {
   margin-bottom: 1.5rem;
@@ -36,6 +41,16 @@
 
 .side-content h1 {
   font-size: 1.5rem;
+}
+
+.meta-content ul {
+  padding: 0;
+  margin: 1rem 0;
+  list-style: none;
+}
+
+.meta-content li {
+  display: inline-block;
 }
 
 .meta-content li a,
@@ -101,22 +116,17 @@
     margin-right: 12rem;
   }
   
-  .meta-content,
   .side-content {
     padding: 2rem 4rem;
     margin: 0 auto;
-  }
-  
-  .side-content {
     float: right;
   }
-
-  .meta-content ul,
+  
   .side-content ul {
-    width: 10rem;
     padding: 0;
     margin: 1rem 0;
     list-style: none;
+    width: 10rem;
   }
 }
 
