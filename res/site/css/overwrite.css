@@ -48,24 +48,6 @@
   display: inline-block;
 }
 
-.meta-content li a,
-.side-content li a {
-  color: #fff;
-  font-size: .8rem;
-}
-
-.meta-content li a .icon,
-.side-content li a .icon,
-.meta-content li a .label,
-.side-content li a .label,
-.meta-content li a .counter,
-.side-content li a .counter {
-  color: #567482;
-  word-wrap: normal;
-  background-color: #f3f6fa;
-  border: solid #dce6f0;
-}
-
 .meta-content li a .container,
 .side-content li a .container {
   display: inline-block;
@@ -95,9 +77,14 @@
   border-width: 1px;
 }
 
+.meta-content li a,
+.side-content li a,
 .meta-content li a span,
-.side-content li a span {
-  opacity: .7
+.side-content li a span,
+.meta-content p,
+.side-content p {
+  opacity: .7;
+  font-size: .8rem;
 }
 
 .meta-content section,
