@@ -45,17 +45,24 @@
 
 .side-content li a .icon {
   display: inline-block;
-  /* background: #a9150d; */
   background: #e39a00;
-  border-radius: 4px 0 0 4px;
   padding: 2px 4px;
+  border-radius: 4px 0 0 4px;
 }
 
 .side-content li a .label {
   display: inline-block;
   background: #e39a00;
-  border-radius: 0 4px 4px 0;
   padding: 1px 4px 3px 0;
+  border-right: #b47101 solid 1px;
+}
+
+.side-content li a .counter {
+  display: inline-block;
+  background: #e39a00;
+  padding: 1px 4px 3px 2px;
+  border-radius: 0 4px 4px 0;
+  border-left: #f4b041 solid 1px;
 }
 
 .side-content li a span {
