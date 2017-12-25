@@ -1,4 +1,5 @@
 <section class="meta-content">
+  <p class="meta">Posted on {{ page.date | date: "%Y-%m-%d" }}</p>
   <section class="category-content">
     <ul>
       {% assign sorted_categories = page.categories | sort %}
