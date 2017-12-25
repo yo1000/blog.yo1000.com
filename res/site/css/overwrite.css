@@ -31,6 +31,8 @@
 
 .meta-content {
   margin: 0 auto;
+  padding-bottom: 1rem;
+  border-bottom: solid 1px #eff0f1;
 }
 
 .meta-content ul {
