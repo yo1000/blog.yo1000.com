@@ -6,7 +6,8 @@
       {% assign c = category[0] %}
       <li><a href="/categories#{{ c }}"><div
         class="container"><div class="icon"><span><i class="fas fa-folder"></i></span></div></div><div
-        class="container"><div class="label"><span>{{ c }} ({{ site.categories[c].size }})</span></div></div></a></li>
+        class="container"><div class="label"><span>{{ c }}</span></div></div><div
+        class="container"><div class="counter"><span>{{ site.categories[c].size }}</span></div></div></a></li>
     {% endfor %}
   </ul>
 </section>
