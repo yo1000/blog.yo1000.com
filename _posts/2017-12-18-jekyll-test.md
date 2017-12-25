@@ -1,9 +1,9 @@
 ---
-category: wip
+layout: xyz
+category: xyz
 tags:
-- jekyll
+- xyz
 - examples
-- wip
 
 redirect_from: "/2017/12/18/jekyll-test"
 ---
