@@ -6,7 +6,8 @@
       {% assign t = tag[0] %}
       <li><a href="/tags#{{ t }}"><div
         class="container"><div class="icon"><span><i class="fas fa-tag"></i></span></div></div><div
-        class="container"><div class="label"><span>{{ t }} ({{ site.tags[t].size }})</span></div></div></a></li>
+        class="container"><div class="label"><span>{{ t }}</span></div></div><div
+        class="container"><div class="counter"><span>{{ site.tags[t].size }}</span></div></div></a></li>
     {% endfor %}
   </ul>
 </section>
