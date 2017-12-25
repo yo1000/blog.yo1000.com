@@ -6,8 +6,7 @@
       {% for c in sorted_categories %}
       <li><a href="/categories#{{ c }}"><div
         class="container"><div class="icon"><span><i class="fas fa-folder"></i></span></div></div><div
-        class="container"><div class="label"><span>{{ c }}</span></div></div><div
-        class="container"><div class="counter"><span>{{ site.categories[c].size }}</span></div></div></a></li>
+        class="container"><div class="label"><span>{{ c }}</span></div></div></a></li>
       {% endfor %}
     </ul>
   </section>
@@ -17,8 +16,7 @@
       {% for t in sorted_tags %}
       <li><a href="/tags#{{ t }}"><div
         class="container"><div class="icon"><span><i class="fas fa-tag"></i></span></div></div><div
-        class="container"><div class="label"><span>{{ t }}</span></div></div><div
-        class="container"><div class="counter"><span>{{ site.tags[t].size }}</span></div></div></a></li>
+        class="container"><div class="label"><span>{{ t }}</span></div></div></a></li>
       {% endfor %}
     </ul>
   </section>
