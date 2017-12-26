@@ -1,6 +1,6 @@
 ---
 title: Simply combination examples with Keycloak, Resource Server and Resource Client
-permalink: /:year/:month/:day/:title
+redirect_from: /2017/12/18/keycloak-example-resource-server-client.html
 category: keycloak
 tags:
 - keycloak
