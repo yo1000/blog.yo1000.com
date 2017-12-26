@@ -153,6 +153,10 @@
     text-align: left;
   }
   
+  .page-header .project-tagline {
+    margin: 0;
+  }
+  
   .side-content {
     display: none;
   }
@@ -163,6 +167,10 @@
     width: 100%;
     padding: .5rem 1rem;
     text-align: left;
+  }
+  
+  .page-header .project-tagline {
+    margin: 0;
   }
   
   .side-content {
