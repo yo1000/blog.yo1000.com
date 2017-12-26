@@ -102,8 +102,8 @@
 
 @media screen and (min-width: 64em) {
   .page-header {
-    padding-top: 0;
-    padding-bottom: 0;
+    width: 100%;
+    padding: .5rem 6rem;
     text-align: left;
   }
 
