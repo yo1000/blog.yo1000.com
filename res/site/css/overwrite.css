@@ -81,13 +81,15 @@
 
 .meta-content li a,
 .side-content li a,
-.meta-content li a span,
-.side-content li a span,
 .meta-content p,
 .side-content p {
-  opacity: .7;
   font-size: .8rem;
   color: #606c71
+}
+
+.side-content li a,
+.side-content p {
+  opacity: .7;
 }
 
 .meta-content section,
