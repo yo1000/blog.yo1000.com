@@ -169,6 +169,13 @@
     text-align: left;
   }
   
+  .page-header .project-name {
+    position: relative;
+    padding-bottom: .1rem;
+    margin-top: -.5rem;
+    font-size: 2rem;
+  }
+  
   .page-header .project-tagline {
     margin: 0;
   }
