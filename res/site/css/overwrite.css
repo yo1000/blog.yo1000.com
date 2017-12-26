@@ -147,12 +147,24 @@
 }
 
 @media screen and (max-width: 42em) {
+  .page-header {
+    width: 100%;
+    padding: .5rem 1rem;
+    text-align: left;
+  }
+  
   .side-content {
     display: none;
   }
 }
 
 @media screen and (min-width: 42em) and (max-width: 64em) {
+  .page-header {
+    width: 100%;
+    padding: .5rem 1rem;
+    text-align: left;
+  }
+  
   .side-content {
     display: none;
   }
