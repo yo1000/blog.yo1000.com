@@ -8,3 +8,36 @@ tags:
 - kotlin
 ---
 
+## Summary
+Keycloak による SSO 検証のデモサイト構築メモ。 SSO サーバーのセットアップと、SSO クライアントの開発を順に見ていきます。
+
+この手順で使用したコードは、以下に公開しているので、こちらも参考にしてください。
+https://github.com/yo1000/kc-resource
+Keycloak 側の設定は、以前のポスト []() をご確認ください。
+
+## 
+
+```console
+$ curl https://start.spring.io/starter.tgz \
+  -d dependencies="web,security,keycloak" \
+  -d language="kotlin" \
+  -d javaVersion="1.8" \
+  -d packaging="jar" \
+  -d bootVersion="1.5.9.RELEASE" \
+  -d type="maven-project" \
+  -d groupId="com.yo1000" \
+  -d artifactId="kc-resource-server" \
+  -d version="1.0.0-SNAPSHOT" \
+  -d name="kc-resource-server" \
+  -d description="Keycloak Client Boilerplate - Resource Server" \
+  -d packageName="com.yo1000.keycloak.resource.server" \
+  -d baseDir="kc-resource-server" \
+  -d applicationName="KcResourceServerApplication" \
+  | tar -xzvf -
+
+$ ls kc-resource-server
+mvnw		mvnw.cmd	pom.xml		src
+
+$ cd kc-resource-server
+```
+
