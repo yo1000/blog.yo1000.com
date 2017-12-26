@@ -10,8 +10,8 @@ tags:
 ---
 
 ## Summary
-Keycloak による SSO 検証のデモサイト構築メモ。
-SSO サーバーのセットアップと、SSO クライアントの開発を順に見ていきます。
+Keycloak による SSO 基盤構築検証のメモ。
+SSO サーバー (Keycloak) のセットアップと、SSO クライアント (リソースサーバー、リソースクライアント) の開発を順に見ていきます。
 
 この手順で使用したコードは、以下に公開しているので、こちらも参考にしてください。<br>
 [https://github.com/yo1000/kc-resource](https://github.com/yo1000/kc-resource)
