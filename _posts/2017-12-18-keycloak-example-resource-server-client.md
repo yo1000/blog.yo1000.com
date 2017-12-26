@@ -1,5 +1,5 @@
 ---
-title: Keycloak Example, When Resource Servers and Resource Clients collaboration
+title: Simply combination examples with Keycloak, Resource Server and Resource Client
 permalink: /:year/:month/:day/:title
 category: keycloak
 tags:
