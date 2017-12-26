@@ -84,11 +84,11 @@
 .meta-content p,
 .side-content p {
   font-size: .8rem;
-  color: #606c71
 }
 
 .meta-content li a,
 .meta-content p {
+  color: #606c71
   opacity: .7;
 }
 
