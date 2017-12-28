@@ -199,4 +199,62 @@ class KcResourceServerController {
 
 ## テストの実装
 
+```kotlin
+package com.yo1000.keycloak.resource.server
+
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.keycloak.KeycloakPrincipal
+import org.keycloak.adapters.RefreshableKeycloakSecurityContext
+import org.keycloak.adapters.springsecurity.account.SimpleKeycloakAccount
+import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken
+import org.mockito.Mockito
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
+import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers
+import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
+import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import org.springframework.web.context.WebApplicationContext
+
+@RunWith(SpringRunner::class)
+@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
+class KcResourceServerControllerTests {
+	@Autowired
+    lateinit var context: WebApplicationContext
+
+    /**
+	 * When the user has Admin and User roles, then can access endpoints that require Admin role.
+     */
+    @Test
+	fun When_the_user_has_Admin_and_User_roles_then_can_access_endpoints_that_require_Admin_role() {
+        val mockMvc = MockMvcBuilders
+                .webAppContextSetup(context)
+                .apply<DefaultMockMvcBuilder>(SecurityMockMvcConfigurers.springSecurity())
+                .build()
+
+        val token = KeycloakAuthenticationToken(
+				SimpleKeycloakAccount(
+						Mockito.mock(KeycloakPrincipal::class.java),
+						setOf("admin", "user"),
+						Mockito.mock(RefreshableKeycloakSecurityContext::class.java)),
+				false)
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .get("/kc/resource/server/admin")
+                .with(SecurityMockMvcRequestPostProcessors
+                        .authentication(token)))
+                .andDo(MockMvcResultHandlers
+                        .print())
+                .andExpect(MockMvcResultMatchers
+                        .status().isOk)
+	}
+}
+```
+
+
 
