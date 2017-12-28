@@ -198,8 +198,12 @@ class KcResourceServerController {
 ```
 
 ## テストの実装
+### テストコード
+Spek で書いてしまいたいところですが、
+Spek だとフィールドインジェクションとの相性が非常に悪いので、JUnit で書いてしまったほうがすっきり書けます。
+DI を必要とするテストについては、(現時点では、) Spek の適用は避けたほうが良いといえるでしょう。
 
-```kotlin
+```KcResourceServerControllerTests.kt
 package com.yo1000.keycloak.resource.server
 
 import org.junit.Test
