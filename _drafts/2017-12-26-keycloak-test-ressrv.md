@@ -10,16 +10,35 @@ tags:
 - testing
 ---
 
-## Summary
-Keycloak による SSO を利用する Spring Boot クライアントでのテストについてのメモ。
+## 概要
+Keycloak による SSO を利用する、リソースサーバー (Spring Boot クライアント) でのテスト実装メモ。
 
-この手順で使用したコードは、以下に公開しているので、こちらも参考にしてください。
+この手順で使用したコードは、以下に公開しているので、こちらも参考にしてください。<br>
 https://github.com/yo1000/kc-resource
 
-Keycloak 側の設定は、[/keycloak/keycloak-example-resource-server-client.html](http://blog.yo1000.com/keycloak/keycloak-example-resource-server-client.html) をご確認ください。
+また、テストコード以外の部分については、
+[過去のポスト](http://blog.yo1000.com/keycloak/keycloak-collabo-ressrv-rescli.html)を前提としています。
+関連するものについては軽く触れますが、詳細を確認したい場合は、そちらを確認してください。
 
-## プロジェクトの作成
-Spring Initializr で、リソースサーバー用のプロジェクトを作成します。
+## 要件
+### 環境
+今回の作業環境は以下のとおりです。
+
+```console
+$ sw_vers
+ProductName:	Mac OS X
+ProductVersion:	10.12.5
+BuildVersion:	16F2073
+
+$ java -version
+java version "1.8.0_131"
+Java(TM) SE Runtime Environment (build 1.8.0_131-b11)
+Java HotSpot(TM) 64-Bit Server VM (build 25.131-b11, mixed mode)
+```
+
+## テストターゲットの準備
+### プロジェクトの作成
+Spring Initializr でプロジェクトを作成します。
 
 ```console
 $ curl https://start.spring.io/starter.tgz \
@@ -45,10 +64,11 @@ mvnw		mvnw.cmd	pom.xml		src
 $ cd kc-resource-server
 ```
 
-## テストターゲットの準備
+### 設定ファイルの配置
+以下、2ファイルを変更します。
 
-### 構成ファイルのセットアップ
-リソースサーバー用の、構成ファイルをセットアップします。
+- `pom.xml`
+- `application.yml`
 
 ```console
 $ sed -i '' \
@@ -71,7 +91,8 @@ keycloak:
 ```
 
 ### セキュリティ構成の実装
-セキュリティ構成を実装します。内容の詳細については、[/keycloak/keycloak-example-resource-server-client.html#implements-security-configuration-for-resource-server](http://blog.yo1000.com/keycloak/keycloak-example-resource-server-client.html#implements-security-configuration-for-resource-server) をご確認ください。
+内容の詳細については、以下を確認してください。<br>
+[/keycloak/keycloak-collabo-ressrv-rescli.html#implements-security-configuration-for-resource-server](http://blog.yo1000.com/keycloak/keycloak-collabo-ressrv-rescli.html#implements-security-configuration-for-resource-server) 
 
 ```console
 $ echo 'package com.yo1000.keycloak.resource.server
@@ -176,6 +197,6 @@ class KcResourceServerController {
 ' > src/main/kotlin/com/yo1000/keycloak/resource/server/KcResourceServerController.kt 
 ```
 
-
+## テストの実装
 
 
