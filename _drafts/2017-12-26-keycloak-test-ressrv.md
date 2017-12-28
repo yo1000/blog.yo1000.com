@@ -173,12 +173,12 @@ class KcSecurityConfigurer: KeycloakWebSecurityConfigurerAdapter() {
 }
 ```
 
-### grantedAuthoritiesMapper(): GrantedAuthoritiesMapper
+#### grantedAuthoritiesMapper(): GrantedAuthoritiesMapper
 認証基盤でロール名を小文字や、大文字小文字混在で設定しても、
 `mapper.setConvertToUpperCase(true)` を設定することで、
 プログラムから扱う場合に、すべて大文字で統一することができます。
 
-### configure(http: HttpSecurity)
+#### configure(http: HttpSecurity)
 エンドポイントと、そのアクセスに必要なロールのマッピングを定義します。
 
 `antMatchers("/kc/resource/server/admin").hasRole("ADMIN")` では、
