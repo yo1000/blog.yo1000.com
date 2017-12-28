@@ -335,3 +335,57 @@ Keycloak で管理されているユーザー情報を表現するクラスで�
 第一引数にユーザー情報の詳細を、第二引数にロールを、第三引数に認証トークンのリフレッシュを管理するオブジェクトを設定します。
 
 今回の例では、ロールのみ設定し、エンドポイントに正しく認可制御を設定できているかどうかを確認しています。
+なお、ロール名は小文字で指定していますが、セキュリティ構成の実装により、`mapper.setConvertToUpperCase(true)` を設定しているため、
+Spring Security 側で大文字に変換されて検査されます。
+
+#### .with(SecurityMockMvcRequestPostProcessors.authentication(token))
+RequestBuilder に、認証情報を設定します。
+このメソッドで認証情報を設定することで、設定された認証状態に応じたテストが可能になります。
+
+## デモ
+参考までに実際に動かした結果の一部を、以下に残しておきます。
+
+```console
+$ ./mvnw clean test
+
+..
+
+2017-12-28 22:44:37.182  INFO 65336 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : FrameworkServlet '': initialization completed in 23 ms
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /kc/resource/server/admin
+       Parameters = {}
+          Headers = {}
+
+Handler:
+             Type = com.yo1000.keycloak.resource.server.KcResourceServerController
+           Method = public java.lang.String com.yo1000.keycloak.resource.server.KcResourceServerController.getAdminResource()
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = {X-Content-Type-Options=[nosniff], X-XSS-Protection=[1; mode=block], Cache-Control=[no-cache, no-store, max-age=0, must-revalidate], Pragma=[no-cache], Expires=[0], X-Frame-Options=[DENY], Content-Type=[text/plain;charset=UTF-8], Content-Length=[16]}
+     Content type = text/plain;charset=UTF-8
+             Body = ADMIN Resource!!
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+
+..
+```
