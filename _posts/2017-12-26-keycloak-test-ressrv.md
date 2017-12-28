@@ -307,12 +307,12 @@ class KcResourceServerControllerTests {
     }
 
     /**
-     * When the user has only User roles,
+     * When the user has only User role,
      * then can access endpoints that require User role,
      * but can't access endpoints that require Admin role.
      */
     @Test
-    fun when_the_user_has_only_User_roles_then_can_access_endpoints_that_require_User_role_but_cant_access_endpoints_that_require_Admin_role() {
+    fun when_the_user_has_only_User_role_then_can_access_endpoints_that_require_User_role_but_cant_access_endpoints_that_require_Admin_role() {
         val token = KeycloakAuthenticationToken(
                 SimpleKeycloakAccount(
                         Mockito.mock(KeycloakPrincipal::class.java),
