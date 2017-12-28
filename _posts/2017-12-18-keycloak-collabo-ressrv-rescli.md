@@ -51,6 +51,10 @@ SSO サーバー (Keycloak) のセットアップと、SSO クライアント (�
 ### Environments
 今回の作業環境は以下のとおりです。
 
+- Java 1.8.0_131
+- Spring Boot 1.5.9.RELEASE
+- Keycloak 3.4.1.Final
+
 ```console
 $ sw_vers
 ProductName:	Mac OS X
