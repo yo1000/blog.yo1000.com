@@ -1,5 +1,5 @@
 ---
-title: Keycloak による認証を利用しているリソースサーバーのテスト
+title: Keycloak で認証されるリソースサーバーのテスト
 category: keycloak
 tags:
 - keycloak
