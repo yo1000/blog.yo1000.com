@@ -2,7 +2,7 @@
 title: Simply combination examples with Keycloak, Resource Server and Resource Client
 redirect_from:
 - /2017/12/18/keycloak-example-resource-server-client.html
-- /2017/12/18/keycloak-example-resource-server-client2.html
+- /keycloak/keycloak-example-resource-server-client.html
 category: keycloak
 tags:
 - keycloak
