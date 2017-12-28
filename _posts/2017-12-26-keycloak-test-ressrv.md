@@ -112,7 +112,7 @@ keycloak:
 
 コード例の後に、要点をまとめます。
 
-```kotlin:KcSecurityConfigurer.kt
+```kotlin
 package com.yo1000.keycloak.resource.server
 
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter
@@ -235,7 +235,7 @@ DI を必要とするテストについては、(現時点では) Spek の適用
 
 コード例の後に、要点をまとめます。
 
-```KcResourceServerControllerTests.kt
+```kotlin
 package com.yo1000.keycloak.resource.server
 
 import org.junit.Before
