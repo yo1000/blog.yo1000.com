@@ -96,10 +96,17 @@ keycloak:
 
 ここでは、テストを理解するのに役立つ実装の一部のみ説明します。
 
-#### antMatchers("/kc/resource/server/admin").hasRole("ADMIN")
+### grantedAuthoritiesMapper(): GrantedAuthoritiesMapper
+認証基盤でロール名を小文字や、大文字小文字混在で設定しても、
+`mapper.setConvertToUpperCase(true)` を設定することで、
+プログラムから扱う場合に、すべて大文字で統一することができます。
 
-
-#### antMatchers("/kc/resource/server/user").hasRole("USER")
+### configure(http: HttpSecurity)
+エンドポイントと、そのアクセスに必要なロールのマッピングを定義します。
+`antMatchers("/kc/resource/server/admin").hasRole("ADMIN")` では、
+`ADMIN` ロールをもっているユーザーのみが、`/kc/resource/server/admin` にアクセスできるように設定します。
+`antMatchers("/kc/resource/server/user").hasRole("USER")` では、
+`USER` ロールをもっているユーザーのみが、`/kc/resource/server/user` にアクセスできるように設定します。
 
 ```KcSecurityConfigurer.kt
 package com.yo1000.keycloak.resource.server
@@ -204,9 +211,9 @@ class KcResourceServerController {
 
 ## テストの実装
 ### テストコード
-Spek で書いてしまいたいところですが、
+[Spek](http://spekframework.org/) で書いてしまいたいところですが、
 Spek だとフィールドインジェクションとの相性が非常に悪いので、JUnit で書いてしまったほうがすっきり書けます。
-DI を必要とするテストについては、(現時点では、) Spek の適用は避けたほうが良いといえるでしょう。
+DI を必要とするテストについては、(現時点では) Spek の適用は避けたほうが良いといえるでしょう。
 
 ```KcResourceServerControllerTests.kt
 package com.yo1000.keycloak.resource.server
