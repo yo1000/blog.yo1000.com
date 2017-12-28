@@ -91,10 +91,10 @@ keycloak:
 ```
 
 ### セキュリティ構成の実装
+ここでは、テストを理解するのに役立つ実装の一部のみ説明します。
 内容の詳細については、以下を確認してください。<br>
 [/keycloak/keycloak-collabo-ressrv-rescli.html#implements-security-configuration-for-resource-server](http://blog.yo1000.com/keycloak/keycloak-collabo-ressrv-rescli.html#implements-security-configuration-for-resource-server) 
 
-ここでは、テストを理解するのに役立つ実装の一部のみ説明します。
 コード例の後に、要点をまとめます。
 
 ```KcSecurityConfigurer.kt
