@@ -112,7 +112,7 @@ keycloak:
 
 コード例の後に、要点をまとめます。
 
-```KcSecurityConfigurer.kt
+```kotlin:KcSecurityConfigurer.kt
 package com.yo1000.keycloak.resource.server
 
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter
