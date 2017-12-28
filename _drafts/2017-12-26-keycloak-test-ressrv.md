@@ -95,20 +95,7 @@ keycloak:
 [/keycloak/keycloak-collabo-ressrv-rescli.html#implements-security-configuration-for-resource-server](http://blog.yo1000.com/keycloak/keycloak-collabo-ressrv-rescli.html#implements-security-configuration-for-resource-server) 
 
 ここでは、テストを理解するのに役立つ実装の一部のみ説明します。
-
-### grantedAuthoritiesMapper(): GrantedAuthoritiesMapper
-認証基盤でロール名を小文字や、大文字小文字混在で設定しても、
-`mapper.setConvertToUpperCase(true)` を設定することで、
-プログラムから扱う場合に、すべて大文字で統一することができます。
-
-### configure(http: HttpSecurity)
-エンドポイントと、そのアクセスに必要なロールのマッピングを定義します。
-
-`antMatchers("/kc/resource/server/admin").hasRole("ADMIN")` では、
-`ADMIN` ロールをもっているユーザーが、`/kc/resource/server/admin` にアクセスできるように設定します。
-
-`antMatchers("/kc/resource/server/user").hasRole("USER")` では、
-`USER` ロールをもっているユーザーが、`/kc/resource/server/user` にアクセスできるように設定します。
+コード例の後に、要点をまとめます。
 
 ```KcSecurityConfigurer.kt
 package com.yo1000.keycloak.resource.server
@@ -186,6 +173,20 @@ class KcSecurityConfigurer: KeycloakWebSecurityConfigurerAdapter() {
 }
 ```
 
+### grantedAuthoritiesMapper(): GrantedAuthoritiesMapper
+認証基盤でロール名を小文字や、大文字小文字混在で設定しても、
+`mapper.setConvertToUpperCase(true)` を設定することで、
+プログラムから扱う場合に、すべて大文字で統一することができます。
+
+### configure(http: HttpSecurity)
+エンドポイントと、そのアクセスに必要なロールのマッピングを定義します。
+
+`antMatchers("/kc/resource/server/admin").hasRole("ADMIN")` では、
+`ADMIN` ロールをもっているユーザーが、`/kc/resource/server/admin` にアクセスできるように設定します。
+
+`antMatchers("/kc/resource/server/user").hasRole("USER")` では、
+`USER` ロールをもっているユーザーが、`/kc/resource/server/user` にアクセスできるように設定します。
+
 ### コントローラーの実装
 リソースを返却するエンドポイントとなる、API 用コントローラーを実装します。
 
@@ -216,6 +217,8 @@ class KcResourceServerController {
 [Spek](http://spekframework.org/) で書いてしまいたいところですが、
 Spek だとフィールドインジェクションとの相性が非常に悪いので、JUnit で書いてしまったほうがすっきり書けます。
 DI を必要とするテストについては、(現時点では) Spek の適用は避けたほうが良いといえるでしょう。
+
+コード例の後に、要点をまとめます。
 
 ```KcResourceServerControllerTests.kt
 package com.yo1000.keycloak.resource.server
@@ -323,5 +326,12 @@ class KcResourceServerControllerTests {
 }
 ```
 
+#### KeycloakAuthenticationToken
+Keycloak により認証を受けた、認証トークンを表現するクラスです。
+ここでは、第一引数に認証済みユーザーの情報を、第二引数に対話ログインによる認証トークンであるかどうかを設定します。
 
+#### SimpleKeycloakAccount
+Keycloak で管理されているユーザー情報を表現するクラスです。
+第一引数にユーザー情報の詳細を、第二引数にロールを、第三引数に認証トークンのリフレッシュを管理するオブジェクトを設定します。
 
+今回の例では、ロールのみ設定し、エンドポイントに正しく認可制御を設定できているかどうかを確認しています。
