@@ -205,7 +205,7 @@ class KcSecurityConfigurer: KeycloakWebSecurityConfigurerAdapter() {
 ### コントローラーの実装
 リソースを返却するエンドポイントとなる、API 用コントローラーを実装します。
 
-```KcResourceServerController.kt
+```kotlin
 package com.yo1000.keycloak.resource.server
 
 import org.springframework.web.bind.annotation.GetMapping
