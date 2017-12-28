@@ -224,25 +224,25 @@ import org.springframework.web.context.WebApplicationContext
 @RunWith(SpringRunner::class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
 class KcResourceServerControllerTests {
-	@Autowired
+    @Autowired
     lateinit var context: WebApplicationContext
 
     /**
-	 * When the user has Admin and User roles, then can access endpoints that require Admin role.
+     * When the user has Admin and User roles, then can access endpoints that require Admin role.
      */
     @Test
-	fun When_the_user_has_Admin_and_User_roles_then_can_access_endpoints_that_require_Admin_role() {
+    fun when_the_user_has_Admin_and_User_roles_then_can_access_endpoints_that_require_Admin_role() {
         val mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
                 .apply<DefaultMockMvcBuilder>(SecurityMockMvcConfigurers.springSecurity())
                 .build()
 
         val token = KeycloakAuthenticationToken(
-				SimpleKeycloakAccount(
-						Mockito.mock(KeycloakPrincipal::class.java),
-						setOf("admin", "user"),
-						Mockito.mock(RefreshableKeycloakSecurityContext::class.java)),
-				false)
+                SimpleKeycloakAccount(
+                        Mockito.mock(KeycloakPrincipal::class.java),
+                        setOf("admin", "user"),
+                        Mockito.mock(RefreshableKeycloakSecurityContext::class.java)),
+                false)
 
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/kc/resource/server/admin")
@@ -252,7 +252,7 @@ class KcResourceServerControllerTests {
                         .print())
                 .andExpect(MockMvcResultMatchers
                         .status().isOk)
-	}
+    }
 }
 ```
 
