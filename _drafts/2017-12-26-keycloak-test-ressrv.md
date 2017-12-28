@@ -101,8 +101,8 @@ keycloak:
 
 #### antMatchers("/kc/resource/server/user").hasRole("USER")
 
-```console
-$ echo 'package com.yo1000.keycloak.resource.server
+```KcSecurityConfigurer.kt
+package com.yo1000.keycloak.resource.server
 
 import org.keycloak.adapters.springsecurity.config.KeycloakWebSecurityConfigurerAdapter
 import org.springframework.context.annotation.Bean
@@ -175,14 +175,13 @@ class KcSecurityConfigurer: KeycloakWebSecurityConfigurerAdapter() {
                 .anyRequest().permitAll()
     }
 }
-' > src/main/kotlin/com/yo1000/keycloak/resource/server/KcSecurityConfigurer.kt
 ```
 
 ### コントローラーの実装
 リソースを返却するエンドポイントとなる、API 用コントローラーを実装します。
 
-```console
-$ echo 'package com.yo1000.keycloak.resource.server
+```KcResourceServerController.kt
+package com.yo1000.keycloak.resource.server
 
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -201,7 +200,6 @@ class KcResourceServerController {
         return "USER Resource."
     }
 }
-' > src/main/kotlin/com/yo1000/keycloak/resource/server/KcResourceServerController.kt 
 ```
 
 ## テストの実装
