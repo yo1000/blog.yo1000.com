@@ -1,5 +1,5 @@
 ---
-title: Keycloak で認証されるリソースサーバーのテスト
+title: Keycloak 認証を使うリソースサーバー (Spring Boot クライアント) のテスト
 category: keycloak
 tags:
 - keycloak
@@ -11,7 +11,7 @@ tags:
 ---
 
 ## 概要
-Keycloak による SSO を利用する、リソースサーバー (Spring Boot クライアント) でのテスト実装メモ。
+Keycloak による認証を使う、リソースサーバー (Spring Boot クライアント) でのテスト実装メモ。
 
 この手順で使用したコードは、以下に公開しているので、こちらも参考にしてください。<br>
 [https://github.com/yo1000/kc-resource#try-testing-with-only-kc-resource-server](https://github.com/yo1000/kc-resource#try-testing-with-only-kc-resource-server)
