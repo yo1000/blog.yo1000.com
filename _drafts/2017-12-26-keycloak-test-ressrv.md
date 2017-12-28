@@ -103,10 +103,12 @@ keycloak:
 
 ### configure(http: HttpSecurity)
 エンドポイントと、そのアクセスに必要なロールのマッピングを定義します。
+
 `antMatchers("/kc/resource/server/admin").hasRole("ADMIN")` では、
-`ADMIN` ロールをもっているユーザーのみが、`/kc/resource/server/admin` にアクセスできるように設定します。
+`ADMIN` ロールをもっているユーザーのみが、`/kc/resource/server/admin` にアクセスできるように設定されます。
+
 `antMatchers("/kc/resource/server/user").hasRole("USER")` では、
-`USER` ロールをもっているユーザーのみが、`/kc/resource/server/user` にアクセスできるように設定します。
+`USER` ロールをもっているユーザーのみが、`/kc/resource/server/user` にアクセスできるように設定されます。
 
 ```KcSecurityConfigurer.kt
 package com.yo1000.keycloak.resource.server
