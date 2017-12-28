@@ -389,3 +389,7 @@ MockHttpServletResponse:
 
 ..
 ```
+
+## 参考
+### コード例
+[https://github.com/keycloak/keycloak/blob/master/adapters/oidc/spring-security/src/test/java/org/keycloak/adapters/springsecurity/authentication/KeycloakAuthenticationProviderTest.java](https://github.com/keycloak/keycloak/blob/master/adapters/oidc/spring-security/src/test/java/org/keycloak/adapters/springsecurity/authentication/KeycloakAuthenticationProviderTest.java)
