@@ -71,7 +71,7 @@ $ curl https://start.spring.io/starter.tgz \
   -d artifactId="kc-resource-server" \
   -d version="1.0.0-SNAPSHOT" \
   -d name="kc-resource-server" \
-  -d description="Keycloak Client Boilerplate - Resource Server" \
+  -d description="Keycloak Client Testing - Resource Server" \
   -d packageName="com.yo1000.keycloak.resource.server" \
   -d baseDir="kc-resource-server" \
   -d applicationName="KcResourceServerApplication" \
