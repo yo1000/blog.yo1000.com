@@ -45,7 +45,9 @@ mvnw		mvnw.cmd	pom.xml		src
 $ cd kc-resource-server
 ```
 
-## 構成ファイルのセットアップ
+## テストターゲットの準備
+
+### 構成ファイルのセットアップ
 リソースサーバー用の、構成ファイルをセットアップします。
 
 ```console
@@ -68,7 +70,7 @@ keycloak:
 ' > src/main/resources/application.yml
 ```
 
-## セキュリティ構成の実装
+### セキュリティ構成の実装
 セキュリティ構成を実装します。内容の詳細については、[/keycloak/keycloak-example-resource-server-client.html#implements-security-configuration-for-resource-server](http://blog.yo1000.com/keycloak/keycloak-example-resource-server-client.html#implements-security-configuration-for-resource-server) をご確認ください。
 
 ```console
@@ -148,6 +150,32 @@ class KcSecurityConfigurer: KeycloakWebSecurityConfigurerAdapter() {
 ' > src/main/kotlin/com/yo1000/keycloak/resource/server/KcSecurityConfigurer.kt
 ```
 
+### コントローラーの実装
+リソースを返却するエンドポイントとなる、API 用コントローラーを実装します。
 
-  
---
+```console
+$ echo 'package com.yo1000.keycloak.resource.server
+
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
+
+@RestController
+@RequestMapping("/kc/resource/server")
+class KcResourceServerController {
+    @GetMapping("/admin")
+    fun getAdminResource(): String {
+        return "ADMIN Resource!!"
+    }
+
+    @GetMapping("/user")
+    fun getUserResource(): String {
+        return "USER Resource."
+    }
+}
+' > src/main/kotlin/com/yo1000/keycloak/resource/server/KcResourceServerController.kt 
+```
+
+
+
+
