@@ -1,5 +1,5 @@
 ---
-title: Testing examples for Resource Server as Keycloak Client
+title: Keycloak による認証を利用しているリソースサーバーのテスト
 category: keycloak
 tags:
 - keycloak
