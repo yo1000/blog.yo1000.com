@@ -102,6 +102,15 @@
   top: .1rem;
 }
 
+.tw-share-button,
+.fb-share-button {
+  display: inline;
+  padding: 0 .3rem;
+  font-size: .8rem;
+  border: #606c71 solid 1px;
+  border-radius: 3px;
+}
+
 @media screen and (min-width: 64em) {
   .page-header {
     width: 100%;
