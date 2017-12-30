@@ -37,10 +37,6 @@
   margin-bottom: 0;
 }
 
-.meta-content li {
-  display: inline-block;
-}
-
 .meta-content li a .container,
 .side-content li a .container {
   display: inline-block;
@@ -84,22 +80,12 @@
 }
 
 .meta-content section,
-.meta-content ul {
+.meta-content ul,
+.meta-content li,
+.meta-content .posted-at,
+.meta-content .tw-share-button,
+.meta-content .fb-share-button {
   display: inline-block;
-}
-
-.twitter-content,
-.facebook-content {
-  display: inline-block;
-}
-
-.tw-share-button,
-.fb-share-button {
-  display: inline;
-  padding: 0 .3rem;
-  font-size: .8rem;
-  border: #606c71 solid 1px;
-  border-radius: 3px;
 }
 
 @media screen and (min-width: 64em) {
