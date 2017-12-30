@@ -1,5 +1,5 @@
 ---
-title: Keycloak・リソースサーバー・リソースクライアントを連携する簡単な実装例
+title: Keycloak・リソースサーバー・リソースクライアントの連携例
 redirect_from:
 - /2017/12/18/keycloak-example-resource-server-client.html
 - /keycloak/keycloak-example-resource-server-client.html
