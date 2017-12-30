@@ -88,6 +88,10 @@
   display: inline-block;
 }
 
+.posted-at {
+  margin-right: .5rem;
+}
+
 @media screen and (min-width: 64em) {
   .page-header {
     width: 100%;
