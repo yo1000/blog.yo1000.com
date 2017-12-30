@@ -88,11 +88,6 @@
   display: inline-block;
 }
 
-.meta-content .meta {
-  position: relative;
-  top: .1rem;
-}
-
 .twitter-content,
 .facebook-content {
   display: inline-block;
