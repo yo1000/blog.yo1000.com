@@ -3,11 +3,10 @@
     <p class="posted-at">Posted on {{ page.date | date: "%Y-%m-%d" }}</p>
     <section class="social-content">
       <ul>
-        <li>
-          <div class="tw-share-button"><a 
-            href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false"><i 
-            class="fab fa-twitter"></i> Tweet</a><script 
-            async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></div>
+        <li><a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-show-count="false"><div
+          class="container"><div class="icon"><span><i class="fab fa-twitter"></i></span></div></div><div
+          class="container"><div class="label"><span>Tweet</span></div></div></a><script 
+          async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
         </li>
         <li>
           <div id="fb-root"></div>
@@ -21,8 +20,9 @@
           <div class="fb-share-button" data-href="{{ page.url | absolute_url }}" 
             data-layout="button" data-size="small" data-mobile-iframe="false"><a 
             class="fb-xfbml-parse-ignore" target="_blank" 
-            href="https://www.facebook.com/sharer/sharer.php?u={{ page.url | absolute_url | uri_escape }}&amp;src=sdkpreparse"><i 
-            class="fab fa-facebook"></i> Share</a></div>
+            href="https://www.facebook.com/sharer/sharer.php?u={{ page.url | absolute_url | uri_escape }}&amp;src=sdkpreparse"><div
+            class="container"><div class="icon"><span><i class="fab fa-facebook"></i></span></div></div><div
+            class="container"><div class="label"><span>Share</span></div></div></a></div>
         </li>
       </ul>
     </section>
