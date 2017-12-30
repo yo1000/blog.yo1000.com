@@ -9,7 +9,9 @@
     </section>
     <section class="main-content">
       <article>
-      {{ content }}
+        {% include article-header.html %}
+        {{ content }}
+        {% include article-footer.html %}
       </article>
       {% include page-footer.html %}
     </section>
