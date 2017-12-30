@@ -4,6 +4,11 @@
   background-image: linear-gradient(120deg, #a9150d, #fede00);
 }
 
+.main-content article hr {
+  height: 1px;
+  width: 100%;
+}
+
 .main-content h1, .main-content h2, .main-content h3,
 .main-content h4, .main-content h5, .main-content h6,
 .side-content h1, .side-content h2, .side-content h3,
@@ -19,8 +24,6 @@
 
 .meta-content {
   margin: 0 auto;
-  padding-bottom: 1rem;
-  border-bottom: solid 1px #eff0f1;
 }
 
 .meta-content ul {
