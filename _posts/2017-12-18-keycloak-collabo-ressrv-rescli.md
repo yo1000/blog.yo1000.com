@@ -1,5 +1,5 @@
 ---
-title: Simply combination examples with Keycloak, Resource Server and Resource Client
+title: Keycloak、リソースサーバー、リソースクライアントを連携する簡単な実装例
 redirect_from:
 - /2017/12/18/keycloak-example-resource-server-client.html
 - /keycloak/keycloak-example-resource-server-client.html
@@ -11,14 +11,14 @@ tags:
 - kotlin
 ---
 
-## Summary
+## 概要
 Keycloak による SSO 基盤構築検証のメモ。
 SSO サーバー (Keycloak) のセットアップと、SSO クライアント (リソースサーバー、リソースクライアント) の開発を順に見ていきます。
 
 この手順で使用したコードは、以下に公開しているので、こちらも参考にしてください。<br>
 [https://github.com/yo1000/kc-resource](https://github.com/yo1000/kc-resource)
 
-### Contents
+### 目次
 
 - [Requirements](#requirements)
   - [Environments](#environments)
@@ -46,9 +46,9 @@ SSO サーバー (Keycloak) のセットアップと、SSO クライアント (�
   - [Documents](#documents)
   - [Examples](#examples)
 
-## Requirements
+## 要件
 
-### Environments
+### 環境
 今回の作業環境は以下のとおりです。
 
 - Java 1.8.0_131
@@ -67,7 +67,7 @@ Java(TM) SE Runtime Environment (build 1.8.0_131-b11)
 Java HotSpot(TM) 64-Bit Server VM (build 25.131-b11, mixed mode)
 ```
 
-### Flow
+### 認証認可フロー
 構築しようとしている認証認可フローの概要図は、以下のとおりです。
 
 ![kc-resource-flow.svg]({{ site.baseurl }}/res/site/img/keycloak/kc-resource-flow.svg)
@@ -88,7 +88,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.131-b11, mixed mode)
 - Resource Client
   - Resource Server からリソースを取得して、画面に結果を表示します
 
-### Notes
+### 備考
 以降、一連の流れを実施するにあたり、ディレクトリ移動が数回発生するため、
 便宜上、`${BASE_DIR}` をディレクトリの基点として使用します。
 
@@ -96,9 +96,9 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.131-b11, mixed mode)
 $ BASE_DIR=`pwd`
 ```
 
-## Set up Keycloak (SSO Server)
+## Keycloak のセットアップ (SSO Server)
 
-### Download & Unarchive
+### ダウンロード・展開
 執筆時点での最新は、[3.4.1.Final](http://www.keycloak.org/archive/downloads-3.4.1.html)<br>
 Download URL:
 [https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz](https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar.gz)
@@ -110,7 +110,7 @@ $ curl https://downloads.jboss.org/keycloak/3.4.1.Final/keycloak-3.4.1.Final.tar
 $ cd keycloak-3.4.1.Final
 ```
 
-### Initial settings for Keycloak
+### Keycloak の初期設定・起動
 管理ユーザーは、以下いずれかの方法で追加します。
 
 - ホスト内の `add-user-keycloak.sh` による登録 _(今回はこちらを使用)_
@@ -142,7 +142,7 @@ $ bin/standalone.sh \
 18:38:14,161 INFO  [org.jboss.as] (Controller Boot Thread) WFLYSRV0025: Keycloak 3.4.1.Final (WildFly Core 3.0.8.Final) started in 61427ms - Started 545 of 881 services (604 services are lazy, passive or on-demand)
 ```
 
-### Login to Keycloak
+### Keycloak ヘログイン
 以降、`kcadm.sh` を使用する上で、ログイン状態が必要になるため、ログインします。
 `kcadm.sh` 実行時に、以下のようなメッセージが出力された場合は、
 ログインセッションが期限切れとなっているため、改めてログインします。
@@ -159,7 +159,7 @@ $ bin/kcadm.sh config credentials \
 Logging into http://127.0.0.1:8080/auth as user admin of realm master
 ```
 
-### Set up Realm
+### Realm の作成
 レルムは `領域・範囲・部門` といった単語に略されるもので、
 そのログインが、どのような種類のリソースにアクセスするためのものかを区別、管理するための単位です。
 より端的には、レルムが分離されていると、ログイン画面の URL が分離されます。
@@ -187,7 +187,7 @@ $ bin/kcadm.sh create roles \
 Created new role with id 'user'
 ```
 
-### Set up Users
+### ユーザーの登録
 `kc-resource` レルムにユーザーを追加していきます。
 管理ユーザーとして `alice` を、一般ユーザーとして `bob` を、それぞれ作成します。
 
@@ -226,7 +226,7 @@ $ bin/kcadm.sh add-roles \
   --rolename user
 ```
 
-### Set up Clients
+### SSO クライアントの登録
 SSO 基盤を使用するアプリケーション (SSO サーバーに対する、クライアント) を登録します。
 リソースサーバーとして `kc-resource-server` を、
 リソースクライアントとして `kc-resource-client` をそれぞれ作成します。
@@ -247,9 +247,9 @@ $ RES_CLI_ID=`bin/kcadm.sh create clients -r kc-resource -s clientId=kc-resource
 373d1ce7-19c2-4a40-b1a3-deb3e4a02c83
 ```
 
-## Develop Resource Server (SSO Client - A)
+## リソースサーバーの実装 (SSO Client - A)
 
-### Create Project for Resource Server
+### プロジェクトの作成
 Spring Initializr で、リソースサーバー用のプロジェクトを作成します。
 
 ```console
@@ -277,7 +277,7 @@ mvnw		mvnw.cmd	pom.xml		src
 $ cd kc-resource-server
 ```
 
-### Set up Configuration files for Resource Server
+### 設定ファイルの配置
 リソースサーバー用の、構成ファイルをセットアップします。
 
 ```console
@@ -300,17 +300,8 @@ keycloak:
 ' > src/main/resources/application.yml
 ```
 
-### Implements Security Configuration for Resource Server
-セキュリティ構成を実装します。いくつかポイントがありますが、とくに以下の点に注意してください。
-
-#### configure(http: HttpSecurity)
-認証で保護したい URL のパターンと、許可するロールの組み合わせを正しく設定します。
-この設定に誤りがあると、SSO 基盤へのリダイレクトに失敗します。
-
-#### grantedAuthoritiesMapper(): GrantedAuthoritiesMapper
-認証基盤でロール名を小文字や、大文字小文字混在で設定しても、
-`mapper.setConvertToUpperCase(true)` を設定することで、
-プログラムから扱う場合に、すべて大文字で統一することができます。
+### セキュリティ構成の実装
+コード例の後に、要点をまとめます。
 
 ```console
 $ echo 'package com.yo1000.keycloak.resource.server
@@ -389,7 +380,16 @@ class KcSecurityConfigurer: KeycloakWebSecurityConfigurerAdapter() {
 ' > src/main/kotlin/com/yo1000/keycloak/resource/server/KcSecurityConfigurer.kt
 ```
 
-### Implements RestController for Resource Server
+#### configure(http: HttpSecurity)
+認証で保護したい URL のパターンと、許可するロールの組み合わせを正しく設定します。
+この設定に誤りがあると、SSO 基盤へのリダイレクトに失敗します。
+
+#### grantedAuthoritiesMapper(): GrantedAuthoritiesMapper
+認証基盤でロール名を小文字や、大文字小文字混在で設定しても、
+`mapper.setConvertToUpperCase(true)` を設定することで、
+プログラムから扱う場合に、すべて大文字で統一することができます。
+
+### コントローラーの実装
 リソースを返却するエンドポイントとなる、API 用コントローラーを実装します。
 
 ```console
@@ -415,16 +415,16 @@ class KcResourceServerController {
 ' > src/main/kotlin/com/yo1000/keycloak/resource/server/KcResourceServerController.kt 
 ```
 
-### Build and Run Resource Server
+### ビルド・起動
 リソースサーバー用アプリケーションを起動します。
 
 ```console
 $ ./mvnw clean spring-boot:run &
 ```
 
-## Develop Resource Client (SSO Client - B)
+## リソースクライアントの実装 (SSO Client - B)
 
-### Create Project for Resource Client
+### プロジェクトの作成
 Spring Initializr で、リソースクライアント用のプロジェクトを作成します。
 
 ```console
@@ -452,7 +452,7 @@ mvnw		mvnw.cmd	pom.xml		src
 $ cd kc-resource-client
 ```
 
-### Set up Configuration files for Resource Client
+### 設定ファイルの配置
 リソースクライアント用の、構成ファイルをセットアップします。
 
 こちらでは、リソースサーバーでは設定しなかった `keycloak.json` が必要になります。
@@ -484,27 +484,11 @@ $ ${BASE_DIR}/keycloak-3.4.1.Final/bin/kcadm.sh \
   > src/main/resources/keycloak.json 
 ```
 
-### Implements Security Configuration for Resource Client
-セキュリティ構成を実装します。
+### セキュリティ構成の実装
+コード例の後に、要点をまとめます。
+
 Resource Server 用の実装で触れたものと概ね同様ですが、
-`adapterDeploymentContext()` の説明を追加しているので、
-改めて以下の点に注意してください。
-
-#### configure(http: HttpSecurity)
-認証で保護したい URL のパターンと、許可するロールの組み合わせを正しく設定します。
-この設定に誤りがあると、SSO 基盤へのリダイレクトに失敗します。
-
-#### grantedAuthoritiesMapper(): GrantedAuthoritiesMapper
-認証基盤でロール名を小文字や、大文字小文字混在で設定しても、
-`mapper.setConvertToUpperCase(true)` を設定することで、
-プログラムから扱う場合に、すべて大文字で統一することができます。
-
-#### adapterDeploymentContext(): AdapterDeploymentContext
-アプリケーションが読み込む、`keycloak.json` の位置を変更します。
-デフォルトでは、`WEB-INF/keycloak.json` となっています。
-Spring Boot で、実行可能 JAR を作成する場合、
-`WEB-INF` にファイルを配置するのは一般的ではないため、
-`resources` 直下に配置した、`keycloak.json` を読み込ませるようにします。
+`adapterDeploymentContext()` の説明を追加しています。
 
 ```console
 $ echo 'package com.yo1000.keycloak.resource.client
@@ -599,7 +583,23 @@ class SecurityConfiguration : KeycloakWebSecurityConfigurerAdapter() {
 ' > src/main/kotlin/com/yo1000/keycloak/resource/client/SecurityConfiguration.kt
 ```
 
-### Implements Controller with use `KeycloakRestTemplate` for Resource Client
+#### configure(http: HttpSecurity)
+認証で保護したい URL のパターンと、許可するロールの組み合わせを正しく設定します。
+この設定に誤りがあると、SSO 基盤へのリダイレクトに失敗します。
+
+#### grantedAuthoritiesMapper(): GrantedAuthoritiesMapper
+認証基盤でロール名を小文字や、大文字小文字混在で設定しても、
+`mapper.setConvertToUpperCase(true)` を設定することで、
+プログラムから扱う場合に、すべて大文字で統一することができます。
+
+#### adapterDeploymentContext(): AdapterDeploymentContext
+アプリケーションが読み込む、`keycloak.json` の位置を変更します。
+デフォルトでは、`WEB-INF/keycloak.json` となっています。
+Spring Boot で、実行可能 JAR を作成する場合、
+`WEB-INF` にファイルを配置するのは一般的ではないため、
+`resources` 直下に配置した、`keycloak.json` を読み込ませるようにします。
+
+### `KeycloakRestTemplate` を使用するコントローラーの実装
 リソースサーバーにリソースを要求して、
 結果を画面に表示するエンドポイントとなる、コントローラーを実装します。
 
@@ -644,14 +644,14 @@ class KcResourceClientController(
 ' > src/main/kotlin/com/yo1000/keycloak/resource/client/KcResourceClientController.kt
 ```
 
-### Build and Run Resource Client
+### ビルド・起動
 リソースクライアント用アプリケーションを起動します。
 
 ```console
 $ ./mvnw clean spring-boot:run &
 ```
 
-## Demo
+## デモ
 参考までに、実際に動かした結果を、以下キャプチャに残しておきます。
 
 以下 URL にアクセスしてみます。<br>
@@ -663,15 +663,15 @@ Keycloak へリダイレクトされ、ログインを要求されます。<br>
 ログインすると、ロールに応じたメッセージが表示されます。<br>
 ![kc-resource-demo-2.png]({{ site.baseurl }}/res/site/img/keycloak/kc-resource-demo-2.png)
 
-## References
+## 参考
 
-### Documents
+### ドキュメント
 
 - [http://www.keycloak.org/](http://www.keycloak.org/)
 - [http://blog.keycloak.org/2017/01/administer-keycloak-server-from-shell.html](http://blog.keycloak.org/2017/01/administer-keycloak-server-from-shell.html)
 - [http://keycloak-documentation.openstandia.jp/master/ja_JP/securing_apps/index.html](http://keycloak-documentation.openstandia.jp/master/ja_JP/securing_apps/index.html)
 
-### Examples
+### コード例
 
 - [https://github.com/foo4u/keycloak-spring-demo](https://github.com/foo4u/keycloak-spring-demo)
 - [https://sandor-nemeth.github.io/java/spring/2017/06/15/spring-boot-with-keycloak.html](https://sandor-nemeth.github.io/java/spring/2017/06/15/spring-boot-with-keycloak.html)
