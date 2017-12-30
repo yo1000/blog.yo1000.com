@@ -70,12 +70,13 @@
   font-size: .8rem;
 }
 
-.meta-content li {
-  opacity: .7;
-}
-
+.meta-content li,
 .meta-content li a {
   color: #606c71;
+}
+
+.meta-content li {
+  opacity: .7;
 }
 
 .meta-content section,
