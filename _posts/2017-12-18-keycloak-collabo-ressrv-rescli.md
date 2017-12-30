@@ -1,5 +1,5 @@
 ---
-title: Keycloak、リソースサーバー、リソースクライアントを連携する簡単な実装例
+title: Keycloak・リソースサーバー・リソースクライアントを連携する簡単な実装例
 redirect_from:
 - /2017/12/18/keycloak-example-resource-server-client.html
 - /keycloak/keycloak-example-resource-server-client.html
@@ -20,31 +20,33 @@ SSO サーバー (Keycloak) のセットアップと、SSO クライアント (�
 
 ### 目次
 
-- [Requirements](#requirements)
-  - [Environments](#environments)
-  - [Flow](#flow)
-  - [Notes](#notes)
-- [Set up Keycloak (SSO Server)](#set-up-keycloak-sso-server)
-  - [Download & Unarchive](#download--unarchive)
-  - [Initial settings for Keycloak](#initial-settings-for-keycloak)
-  - [Set up Realm](#set-up-realm)
-  - [Set up Users](#set-up-users)
-  - [Set up Clients](#set-up-clients)
-- [Develop Resource Server (SSO Client - A)](#develop-resource-server-sso-client---a)
-  - [Create Project](#create-project-for-resource-server)
-  - [Set up Configuration files](#set-up-configuration-files-for-resource-server)
-  - [Implements Security Configuration](#implements-security-configuration-for-resource-server)
-  - [Implements RestController](#implements-restcontroller-for-resource-server)
-  - [Build and Run Resource Server](#build-and-run-resource-server)
-- [Develop Resource Client (SSO Client - B)](#develop-resource-client-sso-client---b)
-  - [Create Project](#create-project-for-resource-client)
-  - [Set up Configuration files](#set-up-configuration-files-for-resource-client)
-  - [Implements Security Configuration](#implements-security-configuration-for-resource-client)
-  - [Implements Controller with use KeycloakRestTemplate](#implements-controller-with-use-keycloakresttemplate-for-resource-client)
-  - [Build and Run Resource Client](#build-and-run-resource-client)
-- [References](#references)
-  - [Documents](#documents)
-  - [Examples](#examples)
+- [要件](#要件)
+  - [環境](#環境)
+  - [認証認可フロー](#認証認可フロー)
+  - [備考](#備考)
+- [Keycloak のセットアップ (SSO Server)](#keycloak-のセットアップ-sso-server)
+  - [ダウンロード・展開](#ダウンロード展開)
+  - [Keycloak の初期設定・起動](#Keycloak-の初期設定起動)
+  - [Keycloak ヘログイン](#Keycloak-ヘログイン)
+  - [Realm の作成](#Realm-の作成)
+  - [ユーザーの登録](#ユーザーの登録)
+  - [SSO クライアントの登録](#SSO-クライアントの登録)
+- [リソースサーバーの実装 (SSO Client - A)](#リソースサーバーの実装-sso-client---a)
+  - [プロジェクトの作成](#プロジェクトの作成)
+  - [設定ファイルの配置](#設定ファイルの配置)
+  - [セキュリティ構成の実装](#セキュリティ構成の実装)
+  - [コントローラーの実装](#コントローラーの実装)
+  - [ビルド・起動](#ビルド起動)
+- [リソースクライアントの実装 (SSO Client - B)](#リソースクライアントの実装-sso-client---b)
+  - [プロジェクトの作成](#プロジェクトの作成-1)
+  - [設定ファイルの配置](#設定ファイルの配置-1)
+  - [セキュリティ構成の実装](#セキュリティ構成の実装-1)
+  - [KeycloakRestTemplate を使用するコントローラーの実装](#keycloakresttemplate-を使用するコントローラーの実装)
+  - [ビルド・起動](#ビルド起動-1)
+- [デモ](#デモ)
+- [参考](#参考)
+  - [ドキュメント](#ドキュメント)
+  - [コード例](#コード例)
 
 ## 要件
 
@@ -599,7 +601,7 @@ Spring Boot で、実行可能 JAR を作成する場合、
 `WEB-INF` にファイルを配置するのは一般的ではないため、
 `resources` 直下に配置した、`keycloak.json` を読み込ませるようにします。
 
-### `KeycloakRestTemplate` を使用するコントローラーの実装
+### KeycloakRestTemplate を使用するコントローラーの実装
 リソースサーバーにリソースを要求して、
 結果を画面に表示するエンドポイントとなる、コントローラーを実装します。
 
