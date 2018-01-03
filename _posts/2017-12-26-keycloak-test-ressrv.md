@@ -14,7 +14,7 @@ tags:
 Keycloak による認証を使う、リソースサーバー (Spring Boot クライアント) でのテスト実装メモ。
 
 この手順で使用したコードは、以下に公開しているので、こちらも参考にしてください。<br>
-[https://github.com/yo1000/kc-resource#try-testing-with-only-kc-resource-server](https://github.com/yo1000/kc-resource#try-testing-with-only-kc-resource-server)
+[https://github.com/yo1000/kc-resource/e28f12a6fc#try-testing-with-only-kc-resource-server](https://github.com/yo1000/kc-resource/tree/e28f12a6fcdae8f4012f2ae858455880019e88d7#try-testing-with-only-kc-resource-server)
 
 また、テストコード以外の部分については、
 [過去のポスト](http://blog.yo1000.com/keycloak/keycloak-collabo-ressrv-rescli.html)を前提としています。
