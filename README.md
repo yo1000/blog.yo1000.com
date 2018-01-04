@@ -3,8 +3,8 @@
 # 備忘
 今後、ポストのネタにしようと思っているものたちのメモ。
 
-- [x] Keycloak x ResourceServer x ResourceClient
-- [x] Keycloak x ResourceServer + Testing
-- [ ] Keycloak x JS
-- [ ] Keycloak x Vue.js
-- [ ] Spring Layered Architecture (model? data? form?)
+- :white_check_mark:   Keycloak x ResourceServer x ResourceClient
+- :white_check_mark:   Keycloak x ResourceServer + Testing
+- :white_large_square: Keycloak x JS
+- :white_large_square: Keycloak x Vue.js
+- :white_large_square: Spring Layered Architecture (model? data? form?)
