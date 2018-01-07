@@ -22,15 +22,14 @@ SSO 基盤を使用するアプリケーション (SSO サーバーに対する�
 
 ```console
 $ # Add realm client for Resource client (for Javascript)
-$ RES_CLI_JS_ID=`\
+$ RES_CLI_ID=`\
   bin/kcadm.sh create clients \
   -r kc-resource \
   -s clientId=kc-resource-client-js \
-  -s 'accessType=public' \
+  -s publicClient=true \
   -s 'redirectUris=["http://127.0.0.1:28081/*"]' \
   -s 'webOrigins=["http://127.0.0.1:28081"]' \
   -i\
-  `
-$ echo $RES_CLI_JS_ID
-
+  `; echo $RES_CLI_ID
+f970945c-67dc-4c09-8126-423158ff1248
 ```
