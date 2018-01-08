@@ -1,3 +1,14 @@
+---
+title: Keycloak・リソースサーバー・Javascript クライアントの連携例
+category: keycloak
+tags:
+- keycloak
+- spring boot
+- spring security
+- kotlin
+- javascript
+---
+
 ## 概要
 Keycloak と、リソースサーバー、リソースクライアント間の SSO 検証メモ。(Javascript クライアント版)
 
@@ -15,7 +26,7 @@ Javascript クライアントからの利用方法を中心に書いていきま
   - [認証認可フロー](#認証認可フロー)
   - [備考](#備考)
 - [Keycloak のセットアップ (SSO Server)](#keycloak-のセットアップ-sso-server)
-  - [Keycloak ヘログイン](#Keycloak-ヘログイン)
+  - [Keycloak ヘログイン](#keycloak-ヘログイン)
   - [SSO クライアントの登録](#sso-クライアントの登録)
 - [リソースサーバーの実装 (SSO Client - A)](#リソースサーバーの実装-sso-client---a)
   - [セキュリティ構成の実装](#セキュリティ構成の実装)
@@ -27,7 +38,6 @@ Javascript クライアントからの利用方法を中心に書いていきま
   - [ビルド・起動](#ビルド起動-1)
 - [デモ](#デモ)
 - [参考](#参考)
-  - [ドキュメント](#ドキュメント)
 
 ## 要件
 
@@ -37,6 +47,8 @@ Javascript クライアントからの利用方法を中心に書いていきま
 - Java 1.8.0_131
 - Spring Boot 1.5.9.RELEASE
 - Keycloak 3.4.1.Final
+- NodeJS v8.4.0
+- NPM 5.6.0
 
 ```console
 $ sw_vers
@@ -48,6 +60,12 @@ $ java -version
 java version "1.8.0_131"
 Java(TM) SE Runtime Environment (build 1.8.0_131-b11)
 Java HotSpot(TM) 64-Bit Server VM (build 25.131-b11, mixed mode)
+
+$ node -v
+v8.4.0
+
+$ npm -v
+5.6.0
 ```
 
 ### 認証認可フロー
