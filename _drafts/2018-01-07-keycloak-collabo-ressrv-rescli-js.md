@@ -317,3 +317,91 @@ $ ${BASE_DIR}/keycloak-3.4.1.Final/bin/kcadm.sh \
 ここまでできたら、Javascript から SSO を利用する準備は整いました。
 スクリプトを実装して、実際にリソースサーバーからリソースを取得してみます。
 
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>kc-resource-client</title>
+</head>
+<body>
+<div>
+    <button id="req-admin-btn">Request admin resource</button>
+</div>
+<div>
+    <button id="req-user-btn">Request user resource</button>
+</div>
+<pre id="display"></pre>
+<script type="text/javascript" src="http://127.0.0.1:8080/auth/js/keycloak.js"></script>
+<script type="text/javascript">
+(function () {
+    /**
+     * @param keycloak
+     * @param role
+     */
+    function getResource(keycloak, role) {
+        if (!keycloak || !keycloak.token) {
+            console.error('Require Authentication.');
+            return;
+        }
+
+        if (!role) {
+            console.error('Require Role in arguments.');
+            return;
+        }
+
+        var url = 'http://localhost:18080/kc/resource/server/' + role;
+        var xhr = new XMLHttpRequest();
+
+        xhr.open('GET', url, true);
+        xhr.setRequestHeader('Accept', 'application/json');
+        xhr.setRequestHeader('Authorization', 'Bearer ' + keycloak.token);
+        xhr.onreadystatechange = function () {
+            var display = document.getElementById('display');
+
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    console.info('OK');
+                    display.innerText = xhr.responseText;
+                } else if (xhr.status === 403) {
+                    console.error('Forbidden');
+                    display.innerText = '[Forbidden]'
+                } else {
+                    console.error(xhr);
+                }
+            }
+        };
+
+        xhr.send();
+    }
+
+    /*
+     * Will be run when page loading.
+     */
+    var keycloak = Keycloak();
+
+    keycloak
+        .init({
+            "onLoad" : "login-required"
+        })
+        .success(function(authenticated) {
+            console.info(authenticated ? 'Authenticated' : 'Not authenticated');
+            console.debug(keycloak);
+        }).error(function() {
+        console.error('Failed to initialize');
+    });
+
+    var reqAdminBtn = document.getElementById('req-admin-btn');
+    reqAdminBtn.addEventListener('click', function (e) {
+        getResource(keycloak, 'admin');
+    }, false);
+
+    var reqUserBtn = document.getElementById('req-user-btn');
+    reqUserBtn.addEventListener('click', function (e) {
+        getResource(keycloak, 'user');
+    }, false);
+})();
+</script>
+</body>
+</html>
+```
