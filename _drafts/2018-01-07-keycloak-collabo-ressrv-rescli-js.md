@@ -317,6 +317,8 @@ $ ${BASE_DIR}/keycloak-3.4.1.Final/bin/kcadm.sh \
 ここまでできたら、Javascript から SSO を利用する準備は整いました。
 スクリプトを実装して、実際にリソースサーバーからリソースを取得してみます。
 
+コード例の後に、要点をまとめます。
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -331,7 +333,8 @@ $ ${BASE_DIR}/keycloak-3.4.1.Final/bin/kcadm.sh \
 <div>
     <button id="req-user-btn">Request user resource</button>
 </div>
-<pre id="display"></pre>
+<pre id="display-username"></pre>
+<pre id="display-resource"></pre>
 <script type="text/javascript" src="http://127.0.0.1:8080/auth/js/keycloak.js"></script>
 <script type="text/javascript">
 (function () {
@@ -357,15 +360,15 @@ $ ${BASE_DIR}/keycloak-3.4.1.Final/bin/kcadm.sh \
         xhr.setRequestHeader('Accept', 'application/json');
         xhr.setRequestHeader('Authorization', 'Bearer ' + keycloak.token);
         xhr.onreadystatechange = function () {
-            var display = document.getElementById('display');
+            var displayResource = document.getElementById('display-resource');
 
             if (xhr.readyState === 4) {
                 if (xhr.status === 200) {
                     console.info('OK');
-                    display.innerText = xhr.responseText;
+                    displayResource.innerText = xhr.responseText;
                 } else if (xhr.status === 403) {
                     console.error('Forbidden');
-                    display.innerText = '[Forbidden]'
+                    displayResource.innerText = '[Forbidden]'
                 } else {
                     console.error(xhr);
                 }
@@ -387,6 +390,9 @@ $ ${BASE_DIR}/keycloak-3.4.1.Final/bin/kcadm.sh \
         .success(function(authenticated) {
             console.info(authenticated ? 'Authenticated' : 'Not authenticated');
             console.debug(keycloak);
+
+            var displayUsername = document.getElementById('display-username');
+            displayUsername.innerText = keycloak.tokenParsed.preferred_username;
         }).error(function() {
         console.error('Failed to initialize');
     });
@@ -405,3 +411,52 @@ $ ${BASE_DIR}/keycloak-3.4.1.Final/bin/kcadm.sh \
 </body>
 </html>
 ```
+
+#### keycloak.js
+`<script type="text/javascript" src="http://127.0.0.1:8080/auth/js/keycloak.js"></script>` からも分かるように、
+Javascript 用 Keycloak アダプターライブラリは、Keycloak サーバー内にホストされています。
+アプリケーションが使用する Keycloak サーバー上のライブラリを参照する方法が推奨されており、
+この参照方法に従っておくと、Keycloak サーバーのバージョンアップ時などにスクリプトも合わせて最新化されるため、
+バージョンを追従できるようになります。
+
+#### keycloak.token
+`Keycloak` オブジェクトは SSO による認証を受ける前と、受けた後でフィールドの状態が大きく変化します。
+認証前の状態では、`keycloak.token` を参照することはできません。
+認証後、`keycloak.token` が参照可能となり、リソースサーバーへの認証情報として使用可能になります。
+
+#### keycloak.tokenParsed
+`keycloak.token` 同様に、認証後に参照可能になるフィールドです。
+このフィールドには認証を受けたユーザーや、そのロール、認証トークンの有効期限などが設定されています。
+
+## デモ
+参考までに、実際に動かした結果を、以下キャプチャに残しておきます。
+
+以下 npm コマンドを実行すると、公開されたページが表示されます。
+表示されなかった場合は、コマンド結果に従って、
+ブラウザで `http://127.0.0.1:28081` を表示してください。
+
+```console
+$ npm run http
+
+> kc-resource-client@1.0.0 http ${BASE_DIR}/kc-resource/kc-resource-client-js
+> http-server -o -p 28081
+
+Starting up http-server, serving ./
+Available on:
+  http://127.0.0.1:28081
+  http://10.0.0.7:28081
+  http://10.211.55.2:28081
+  http://10.37.129.2:28081
+Hit CTRL-C to stop the server
+```
+
+初回表示では、Keycloak へリダイレクトされ、ログインを要求されます。<br>
+![kc-resource-demo-1.png]({{ site.baseurl }}/res/site/img/keycloak/kc-resource-demo-1.png)
+
+ログインすると、画面にユーザー名が表示され、ボタンをクリックすると要求に応じたメッセージが表示されます。<br>
+![kc-resource-demo-3.png]({{ site.baseurl }}/res/site/img/keycloak/kc-resource-demo-3.png)
+
+## 参考
+
+- [http://www.keycloak.org/docs/3.1/securing_apps/topics/oidc/javascript-adapter.html](http://www.keycloak.org/docs/3.1/securing_apps/topics/oidc/javascript-adapter.html)
+- [https://qiita.com/mamomamo/items/cdde95feffbb5e524fd4](https://qiita.com/mamomamo/items/cdde95feffbb5e524fd4)
