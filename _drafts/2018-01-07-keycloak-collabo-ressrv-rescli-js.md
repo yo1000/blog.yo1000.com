@@ -6,7 +6,7 @@ Keycloak と、リソースサーバー、リソースクライアント間の S
 Javascript クライアントからの利用方法を中心に書いていきます。
 
 この手順で使用したコードは、以下に公開しているので、こちらも参考にしてください。<br>
-[https://github.com/yo1000/kc-resource/1234567890](not ready)
+[https://github.com/yo1000/kc-resource/tree/d8dad62324/kc-resource-client-js](https://github.com/yo1000/kc-resource/tree/d8dad62324d5b652ec49da2300aa74d22df93c76/kc-resource-client-js)
 
 ### 目次
 
@@ -15,23 +15,15 @@ Javascript クライアントからの利用方法を中心に書いていきま
   - [認証認可フロー](#認証認可フロー)
   - [備考](#備考)
 - [Keycloak のセットアップ (SSO Server)](#keycloak-のセットアップ-sso-server)
-  - [ダウンロード・展開](#ダウンロード展開)
-  - [Keycloak の初期設定・起動](#Keycloak-の初期設定起動)
   - [Keycloak ヘログイン](#Keycloak-ヘログイン)
-  - [Realm の作成](#Realm-の作成)
-  - [ユーザーの登録](#ユーザーの登録)
-  - [SSO クライアントの登録](#SSO-クライアントの登録)
+  - [SSO クライアントの登録](#sso-クライアントの登録)
 - [リソースサーバーの実装 (SSO Client - A)](#リソースサーバーの実装-sso-client---a)
-  - [プロジェクトの作成](#プロジェクトの作成)
-  - [設定ファイルの配置](#設定ファイルの配置)
   - [セキュリティ構成の実装](#セキュリティ構成の実装)
-  - [コントローラーの実装](#コントローラーの実装)
   - [ビルド・起動](#ビルド起動)
 - [リソースクライアントの実装 (SSO Client - B)](#リソースクライアントの実装-sso-client---b)
-  - [プロジェクトの作成](#プロジェクトの作成-1)
-  - [設定ファイルの配置](#設定ファイルの配置-1)
-  - [セキュリティ構成の実装](#セキュリティ構成の実装-1)
-  - [KeycloakRestTemplate を使用するコントローラーの実装](#keycloakresttemplate-を使用するコントローラーの実装)
+  - [プロジェクトの作成](#プロジェクトの作成)
+  - [設定ファイルの配置](#設定ファイルの配置)
+  - [認証とリソース取得スクリプトの実装](#認証とリソース取得スクリプトの実装)
   - [ビルド・起動](#ビルド起動-1)
 - [デモ](#デモ)
 - [参考](#参考)
@@ -266,9 +258,14 @@ $ ./mvnw clean spring-boot:run &
 ### プロジェクトの作成
 アプリケーションサーバーは必要ありませんが、
 HTTP Server を起動しなければならないため、ここでは npm を使用します。
-以下のように `package.json` を準備してください。
+以下のように プロジェクト用ディレクトリの作成と、`package.json` を準備してください。
 
+```console
+$ mkdir ${BASE_DIR/kc-resource/}kc-resource-client-js
+$ cd ${BASE_DIR/kc-resource/}kc-resource-client-js
 ```
+
+```json
 {
   "name": "kc-resource-client",
   "version": "1.0.0",
@@ -427,6 +424,15 @@ Javascript 用 Keycloak アダプターライブラリは、Keycloak サーバ�
 #### keycloak.tokenParsed
 `keycloak.token` 同様に、認証後に参照可能になるフィールドです。
 このフィールドには認証を受けたユーザーや、そのロール、認証トークンの有効期限などが設定されています。
+
+### ビルド・起動
+リソースクライアント用ページを表示します。
+
+```console
+$ cd ${BASE_DIR}/kc-resource/kc-resource-client-js
+$ npm install
+$ npm run http
+```
 
 ## デモ
 参考までに、実際に動かした結果を、以下キャプチャに残しておきます。
