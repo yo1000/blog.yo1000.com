@@ -5,6 +5,6 @@
 
 - :white_check_mark:   Keycloak x ResourceServer x ResourceClient
 - :white_check_mark:   Keycloak x ResourceServer + Testing
-- :white_large_square: Keycloak x JS
+- :white_check_mark:   Keycloak x JS
 - :white_large_square: Keycloak x Vue.js
 - :white_large_square: Spring Layered Architecture (model? data? form?)
