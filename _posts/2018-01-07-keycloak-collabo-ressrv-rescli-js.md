@@ -17,7 +17,7 @@ Keycloak と、リソースサーバー、リソースクライアント間の S
 Javascript クライアントからの利用方法を中心に書いていきます。
 
 この手順で使用したコードは、以下に公開しているので、こちらも参考にしてください。<br>
-[https://github.com/yo1000/kc-resource/tree/d8dad62324/kc-resource-client-js](https://github.com/yo1000/kc-resource/tree/d8dad62324d5b652ec49da2300aa74d22df93c76/kc-resource-client-js)
+[https://github.com/yo1000/kc-resource/tree/e09c1dd987/kc-resource-client-js](https://github.com/yo1000/kc-resource/tree/e09c1dd9876d2f3a9480cbf03e2ec826eb3f99de/kc-resource-client-js)
 
 ### 目次
 
@@ -383,7 +383,7 @@ $ ${BASE_DIR}/keycloak-3.4.1.Final/bin/kcadm.sh \
                     displayResource.innerText = xhr.responseText;
                 } else if (xhr.status === 403) {
                     console.error('Forbidden');
-                    displayResource.innerText = '[Forbidden]'
+                    displayResource.innerText = '[Forbidden]';
                 } else {
                     console.error(xhr);
                 }
