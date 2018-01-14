@@ -26,6 +26,7 @@ AWS 自身から [DynaoDB Local](https://docs.aws.amazon.com/ja_jp/amazondynamod
 
 ### 目次
 
+
 ## 要件
 
 ### 環境
@@ -45,6 +46,7 @@ java version "1.8.0_131"
 Java(TM) SE Runtime Environment (build 1.8.0_131-b11)
 Java HotSpot(TM) 64-Bit Server VM (build 25.131-b11, mixed mode)
 ```
+
 
 ## 依存関係解決
 
@@ -217,3 +219,76 @@ Amazon S3 上に、必要なファイル群がアップロードされている�
 使用可能なリージョン別のリポジトリについては、以下を確認してください。<br>
 [https://docs.aws.amazon.com/ja_jp/amazondynamodb/latest/developerguide/DynamoDBLocal.html#DynamoDBLocal.Maven](https://docs.aws.amazon.com/ja_jp/amazondynamodb/latest/developerguide/DynamoDBLocal.html#DynamoDBLocal.Maven)
 
+
+## テスト
+
+### テストコード
+テストの前に、組み込み DynamoDB を作成して、テストの後に、これを破棄するようなサンプルを用意します。
+テストでは、テーブルの作成と、設定通りにテーブルが作成されているかを確認してみます。
+
+```kotlin
+package com.yo1000.dynamo.local
+
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB
+import com.amazonaws.services.dynamodbv2.local.embedded.DynamoDBEmbedded
+import com.amazonaws.services.dynamodbv2.model.*
+import org.junit.After
+import org.junit.Assert
+import org.junit.Before
+import org.junit.Test
+
+/**
+ *
+ * @author yo1000
+ */
+class DynamoDBEmbeddedTest {
+    lateinit var dynamo: AmazonDynamoDB
+
+    @Before
+    fun createDB() {
+        dynamo = DynamoDBEmbedded.create().amazonDynamoDB()
+    }
+
+    @After
+    fun shutdownDB() {
+        dynamo.shutdown()
+    }
+
+    @Test
+    fun test_that_table_is_created_equally_with_setting() {
+        val tableName = "Stationery"
+        val hashKeyName = "item_id"
+        val readCapacityUnits = 1000L
+        val writeCapacityUnits = 1000L
+
+        val result = dynamo.createTable(CreateTableRequest()
+                .withTableName(tableName)
+                .withKeySchema(listOf(
+                        KeySchemaElement(hashKeyName, KeyType.HASH)
+                ))
+                .withAttributeDefinitions(listOf(
+                        AttributeDefinition(hashKeyName, ScalarAttributeType.S)
+                ))
+                .withProvisionedThroughput(
+                        ProvisionedThroughput(readCapacityUnits, writeCapacityUnits))
+        )
+
+        val tableDesc = result.tableDescription
+        Assert.assertEquals(tableName, tableDesc.tableName)
+        Assert.assertEquals("[{AttributeName: $hashKeyName,KeyType: ${KeyType.HASH}}]",
+                tableDesc.keySchema.toString())
+        Assert.assertEquals("[{AttributeName: $hashKeyName,AttributeType: ${ScalarAttributeType.S}}]",
+                tableDesc.attributeDefinitions.toString())
+        Assert.assertEquals(readCapacityUnits, tableDesc.provisionedThroughput.readCapacityUnits)
+        Assert.assertEquals(writeCapacityUnits, tableDesc.provisionedThroughput.writeCapacityUnits)
+        Assert.assertEquals("ACTIVE", tableDesc.tableStatus)
+        Assert.assertEquals("arn:aws:dynamodb:ddblocal:000000000000:table/$tableName", tableDesc.tableArn)
+
+        val tables = dynamo.listTables()
+        Assert.assertEquals(1, tables.tableNames.size)
+    }
+}
+```
+
+書いた内容以上のものはないくらいシンプルなものなので、これ以上の説明はありませんが、
+この最小限のサンプルを理解しておくことで、Spring Boot 等への組み込みも容易になります。
