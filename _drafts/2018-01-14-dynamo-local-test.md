@@ -195,11 +195,11 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.131-b11, mixed mode)
 - DynamoDB とインターフェースが等しいこと
 - データを永続化できること
 
-の2点が満たせればよいだけなので、内部実装では SQLite により永続化されています。
+の2点が満たせればよいだけなので、内部実装としては、SQLite を使用した永続化が行われています。
 そのため、この依存が必要になってきます。
 
 `maven-surefire-plugin` で、引数に `-Dsqlite4java.library.path=${basedir}/target/dependencies` を渡して、
-SQLite のライブラリパスを指定している部分からもこれを読み取ることができます。
+SQLite のライブラリパスを指定している部分からも、これを読み取ることができます。
 
 #### maven-dependency-plugin
 `outputDirectory` に、`${project.build.directory}/dependencies` を設定して、
@@ -207,4 +207,13 @@ SQLite のライブラリパスを指定している部分からもこれを読�
 
 この指定により、`maven-surefire-plugin` で、
 引数に設定した `-Dsqlite4java.library.path=${basedir}/target/dependencies` を参照可能になります。
+
+#### dynamodb-local-oregon, dynamodb-local-tokyo
+DynamoDB Local は、Maven Central にアップロードされておらず、
+Amazon S3 上に、必要なファイル群がアップロードされているだけなので、
+追加リポジトリの指定が必要になります。
+
+また、依存解決するロケーションにより、ネットワーク的に有利なリージョンを選択することが可能です。
+使用可能なリージョン別のリポジトリについては、以下を確認してください。<br>
+[https://docs.aws.amazon.com/ja_jp/amazondynamodb/latest/developerguide/DynamoDBLocal.html#DynamoDBLocal.Maven](https://docs.aws.amazon.com/ja_jp/amazondynamodb/latest/developerguide/DynamoDBLocal.html#DynamoDBLocal.Maven)
 
