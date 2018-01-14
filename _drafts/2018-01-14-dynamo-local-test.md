@@ -8,7 +8,8 @@ tags:
 ---
 
 ## 概要
-DynamoDB を AWS に依存せず、ローカルでテストする流れのメモ。
+[Amazon DynamoDB](https://docs.aws.amazon.com/ja_jp/amazondynamodb/latest/developerguide/Introduction.html) を、
+AWS に依存せず、ローカルでテストする流れのメモ。
 
 DynamoDB では、AWS を利用せずとも、ローカルで検証できるように、
 AWS 自身から [DynaoDB Local](https://docs.aws.amazon.com/ja_jp/amazondynamodb/latest/developerguide/DynamoDBLocal.html) という
@@ -24,3 +25,24 @@ AWS 自身から [DynaoDB Local](https://docs.aws.amazon.com/ja_jp/amazondynamod
 [https://github.com/yo1000/ddb-local/tree/40c9061dc6/ddb-local-test](https://github.com/yo1000/ddb-local/tree/40c9061dc671a88508a85937295306927fef1f0c/ddb-local-test)
 
 ### 目次
+
+## 要件
+
+### 環境
+今回の作業環境は以下のとおりです。
+
+- Java 1.8.0_131
+- DynamoDB Local 1.11.86
+
+```console
+$ sw_vers
+ProductName:	Mac OS X
+ProductVersion:	10.12.5
+BuildVersion:	16F2073
+
+$ java -version
+java version "1.8.0_131"
+Java(TM) SE Runtime Environment (build 1.8.0_131-b11)
+Java HotSpot(TM) 64-Bit Server VM (build 25.131-b11, mixed mode)
+```
+
