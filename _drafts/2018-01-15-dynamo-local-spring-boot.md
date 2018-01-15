@@ -1,0 +1,409 @@
+---
+title: DynamoDB Local を Spring Boot で使う
+category: dynamodb
+tags:
+- dynamodb
+- spring boot
+- kotlin
+- testing
+---
+
+## 概要
+[DynamoDB Local](https://docs.aws.amazon.com/ja_jp/amazondynamodb/latest/developerguide/DynamoDBLocal.html)
+を、Spring Boot で使うメモ。
+
+Spring Data の
+[CrudRepository](https://docs.spring.io/spring-data/data-commons/docs/1.13.x/reference/html/#repositories.definition-tuning)
+を使用した、リポジトリクラスの定義と、自動生成や、
+Spring Boot の
+[Auto configuration](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-developing-auto-configuration.html)
+の仕組みを組み合わせて、プロダクションと、テストで、データストアの使い分けができるようにしていきます。
+
+この手順で使用したコードは、以下に公開しているので、こちらも参考にしてください。<br>
+[https://github.com/yo1000/ddb-local/tree/0f953cea74/ddb-local-spring-boot](https://github.com/yo1000/ddb-local/tree/0f953cea741aeeb89ac99a1246582a238b8c575c/ddb-local-spring-boot)
+
+### 目次
+
+
+
+## 要件
+
+### 環境
+今回の作業環境は以下のとおりです。
+
+- Java 1.8.0_131
+- Kotlin 1.2.10
+- DynamoDB Local 1.11.86
+- Spring Boot 2.0.0.M7
+
+```console
+$ sw_vers
+ProductName:	Mac OS X
+ProductVersion:	10.12.5
+BuildVersion:	16F2073
+
+$ java -version
+java version "1.8.0_131"
+Java(TM) SE Runtime Environment (build 1.8.0_131-b11)
+Java HotSpot(TM) 64-Bit Server VM (build 25.131-b11, mixed mode)
+```
+
+## プロジェクト作成
+[Spring Initializr](https://start.spring.io/) でプロジェクトを作成し、必要な依存を設定します。
+
+### Spring Initializr
+Initializr テンプレート内には、DynamoDB 用の依存が用意されていないので、
+ここではとくに依存を選択せずに、プロジェクトを作成していきます。
+
+```console
+$ curl https://start.spring.io/starter.tgz \
+  -d dependencies="" \
+  -d language="kotlin" \
+  -d javaVersion="1.8" \
+  -d packaging="jar" \
+  -d bootVersion="2.0.0.M7" \
+  -d type="maven-project" \
+  -d groupId="com.yo1000" \
+  -d artifactId="kc-resource-server" \
+  -d version="1.0.0-SNAPSHOT" \
+  -d name="ddb-local-spring-boot" \
+  -d description="DynamoDB Local Demo" \
+  -d packageName="com.yo1000.dynamo.local" \
+  -d baseDir="ddb-local-spring-boot" \
+  -d applicationName="DdbLocalSpringBootApplication" \
+  | tar -xzvf -
+```
+
+### pom.xml
+DynamoDB、および DynamoDB Local を使用するのに必要な依存を追加していきます。
+
+ビルドプラグインの設定については、以前のポスト
+([DynamoDB Local を使用したテスト](http://blog.yo1000.com/dynamodb/dynamo-local-test.html))
+で触れているので、内容を把握したい場合には、そちらを確認してください。
+
+`pom.xml` 掲載の後に、その他の要点をまとめます。
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.yo1000</groupId>
+    <artifactId>ddb-local-spring-boot</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>ddb-local-spring-boot</name>
+    <description>DynamoDB Local Spring Boot Example</description>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.0.M7</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <properties>
+        <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <kotlin.version>1.2.10</kotlin.version>
+        <dynamodblocal.version>[1.11,2.0)</dynamodblocal.version>
+        <sqlite4java.version>1.0.392</sqlite4java.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib-jre8</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-reflect</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-commons</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.derjust</groupId>
+            <artifactId>spring-data-dynamodb</artifactId>
+            <version>5.0.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>DynamoDBLocal</artifactId>
+            <version>${dynamodblocal.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.almworks.sqlite4java</groupId>
+            <artifactId>sqlite4java</artifactId>
+            <version>${sqlite4java.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
+        <testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>kotlin-maven-plugin</artifactId>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <configuration>
+                    <compilerPlugins>
+                        <plugin>spring</plugin>
+                    </compilerPlugins>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.jetbrains.kotlin</groupId>
+                        <artifactId>kotlin-maven-allopen</artifactId>
+                        <version>${kotlin.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>-Dsqlite4java.library.path=${basedir}/target/dependencies</argLine>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/dependencies</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+
+        <repository>
+            <id>dynamodb-local-tokyo</id>
+            <name>DynamoDB Local Release Repository</name>
+            <url>https://s3-ap-northeast-1.amazonaws.com/dynamodb-local-tokyo/release</url>
+        </repository>
+        <repository>
+            <id>dynamodb-local-oregon</id>
+            <name>DynamoDB Local Release Repository</name>
+            <url>https://s3-us-west-2.amazonaws.com/dynamodb-local/release</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </pluginRepository>
+        <pluginRepository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+
+</project>
+```
+
+#### spring-data-commons
+Spring Data で使用される共通ライブラリです。
+今回は Spring Initializr で Spring Data 系の依存を選択していないため、
+この依存を個別追加しています。
+
+#### spring-data-dynamodb
+サードパーティ製の DynamoDB 用 Spring Data ライブラリです。
+これを使用することで、リポジトリクラスの実装等が非常に簡単になります。
+
+## コンフィグレーション
+
+### プロダクション
+コード例の後に、要点をまとめます。
+
+```kotlin
+package com.yo1000.dynamo.local
+
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder
+import org.socialsignin.spring.data.dynamodb.repository.config.EnableDynamoDBRepositories
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+
+
+/**
+ *
+ * @author yo1000
+ */
+@Configuration
+@EnableDynamoDBRepositories(basePackages = ["com.yo1000.dynamo.local.repository"])
+class DynamoDBConfiguration {
+    @Bean
+    @ConditionalOnMissingBean
+    fun amazonDynamoDB(): AmazonDynamoDB {
+        return AmazonDynamoDBClientBuilder.standard().build()
+    }
+}
+```
+
+#### @ConditionalOnMissingBean
+アプリケーション起動時、DI コンテナ上に `AmazonDynamoDB` インスタンスが見つからない場合に、
+このメソッドの戻り値を DI コンテナに登録してくれるようになります。
+既に登録済みのインスタンスを見つけた場合はこれをスキップします。
+
+テスト実行時など、DynamoDB を参照できないロケーションでこのメソッドが実行されると、
+例外をスローしてしまうため、プロダクション環境以外で実行されないように、
+`@ConditionalOnMissingBean` アノテーションを設定しておきます。
+
+#### @EnableDynamoDBRepositories
+指定しておくと、`@EnableScan` アノテーションの付けられたリポジトリインターフェースを自動的に実装し、
+DI コンテナに自動登録してくれるようになります。
+自動実装されるインターフェース上のメソッドは、
+[JPA による永続化メソッド群の命名規則](https://docs.spring.io/spring-data/data-jpa/docs/current/reference/html/)に
+従う必要があります。
+
+### テスト
+コード例の後に、要点をまとめます。
+
+```kotlin
+package com.yo1000.dynamo.local
+
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB
+import com.amazonaws.services.dynamodbv2.local.embedded.DynamoDBEmbedded
+import org.socialsignin.spring.data.dynamodb.repository.config.EnableDynamoDBRepositories
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Primary
+
+/**
+ *
+ * @author yo1000
+ */
+@Configuration
+@EnableDynamoDBRepositories(basePackages = ["com.yo1000.dynamo.local.repository"])
+class TestDynamoDBConfiguration {
+    @Bean
+    fun amazonDynamoDB(): AmazonDynamoDB {
+        return DynamoDBEmbedded.create().amazonDynamoDB()
+    }
+}
+```
+
+#### amazonDynamoDB(): AmazonDynamoDB
+プロダクション側で設定したものと、同じクラスによる DI コンテナへの登録メソッドです。
+プロダクション側のメソッドに、`@ConditionalOnMissingBean` アノテーションを付けているので、
+こちらのメソッドによる DI コンテナへの登録が優先され、テスト時にはこちらの定義が使用されるようになります。
+
+テスト用に、`DynamoDBEmbedded` インスタンスを返却するようにしているので、
+テスト実行時には DynamoDB Local が使用されるようになちます。
+
+### データ
+コード例の後に、要点をまとめます。
+
+```kotlin
+package com.yo1000.dynamo.local.repository
+
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable
+
+/**
+ *
+ * @author yo1000
+ */
+@DynamoDBTable(tableName = "Stationary")
+class Stationary(
+        @get:DynamoDBHashKey
+        var id: String = "",
+        @get:DynamoDBAttribute
+        var name: String = ""
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Stationary
+
+        if (id != other.id) return false
+        if (name != other.name) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = id.hashCode()
+        result = 31 * result + name.hashCode()
+        return result
+    }
+}
+```
+
+## リポジトリ
+コード例の後に、要点をまとめます。
+
+
+
+### CrudRepository
+
+
+## テスト
+
