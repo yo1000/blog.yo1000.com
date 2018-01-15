@@ -260,8 +260,6 @@ DynamoDB、および DynamoDB Local を使用するのに必要な依存を追�
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-
-
 </project>
 ```
 
@@ -289,11 +287,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
-
-/**
- *
- * @author yo1000
- */
 @Configuration
 @EnableDynamoDBRepositories(basePackages = ["com.yo1000.dynamo.local.repository"])
 class DynamoDBConfiguration {
@@ -334,10 +327,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
 
-/**
- *
- * @author yo1000
- */
 @Configuration
 @EnableDynamoDBRepositories(basePackages = ["com.yo1000.dynamo.local.repository"])
 class TestDynamoDBConfiguration {
@@ -356,6 +345,9 @@ class TestDynamoDBConfiguration {
 テスト用に、`DynamoDBEmbedded` インスタンスを返却するようにしているので、
 テスト実行時には DynamoDB Local が使用されるようになちます。
 
+
+## リポジトリ
+
 ### データ
 コード例の後に、要点をまとめます。
 
@@ -366,10 +358,6 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable
 
-/**
- *
- * @author yo1000
- */
 @DynamoDBTable(tableName = "Stationary")
 class Stationary(
         @get:DynamoDBHashKey
@@ -397,13 +385,41 @@ class Stationary(
 }
 ```
 
-## リポジトリ
-コード例の後に、要点をまとめます。
+#### @DynamoDBTable(tableName = "Stationary")
+このクラスインスタンスが DynamoDB の永続化対象であることをマークします。
 
+#### @get:DynamoDBHashKey
+DynamoDB の各種アノテーションは Getter メソッドに設定して使用します。
+この Getter メソッドが、主となる検索キーであることをアノテーションでマークします。
 
+#### @get:DynamoDBAttribute
+この Getter メソッドが、DynamoDB で永続化される属性であることをマークします。
+
+#### var
+DynamoDB とマッピングするクラスの各フィールドは、(アノテーションは Getter だけにしか付けないにも関わらず)
+対応する Getter と Setter の両方が必要になるため、フィールドは `var` で宣言する必要があります。
+
+#### equals, hashCode
+データの検索時に、これらメソッドが使用されるため、実装しておく必要があります。
 
 ### CrudRepository
+コード例の後に、要点をまとめます。
 
+```kotlin
+package com.yo1000.dynamo.local.repository
+
+import org.socialsignin.spring.data.dynamodb.repository.EnableScan
+import org.springframework.data.repository.CrudRepository
+
+@EnableScan
+interface StationaryRepository : CrudRepository<Stationary, String> {
+    fun findByName(name: String): List<Stationary>
+}
+```
+
+#### @EnableScan
+このアノテーションでクラスをマークしておくと、コンフィグレーションクラスの、`
+@EnableDynamoDBRepositories` に応じて、リポジトリクラスが自動実装されるようになります。
 
 ## テスト
 
