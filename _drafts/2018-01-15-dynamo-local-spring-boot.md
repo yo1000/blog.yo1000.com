@@ -20,7 +20,7 @@ Spring Boot の
 の仕組みを組み合わせて、プロダクションと、テストで、データストアの使い分けができるようにしていきます。
 
 この手順で使用したコードは、以下に公開しているので、こちらも参考にしてください。<br>
-[https://github.com/yo1000/ddb-local/tree/0f953cea74/ddb-local-spring-boot](https://github.com/yo1000/ddb-local/tree/0f953cea741aeeb89ac99a1246582a238b8c575c/ddb-local-spring-boot)
+[https://github.com/yo1000/ddb-local/tree/e9eb5812f6/ddb-local-spring-boot](https://github.com/yo1000/ddb-local/tree/e9eb5812f6f665980bd593e9740eccc3f0e73285/ddb-local-spring-boot)
 
 ### 目次
 
@@ -33,6 +33,7 @@ Spring Boot の
 
 - Java 1.8.0_131
 - Kotlin 1.2.10
+- DynamoDB SDK 1.11.263
 - DynamoDB Local 1.11.86
 - Spring Boot 2.0.0.M7
 
@@ -86,7 +87,7 @@ DynamoDB、および DynamoDB Local を使用するのに必要な依存を追�
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.yo1000</groupId>
@@ -110,6 +111,7 @@ DynamoDB、および DynamoDB Local を使用するのに必要な依存を追�
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <kotlin.version>1.2.10</kotlin.version>
+        <dynamodb.version>[1.11,2.0)</dynamodb.version>
         <dynamodblocal.version>[1.11,2.0)</dynamodblocal.version>
         <sqlite4java.version>1.0.392</sqlite4java.version>
     </properties>
@@ -127,15 +129,21 @@ DynamoDB、および DynamoDB Local を使用するのに必要な依存を追�
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-reflect</artifactId>
         </dependency>
-
         <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-commons</artifactId>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-dynamodb</artifactId>
+            <version>${dynamodb.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.derjust</groupId>
             <artifactId>spring-data-dynamodb</artifactId>
             <version>5.0.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.amazonaws</groupId>
+                    <artifactId>aws-java-sdk-dynamodb</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -149,6 +157,12 @@ DynamoDB、および DynamoDB Local を使用するのに必要な依存を追�
             <artifactId>DynamoDBLocal</artifactId>
             <version>${dynamodblocal.version}</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.amazonaws</groupId>
+                    <artifactId>aws-java-sdk-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.almworks.sqlite4java</groupId>
@@ -196,7 +210,7 @@ DynamoDB、および DynamoDB Local を使用するのに必要な依存を追�
                 <executions>
                     <execution>
                         <id>copy-dependencies</id>
-                        <phase>process-resources</phase>
+                        <phase>process-test-resources</phase>
                         <goals>
                             <goal>copy-dependencies</goal>
                         </goals>
@@ -263,14 +277,9 @@ DynamoDB、および DynamoDB Local を使用するのに必要な依存を追�
 </project>
 ```
 
-#### spring-data-commons
-Spring Data で使用される共通ライブラリです。
-今回は Spring Initializr で Spring Data 系の依存を選択していないため、
-この依存を個別追加しています。
-
 #### spring-data-dynamodb
 サードパーティ製の DynamoDB 用 Spring Data ライブラリです。
-これを使用することで、リポジトリクラスの実装等が非常に簡単になります。
+リポジトリクラスの実装等が非常に簡単になります。
 
 ## コンフィグレーション
 
@@ -422,4 +431,24 @@ interface StationaryRepository : CrudRepository<Stationary, String> {
 @EnableDynamoDBRepositories` に応じて、リポジトリクラスが自動実装されるようになります。
 
 ## テスト
+テストを実行して、結果を確認します。
 
+```console
+$ ./mvnw clean test
+
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.651 s - in com.yo1000.dynamo.local.repository.StationaryRepositoryTest
+2018-01-16 00:47:12.293  INFO 20085 --- [       Thread-2] s.c.a.AnnotationConfigApplicationContext : Closing org.springframework.context.annotation.AnnotationConfigApplicationContext@2e570ded: startup date [Tue Jan 16 00:47:08 JST 2018]; root of context hierarchy
+2018-01-16 00:47:12.296  INFO 20085 --- [       Thread-2] c.a.s.d.l.shared.access.LocalDBClient    : Shutting down
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 22.825 s
+[INFO] Finished at: 2018-01-16T00:47:12+09:00
+[INFO] Final Memory: 65M/645M
+[INFO] ------------------------------------------------------------------------
+```
