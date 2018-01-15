@@ -12,7 +12,7 @@ tags:
 AWS に依存せず、ローカルでテストする流れのメモ。
 
 DynamoDB では、AWS を利用せずとも、ローカルで検証できるように、
-AWS 自身から [DynaoDB Local](https://docs.aws.amazon.com/ja_jp/amazondynamodb/latest/developerguide/DynamoDBLocal.html) という
+AWS 自身から [DynamoDB Local](https://docs.aws.amazon.com/ja_jp/amazondynamodb/latest/developerguide/DynamoDBLocal.html) という
 モジュールが提供されています。
 
 このモジュールは AWS が管理している Maven リポジトリにもホスティングされており、これを利用することで、
