@@ -58,4 +58,4 @@ data class Schedule(
 - `JsonBackReference`
 - `JsonManagedReference`
 
-参考: https://qiita.com/sengoku/items/56bc6319759fee6d15e3
+参考: [https://qiita.com/sengoku/items/56bc6319759fee6d15e3](https://qiita.com/sengoku/items/56bc6319759fee6d15e3)
